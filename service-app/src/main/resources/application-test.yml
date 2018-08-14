@@ -1,0 +1,16 @@
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://eureka-server:1000/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    hostname: service-a
+server:
+  port: 1004
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/smarthome?characterEncoding=utf8
+    username: root
+    password: 123456
+  application:
+      name: service-web
