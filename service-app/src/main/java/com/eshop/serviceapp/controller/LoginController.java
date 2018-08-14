@@ -32,9 +32,9 @@ public class LoginController {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
-            User user = (User) subject.getPrincipal();
-            access_token = JwtTokenUtil.createToken(user.getId(),Constants.REDIS_TOKEN_EXPIRE_TIME);
-            redisService.addKey(access_token,user.getId().toString());
+//            User user = (User) subject.getPrincipal();
+//            access_token = JwtTokenUtil.createToken(user.getId(),Constants.REDIS_TOKEN_EXPIRE_TIME);
+//            redisService.addKey(access_token,user.getId().toString());
             re.setCode(ResultEntity.SUCCESS);
             re.setMsg(ResultEntity.MSG_SUCCESS);
             re.setData(access_token);
