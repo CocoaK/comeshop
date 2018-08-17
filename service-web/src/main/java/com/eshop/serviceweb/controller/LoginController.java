@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/auth")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class LoginController {
 
     @Autowired
