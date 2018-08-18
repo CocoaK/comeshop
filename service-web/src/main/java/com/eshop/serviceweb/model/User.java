@@ -1,18 +1,19 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class User extends BaseModel {
     private Integer userId;
-
+    @NotNull
     private String userName;
-
+    @NotNull
     private String dispalyName;
-
+    @NotNull
     private String userPwd;
-
+    @NotNull
     private Date pwdExpiryTime;
-
+    @NotNull
     private String telNo;
 
     private String remarks;
@@ -24,15 +25,15 @@ public class User extends BaseModel {
     private Boolean isActive;
 
     private Date inactiveDate;
-
+    @NotNull
     private String buCode;
-
+    @NotNull
     private String createdBy;
-
+    @NotNull
     private Date createdDate;
-
+    @NotNull
     private String lastUpdatedBy;
-
+    @NotNull
     private Date lastUpdatedDate;
 
     private String rowId;

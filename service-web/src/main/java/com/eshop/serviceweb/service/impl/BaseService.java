@@ -4,6 +4,7 @@ import com.eshop.serviceweb.common.model.ResultEntity;
 import com.eshop.serviceweb.common.model.ResultList;
 import com.eshop.serviceweb.mapper.BaseMapper;
 import com.eshop.serviceweb.service.IBaseService;
+import com.eshop.serviceweb.vo.DeleteVO;
 import com.eshop.serviceweb.vo.PageVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -70,12 +71,12 @@ public abstract class BaseService<T> implements IBaseService<T> {
 
     @Transactional
     @Override
-    public int delete(Long id) {
+    public int delete(Integer id) {
         return getBaseMapper().delete(id);
     }
 
     @Override
-    public T getOne(Long id) {
+    public T getOne(Integer id) {
         return getBaseMapper().getOne(id);
     }
 
@@ -131,11 +132,16 @@ public abstract class BaseService<T> implements IBaseService<T> {
      * @return
      */
     @Override
-    public ResultEntity<String> deleteForResultEntity(Long id) {
+    public ResultEntity<String> deleteForResultEntity(Integer id) {
         return proccessResultEntity(delete(id) > 0 ? ResultEntity.SUCCESS
                 : ResultEntity.FAILD, "", "");
     }
 
+    @Override
+    public ResultEntity<String> deleteForResultEntity(DeleteVO deleteVO){
+        return proccessResultEntity(getBaseMapper().deleteByIdLock(deleteVO) > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, "", "");
+    }
 
     /**
      * 获取单个实体数据
@@ -144,7 +150,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
      * @return
      */
     @Override
-    public ResultEntity<T> getOneResultEntity(Long id) {
+    public ResultEntity<T> getOneResultEntity(Integer id) {
         return proccessResultEntity(ResultEntity.SUCCESS, "", getOne(id));
     }
 

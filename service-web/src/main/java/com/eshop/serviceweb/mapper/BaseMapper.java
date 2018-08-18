@@ -1,18 +1,19 @@
 package com.eshop.serviceweb.mapper;
 
+import com.eshop.serviceweb.vo.DeleteVO;
 import com.github.pagehelper.Page;
 
 import java.util.List;
 
 public interface BaseMapper<T> {
 
-    int delete(Long id);
+    int delete(Integer id);
 
     int insert(T entity);
 
     int insertActive(T entity);
 
-    T getOne(Long id);
+    T getOne(Integer id);
 
     int updateActive(T entity);
 
@@ -25,4 +26,6 @@ public interface BaseMapper<T> {
     Page<T> getPageList(T entity);
 
     Page<T> queryPageList(T entity);
+
+    int deleteByIdLock(DeleteVO deleteVO);
 }

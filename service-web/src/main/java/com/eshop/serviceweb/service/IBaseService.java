@@ -2,6 +2,7 @@ package com.eshop.serviceweb.service;
 
 import com.eshop.serviceweb.common.model.ResultEntity;
 import com.eshop.serviceweb.common.model.ResultList;
+import com.eshop.serviceweb.vo.DeleteVO;
 import com.eshop.serviceweb.vo.PageVO;
 import com.github.pagehelper.Page;
 
@@ -14,11 +15,11 @@ import java.util.List;
 
 public interface IBaseService<T> {
 
-    int delete(Long id);
+    int delete(Integer id);
 
     int add(T entity);
 
-    T getOne(Long id);
+    T getOne(Integer id);
 
     int updateActive(T entity);
 
@@ -43,7 +44,14 @@ public interface IBaseService<T> {
      * @param id
      * @return
      */
-    public ResultEntity<String> deleteForResultEntity(Long id);
+    public ResultEntity<String> deleteForResultEntity(Integer id);
+
+    /**
+     * 删除返回格式化结果
+     * @param DeleteVO
+     * @return
+     */
+    public ResultEntity<String> deleteForResultEntity(DeleteVO deleteVO);
 
 
     /**
@@ -51,7 +59,7 @@ public interface IBaseService<T> {
      * @param id
      * @return
      */
-    public ResultEntity<T> getOneResultEntity(Long id);
+    public ResultEntity<T> getOneResultEntity(Integer id);
 
     /**
      * 更新返回格式化结果

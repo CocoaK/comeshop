@@ -4,6 +4,7 @@ import com.eshop.serviceweb.common.model.ResultEntity;
 import com.eshop.serviceweb.common.model.ResultList;
 import com.eshop.serviceweb.common.util.CryptUtil;
 import com.eshop.serviceweb.service.IBaseService;
+import com.eshop.serviceweb.vo.DeleteVO;
 import com.eshop.serviceweb.vo.PageVO;
 import com.github.pagehelper.Page;
 import org.springframework.validation.annotation.Validated;
@@ -33,13 +34,18 @@ public abstract class BaseController<T> {
 
     @RequestMapping("/add")
     public @ResponseBody
-    ResultEntity<String> add(@RequestBody T entity) {
+    ResultEntity<String> add(@Validated @RequestBody T entity) {
         return getBaseService().addForResultEntity(entity);
     }
 
     @RequestMapping("/delete")
-    public @ResponseBody ResultEntity<String> delete(@RequestBody Long id) {
+    public @ResponseBody ResultEntity<String> delete(@RequestBody Integer id) {
         return getBaseService().deleteForResultEntity(id);
+    }
+
+    @RequestMapping("/deleteByIdLock")
+    public @ResponseBody ResultEntity<String> delete(@Validated @RequestBody DeleteVO deleteVO) {
+        return getBaseService().deleteForResultEntity(deleteVO);
     }
 
     @RequestMapping("/update")
