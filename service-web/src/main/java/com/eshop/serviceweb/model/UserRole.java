@@ -1,20 +1,22 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class UserRole extends BaseModel {
+    @NotNull
     private Integer userId;
-
+    @NotNull
     private Integer roleId;
-
+    @NotNull
     private String createdBy;
-
+    @NotNull
     private Date createdDate;
-
+    @NotNull
     private String lastUpdatedBy;
-
+    @NotNull
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public Integer getUserId() {

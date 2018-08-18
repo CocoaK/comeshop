@@ -27,6 +27,10 @@
   <delete id="delete" parameterType="java.lang.Integer">
     delete from role
     where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from role
+    where role_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
@@ -214,6 +218,10 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Role" resultMap="BaseResultMap" useCache="false">
+    select * from role
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.Role" resultMap="BaseResultMap" useCache="false">
     select * from role
     <include refid="Base_Query_Cause" />
   </select>

@@ -51,7 +51,7 @@ public interface IBaseService<T> {
      * @param DeleteVO
      * @return
      */
-    public ResultEntity<String> deleteForResultEntity(DeleteVO deleteVO);
+    public ResultEntity<String> deleteByLockForResultEntity(DeleteVO deleteVO);
 
 
     /**

@@ -21,7 +21,7 @@ import java.util.List;
  * 基础转接控制器
  */
 /**增加跨域支持*/
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
 public abstract class BaseController<T> {
 
     public abstract IBaseService<T> getBaseService();
@@ -43,9 +43,9 @@ public abstract class BaseController<T> {
         return getBaseService().deleteForResultEntity(id);
     }
 
-    @RequestMapping("/deleteByIdLock")
+    @RequestMapping("/deleteByLock")
     public @ResponseBody ResultEntity<String> delete(@Validated @RequestBody DeleteVO deleteVO) {
-        return getBaseService().deleteForResultEntity(deleteVO);
+        return getBaseService().deleteByLockForResultEntity(deleteVO);
     }
 
     @RequestMapping("/update")
@@ -55,7 +55,7 @@ public abstract class BaseController<T> {
 
     /**缓存分页支持*/
     @RequestMapping("/getPageList")
-    public ResultList<List<T>> getPageList(@Validated @RequestBody PageVO<T> pageVO) {
+    public ResultList<List<T>> getPageList(@RequestBody PageVO<T> pageVO) {
         ResultList<List<T>> resultList = getBaseService().getPageList(pageVO);
         CryptUtil.crypt(resultList.getData());
         return resultList;

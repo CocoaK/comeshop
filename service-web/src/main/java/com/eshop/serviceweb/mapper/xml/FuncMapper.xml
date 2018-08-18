@@ -26,6 +26,10 @@
   <delete id="delete" parameterType="java.lang.String">
     delete from func
     where func_code = #{funcCode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from func
+    where func_code = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
@@ -200,6 +204,10 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Func" resultMap="BaseResultMap" useCache="false">
+    select * from func
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.Func" resultMap="BaseResultMap" useCache="false">
     select * from func
     <include refid="Base_Query_Cause" />
   </select>

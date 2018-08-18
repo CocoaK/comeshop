@@ -35,7 +35,7 @@ public class User extends BaseModel {
     private String lastUpdatedBy;
     @NotNull
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public Integer getUserId() {

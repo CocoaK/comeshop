@@ -40,7 +40,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
     @Override
     public ResultList<List<T>> getPageList(PageVO<T> pageVO){
         Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
-        getBaseMapper().getPageList(pageVO.getEntity());
+        getBaseMapper().getPageList(pageVO.getParams());
         ResultList<List<T>> re = new ResultList<List<T>>(page.getTotal(), System.currentTimeMillis(), page);
         return re;
     }
@@ -64,7 +64,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
     @Override
     public ResultList<List<T>> queryPageList(PageVO<T> pageVO){
         Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
-        getBaseMapper().queryPageList(pageVO.getEntity());
+        getBaseMapper().queryPageList(pageVO.getParams());
         ResultList<List<T>> re = new ResultList<List<T>>(page.getTotal(), System.currentTimeMillis(), page);
         return re;
     }
@@ -105,8 +105,9 @@ public abstract class BaseService<T> implements IBaseService<T> {
      */
     @Override
     public ResultEntity<String> addForResultEntity(T record) {
-        return proccessResultEntity(add(record) > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, "", "");
+        int result = add(record);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
     /**
@@ -122,7 +123,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 add(t);
             }
         }
-        return proccessResultEntity(ResultEntity.SUCCESS,"","");
+        return proccessResultEntity(ResultEntity.SUCCESS,ResultEntity.MSG_SUCCESS,"");
     }
 
     /**
@@ -133,14 +134,16 @@ public abstract class BaseService<T> implements IBaseService<T> {
      */
     @Override
     public ResultEntity<String> deleteForResultEntity(Integer id) {
-        return proccessResultEntity(delete(id) > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, "", "");
+        int result = delete(id);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
     @Override
-    public ResultEntity<String> deleteForResultEntity(DeleteVO deleteVO){
-        return proccessResultEntity(getBaseMapper().deleteByIdLock(deleteVO) > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, "", "");
+    public ResultEntity<String> deleteByLockForResultEntity(DeleteVO deleteVO){
+        int result = getBaseMapper().deleteByLock(deleteVO);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
     /**
@@ -161,7 +164,9 @@ public abstract class BaseService<T> implements IBaseService<T> {
     @Transactional
     @Override
     public ResultEntity<String> updateForResultEntity(T entity) {
-        return proccessResultEntity(updateActive(entity) > 0 ? ResultEntity.SUCCESS: ResultEntity.FAILD, "", "");
+        int result = updateActive(entity);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
     /**

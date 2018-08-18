@@ -1,22 +1,24 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class RoleFunc extends BaseModel {
+    @NotNull
     private Integer roleId;
-
+    @NotNull
     private String funcCode;
 
     private Boolean isAllowInd;
-
+    @NotNull
     private String createdBy;
-
+    @NotNull
     private Date createdDate;
-
+    @NotNull
     private String lastUpdatedBy;
-
+    @NotNull
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public Integer getRoleId() {

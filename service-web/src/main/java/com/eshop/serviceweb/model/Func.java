@@ -1,10 +1,12 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Func extends BaseModel {
+    @NotNull
     private String funcCode;
-
+    @NotNull
     private String funcName;
 
     private String funcDesc;
@@ -12,15 +14,15 @@ public class Func extends BaseModel {
     private Boolean isActive;
 
     private Date inactiveDate;
-
+    @NotNull
     private String createdBy;
-
+    @NotNull
     private Date createdDate;
-
+    @NotNull
     private String lastUpdatedBy;
-
+    @NotNull
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public String getFuncCode() {

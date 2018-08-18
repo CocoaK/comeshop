@@ -1,12 +1,13 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Role extends BaseModel {
     private Integer roleId;
-
+    @NotNull
     private String roleCode;
-
+    @NotNull
     private String roleName;
 
     private String remarks;
@@ -14,15 +15,15 @@ public class Role extends BaseModel {
     private Boolean isActive;
 
     private Date inactiveDate;
-
+    @NotNull
     private String createdBy;
-
+    @NotNull
     private Date createdDate;
-
+    @NotNull
     private String lastUpdatedBy;
-
+    @NotNull
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public Integer getRoleId() {

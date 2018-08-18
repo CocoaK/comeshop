@@ -25,9 +25,14 @@
   <delete id="delete" parameterType="map">
     delete from role_func
     where role_id = #{roleId,jdbcType=INTEGER}
+      and func_code = #{funcCode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from role_func
+    where role_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
-      and func_code = #{funcCode,jdbcType=VARCHAR}
+      and func_code = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
@@ -174,6 +179,10 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.RoleFunc" resultMap="BaseResultMap" useCache="false">
+    select * from role_func
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.RoleFunc" resultMap="BaseResultMap" useCache="false">
     select * from role_func
     <include refid="Base_Query_Cause" />
   </select>

@@ -10,7 +10,7 @@ public class PageVO<T> {
 
     private String orderBy;
     @Valid
-    private T entity;
+    private T params;
 
     public int getPageSize() {
         return pageSize;
@@ -36,11 +36,11 @@ public class PageVO<T> {
         this.orderBy = orderBy;
     }
 
-    public T getEntity() {
-        return entity;
+    public T getParams() {
+        return params;
     }
 
-    public void setEntity(T entity) {
-        this.entity = entity;
+    public void setParams(T params) {
+        this.params = params;
     }
 }

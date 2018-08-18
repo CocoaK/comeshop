@@ -27,5 +27,5 @@ public interface BaseMapper<T> {
 
     Page<T> queryPageList(T entity);
 
-    int deleteByIdLock(DeleteVO deleteVO);
+    int deleteByLock(DeleteVO deleteVO);
 }
