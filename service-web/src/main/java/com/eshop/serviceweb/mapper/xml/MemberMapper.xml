@@ -42,6 +42,10 @@
   <delete id="delete" parameterType="java.lang.Integer">
     delete from member
     where member_id = #{memberId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from member
+    where member_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
@@ -125,16 +129,16 @@
       <if test="buCode != null">
         bu_code,
       </if>
-      <if test="createdBy != null">
+      <if test="currentUser != null">
         created_by,
       </if>
-      <if test="createdDate != null">
+      <if test="createdDate == null">
         created_date,
       </if>
-      <if test="lastUpdatedBy != null">
+      <if test="lastUpdatedBy == null">
         last_updated_by,
       </if>
-      <if test="lastUpdatedDate != null">
+      <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
       <if test="rowId != null">
@@ -199,17 +203,17 @@
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
       </if>
-      <if test="createdBy != null">
-        #{createdBy,jdbcType=VARCHAR},
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
       </if>
-      <if test="createdDate != null">
-        #{createdDate,jdbcType=DATE},
+      <if test="createdDate == null">
+        now(),
       </if>
-      <if test="lastUpdatedBy != null">
-        #{lastUpdatedBy,jdbcType=VARCHAR},
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
       </if>
-      <if test="lastUpdatedDate != null">
-        #{lastUpdatedDate,jdbcType=DATE},
+      <if test="lastUpdatedDate == null">
+        now(),
       </if>
       <if test="rowId != null">
         #{rowId,jdbcType=VARCHAR},
@@ -284,6 +288,81 @@
       </if>
       <if test="lastUpdatedDate != null">
         last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Member">
+    update member
+    <set>
+      <if test="memberName != null">
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPwd != null">
+        member_pwd = #{memberPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="pwdExpiryTime != null">
+        pwd_expiry_time = #{pwdExpiryTime,jdbcType=DATE},
+      </if>
+      <if test="telNo != null">
+        tel_no = #{telNo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="photograph != null">
+        photograph = #{photograph,jdbcType=VARCHAR},
+      </if>
+      <if test="registrationDate != null">
+        registration_date = #{registrationDate,jdbcType=DATE},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="recommend != null">
+        recommend = #{recommend,jdbcType=INTEGER},
+      </if>
+      <if test="integration != null">
+        integration = #{integration,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date = #{inactiveDate,jdbcType=DATE},
+      </if>
+      <if test="gradeCode != null">
+        grade_code = #{gradeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gradeExpiryDate != null">
+        grade_expiry_date = #{gradeExpiryDate,jdbcType=DATE},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="accessToken != null">
+        access_token = #{accessToken,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -408,6 +487,10 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Member" resultMap="BaseResultMap" useCache="false">
+    select * from member
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.Member" resultMap="BaseResultMap" useCache="false">
     select * from member
     <include refid="Base_Query_Cause" />
   </select>

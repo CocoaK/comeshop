@@ -88,21 +88,21 @@ public abstract class BaseService<T> implements IBaseService<T> {
 
     @Transactional
     @Override
+    public int updateActiveByLock(T entity) {
+        return getBaseMapper().updateActiveByLock(entity);
+    }
+
+    @Transactional
+    @Override
     public int update(T entity) {
         return getBaseMapper().update(entity);
     }
 
     @Override
     public int add(T entity) {
-        return getBaseMapper().insert(entity);
+        return getBaseMapper().insertActive(entity);
     }
 
-    /**
-     * 增加返回格式化结果
-     *
-     * @param record
-     * @return
-     */
     @Override
     public ResultEntity<String> addForResultEntity(T record) {
         int result = add(record);
@@ -110,12 +110,6 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
-    /**
-     * 增加列表返回格式化结果
-     *
-     * @param list
-     * @return
-     */
     @Override
     public ResultEntity<String> addListForResultEntity(List<T> list) {
         if(list!=null && list.size()>0){
@@ -126,12 +120,6 @@ public abstract class BaseService<T> implements IBaseService<T> {
         return proccessResultEntity(ResultEntity.SUCCESS,ResultEntity.MSG_SUCCESS,"");
     }
 
-    /**
-     * 删除返回格式化结果
-     *
-     * @param id
-     * @return
-     */
     @Override
     public ResultEntity<String> deleteForResultEntity(Integer id) {
         int result = delete(id);
@@ -146,21 +134,11 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
-    /**
-     * 获取单个实体数据
-     *
-     * @param id
-     * @return
-     */
     @Override
     public ResultEntity<T> getOneResultEntity(Integer id) {
         return proccessResultEntity(ResultEntity.SUCCESS, "", getOne(id));
     }
 
-    /**
-     * 更新返回格式化结果
-     * @return
-     */
     @Transactional
     @Override
     public ResultEntity<String> updateForResultEntity(T entity) {
@@ -169,14 +147,14 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
-    /**
-     * 传递常用结果消息
-     *
-     * @param code
-     * @param msg
-     * @param data
-     * @return
-     */
+    @Transactional
+    @Override
+    public ResultEntity<String> updateForResultEntityByLock(T entity) {
+        int result = updateActiveByLock(entity);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+    }
+
     @Override
     public <A> ResultEntity<A> proccessResultEntity(int code, String msg, A data) {
         return new ResultEntity<A>(code, msg, data);

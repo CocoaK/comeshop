@@ -15,15 +15,15 @@ public class Role extends BaseModel {
     private Boolean isActive;
 
     private Date inactiveDate;
-    @NotNull
+
     private String createdBy;
-    @NotNull
+
     private Date createdDate;
-    @NotNull
+
     private String lastUpdatedBy;
-    @NotNull
+
     private Date lastUpdatedDate;
-    @NotNull
+
     private String rowId;
 
     public Integer getRoleId() {

@@ -23,6 +23,8 @@ public interface IBaseService<T> {
 
     int updateActive(T entity);
 
+    int updateActiveByLock(T entity);
+
     int update(T entity);
 
     /**
@@ -67,6 +69,13 @@ public interface IBaseService<T> {
      * @return
      */
     public ResultEntity<String> updateForResultEntity(T entity);
+
+    /**
+     * 更新返回格式化结果,支持乐观锁
+     * @param entity
+     * @return
+     */
+    public ResultEntity<String> updateForResultEntityByLock(T entity);
 
     /**
      * 传递常用结果消息

@@ -31,6 +31,10 @@
   <delete id="delete" parameterType="java.lang.Integer">
     delete from member_address
     where member_address_id = #{memberAddressId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from member_address
+    where member_address_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
@@ -81,16 +85,16 @@
       <if test="isDefault != null">
         is_default,
       </if>
-      <if test="createdBy != null">
+      <if test="currentUser != null">
         created_by,
       </if>
-      <if test="createdDate != null">
+      <if test="createdDate == null">
         created_date,
       </if>
-      <if test="lastUpdatedBy != null">
+      <if test="lastUpdatedBy == null">
         last_updated_by,
       </if>
-      <if test="lastUpdatedDate != null">
+      <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
       <if test="rowId != null">
@@ -128,17 +132,17 @@
       <if test="isDefault != null">
         #{isDefault,jdbcType=BIT},
       </if>
-      <if test="createdBy != null">
-        #{createdBy,jdbcType=VARCHAR},
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
       </if>
-      <if test="createdDate != null">
-        #{createdDate,jdbcType=DATE},
+      <if test="createdDate == null">
+        now(),
       </if>
-      <if test="lastUpdatedBy != null">
-        #{lastUpdatedBy,jdbcType=VARCHAR},
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
       </if>
-      <if test="lastUpdatedDate != null">
-        #{lastUpdatedDate,jdbcType=DATE},
+      <if test="lastUpdatedDate == null">
+        now(),
       </if>
       <if test="rowId != null">
         #{rowId,jdbcType=VARCHAR},
@@ -186,6 +190,54 @@
       </if>
       <if test="lastUpdatedDate != null">
         last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where member_address_id = #{memberAddressId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberAddress">
+    update member_address
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="postCode != null">
+        post_code = #{postCode,jdbcType=VARCHAR},
+      </if>
+      <if test="telNo != null">
+        tel_no = #{telNo,jdbcType=VARCHAR},
+      </if>
+      <if test="contacts != null">
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        is_default = #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -274,6 +326,10 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap" useCache="false">
+    select * from member_address
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap" useCache="false">
     select * from member_address
     <include refid="Base_Query_Cause" />
   </select>

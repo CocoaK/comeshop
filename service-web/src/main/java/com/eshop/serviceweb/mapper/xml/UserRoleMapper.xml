@@ -23,9 +23,14 @@
   <delete id="delete" parameterType="map">
     delete from user_role
     where user_id = #{userId,jdbcType=INTEGER}
+      and role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from user_role
+    where user_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
-      and role_id = #{roleId,jdbcType=INTEGER}
+      and role_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
@@ -46,16 +51,16 @@
       <if test="roleId != null">
         role_id,
       </if>
-      <if test="createdBy != null">
+      <if test="currentUser != null">
         created_by,
       </if>
-      <if test="createdDate != null">
+      <if test="createdDate == null">
         created_date,
       </if>
-      <if test="lastUpdatedBy != null">
+      <if test="lastUpdatedBy == null">
         last_updated_by,
       </if>
-      <if test="lastUpdatedDate != null">
+      <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
       <if test="rowId != null">
@@ -69,17 +74,17 @@
       <if test="roleId != null">
         #{roleId,jdbcType=INTEGER},
       </if>
-      <if test="createdBy != null">
-        #{createdBy,jdbcType=VARCHAR},
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
       </if>
-      <if test="createdDate != null">
-        #{createdDate,jdbcType=DATE},
+      <if test="createdDate == null">
+        now(),
       </if>
-      <if test="lastUpdatedBy != null">
-        #{lastUpdatedBy,jdbcType=VARCHAR},
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
       </if>
-      <if test="lastUpdatedDate != null">
-        #{lastUpdatedDate,jdbcType=DATE},
+      <if test="lastUpdatedDate == null">
+        now(),
       </if>
       <if test="rowId != null">
         #{rowId,jdbcType=VARCHAR},
@@ -100,6 +105,28 @@
       </if>
       <if test="lastUpdatedDate != null">
         last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+      and role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.UserRole">
+    update user_role
+    <set>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -159,6 +186,10 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.UserRole" resultMap="BaseResultMap" useCache="false">
+    select * from user_role
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.UserRole" resultMap="BaseResultMap" useCache="false">
     select * from user_role
     <include refid="Base_Query_Cause" />
   </select>

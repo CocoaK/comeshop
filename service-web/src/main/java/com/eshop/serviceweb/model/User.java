@@ -27,15 +27,15 @@ public class User extends BaseModel {
     private Date inactiveDate;
     @NotNull
     private String buCode;
-    @NotNull
+
     private String createdBy;
-    @NotNull
+
     private Date createdDate;
-    @NotNull
+
     private String lastUpdatedBy;
-    @NotNull
+
     private Date lastUpdatedDate;
-    @NotNull
+
     private String rowId;
 
     public Integer getUserId() {

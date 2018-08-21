@@ -16,6 +16,8 @@ public interface BaseMapper<T> {
     T getOne(Integer id);
 
     int updateActive(T entity);
+    /*** 带乐观锁修改 */
+    int updateActiveByLock(T entity);
 
     int update(T entity);
 
@@ -26,6 +28,6 @@ public interface BaseMapper<T> {
     Page<T> getPageList(T entity);
 
     Page<T> queryPageList(T entity);
-
+    /*** 带乐观锁删除 */
     int deleteByLock(DeleteVO deleteVO);
 }

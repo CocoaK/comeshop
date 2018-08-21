@@ -3,21 +3,12 @@ package com.eshop.serviceweb.vo;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public class DeleteVO {
-    @NotNull
-    private Integer id;
+public class DeleteVO extends KeyVO{
+
     @NotNull
     private Date lastUpdatedDate;
     @NotNull
     private String lastUpdatedBy;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Date getLastUpdatedDate() {
         return lastUpdatedDate;

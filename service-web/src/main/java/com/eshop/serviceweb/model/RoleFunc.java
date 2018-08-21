@@ -10,15 +10,15 @@ public class RoleFunc extends BaseModel {
     private String funcCode;
 
     private Boolean isAllowInd;
-    @NotNull
+
     private String createdBy;
-    @NotNull
+
     private Date createdDate;
-    @NotNull
+
     private String lastUpdatedBy;
-    @NotNull
+
     private Date lastUpdatedDate;
-    @NotNull
+
     private String rowId;
 
     public Integer getRoleId() {

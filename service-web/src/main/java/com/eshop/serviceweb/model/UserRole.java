@@ -8,15 +8,15 @@ public class UserRole extends BaseModel {
     private Integer userId;
     @NotNull
     private Integer roleId;
-    @NotNull
+
     private String createdBy;
-    @NotNull
+
     private Date createdDate;
-    @NotNull
+
     private String lastUpdatedBy;
-    @NotNull
+
     private Date lastUpdatedDate;
-    @NotNull
+
     private String rowId;
 
     public Integer getUserId() {

@@ -5,6 +5,7 @@ import com.eshop.serviceweb.common.model.ResultList;
 import com.eshop.serviceweb.common.util.CryptUtil;
 import com.eshop.serviceweb.service.IBaseService;
 import com.eshop.serviceweb.vo.DeleteVO;
+import com.eshop.serviceweb.vo.KeyVO;
 import com.eshop.serviceweb.vo.PageVO;
 import com.github.pagehelper.Page;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +26,19 @@ import java.util.List;
 public abstract class BaseController<T> {
 
     public abstract IBaseService<T> getBaseService();
+
+    @RequestMapping("/get")
+    public @ResponseBody
+    ResultEntity<T> getOne(@Validated @RequestBody KeyVO keyVO) {
+        ResultEntity<T> reusltEntity = new ResultEntity<T>();
+        T entity = getBaseService().getOne(keyVO.getId());
+        if(entity != null){
+            reusltEntity.setCode(ResultEntity.SUCCESS);
+            reusltEntity.setMsg(ResultEntity.MSG_SUCCESS);
+            reusltEntity.setData(entity);
+        }
+        return reusltEntity;
+    }
 
     @RequestMapping("/list")
     public @ResponseBody
@@ -50,6 +64,11 @@ public abstract class BaseController<T> {
 
     @RequestMapping("/update")
     public @ResponseBody ResultEntity<String> update(@RequestBody T record) {
+        return getBaseService().updateForResultEntityByLock(record);
+    }
+
+    @RequestMapping("/updt")
+    public @ResponseBody ResultEntity<String> updt(@RequestBody T record) {
         return getBaseService().updateForResultEntity(record);
     }
 
