@@ -1,4 +1,4 @@
-package com.eshop.serviceweb.shiro;
+package com.eshop.serviceweb.common.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -24,9 +24,6 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.SecureRandom;
 import java.util.*;
 
 /**
@@ -63,7 +60,7 @@ public class JwtTokenUtil {
         // param backups {iss:Service, aud:Web}
         String token = JWT.create().withHeader(map) // header
                 .withClaim("iss", "Service") // payload
-                .withClaim("aud", "Web").withClaim("user_id", null == userId ? null : userId.toString())
+                .withClaim("aud", "Web").withClaim("user_id", null == userId ? null : userId)
                 .withIssuedAt(iatDate) // sign time
                 .withExpiresAt(expiresDate) // expire time
                 .sign(Algorithm.HMAC256(SECRET)); // signature

@@ -2,10 +2,10 @@ package com.eshop.serviceweb.controller;
 
 import com.eshop.serviceweb.common.Constants;
 import com.eshop.serviceweb.common.model.ResultEntity;
+import com.eshop.serviceweb.common.util.JwtTokenUtil;
 import com.eshop.serviceweb.model.User;
 import com.eshop.serviceweb.service.IRedisService;
 import com.eshop.serviceweb.service.IUserService;
-import com.eshop.serviceweb.shiro.JwtTokenUtil;
 import com.eshop.serviceweb.vo.LoginResultVO;
 import com.eshop.serviceweb.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;

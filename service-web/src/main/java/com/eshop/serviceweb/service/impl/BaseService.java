@@ -71,12 +71,12 @@ public abstract class BaseService<T> implements IBaseService<T> {
 
     @Transactional
     @Override
-    public int delete(Integer id) {
+    public int delete(String id) {
         return getBaseMapper().delete(id);
     }
 
     @Override
-    public T getOne(Integer id) {
+    public T getOne(String id) {
         return getBaseMapper().getOne(id);
     }
 
@@ -121,7 +121,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
     }
 
     @Override
-    public ResultEntity<String> deleteForResultEntity(Integer id) {
+    public ResultEntity<String> deleteForResultEntity(String id) {
         int result = delete(id);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
@@ -135,7 +135,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
     }
 
     @Override
-    public ResultEntity<T> getOneResultEntity(Integer id) {
+    public ResultEntity<T> getOneResultEntity(String id) {
         return proccessResultEntity(ResultEntity.SUCCESS, "", getOne(id));
     }
 
@@ -164,4 +164,5 @@ public abstract class BaseService<T> implements IBaseService<T> {
     public <A> ResultEntity<ResultList<A>> proccessResultList(long total, long timetamp, A info) {
         return proccessResultEntity(ResultEntity.SUCCESS, "",new ResultList<A>(total, timetamp, info));
     }
+
 }

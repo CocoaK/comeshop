@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface BaseMapper<T> {
 
-    int delete(Integer id);
+    int delete(String id);
 
     int insert(T entity);
 
     int insertActive(T entity);
 
-    T getOne(Integer id);
+    T getOne(String id);
 
     int updateActive(T entity);
     /*** 带乐观锁修改 */

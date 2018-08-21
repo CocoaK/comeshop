@@ -30,14 +30,7 @@ public abstract class BaseController<T> {
     @RequestMapping("/get")
     public @ResponseBody
     ResultEntity<T> getOne(@Validated @RequestBody KeyVO keyVO) {
-        ResultEntity<T> reusltEntity = new ResultEntity<T>();
-        T entity = getBaseService().getOne(keyVO.getId());
-        if(entity != null){
-            reusltEntity.setCode(ResultEntity.SUCCESS);
-            reusltEntity.setMsg(ResultEntity.MSG_SUCCESS);
-            reusltEntity.setData(entity);
-        }
-        return reusltEntity;
+        return getBaseService().getOneResultEntity(keyVO.getId());
     }
 
     @RequestMapping("/list")
@@ -53,7 +46,7 @@ public abstract class BaseController<T> {
     }
 
     @RequestMapping("/delete")
-    public @ResponseBody ResultEntity<String> delete(@RequestBody Integer id) {
+    public @ResponseBody ResultEntity<String> delete(@RequestBody String id) {
         return getBaseService().deleteForResultEntity(id);
     }
 

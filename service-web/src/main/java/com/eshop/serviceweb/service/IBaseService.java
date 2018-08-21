@@ -15,11 +15,11 @@ import java.util.List;
 
 public interface IBaseService<T> {
 
-    int delete(Integer id);
+    int delete(String id);
 
     int add(T entity);
 
-    T getOne(Integer id);
+    T getOne(String id);
 
     int updateActive(T entity);
 
@@ -46,7 +46,7 @@ public interface IBaseService<T> {
      * @param id
      * @return
      */
-    public ResultEntity<String> deleteForResultEntity(Integer id);
+    public ResultEntity<String> deleteForResultEntity(String id);
 
     /**
      * 删除返回格式化结果
@@ -61,7 +61,7 @@ public interface IBaseService<T> {
      * @param id
      * @return
      */
-    public ResultEntity<T> getOneResultEntity(Integer id);
+    public ResultEntity<T> getOneResultEntity(String id);
 
     /**
      * 更新返回格式化结果

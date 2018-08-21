@@ -19,6 +19,7 @@ package com.eshop.serviceweb.shiro;
 
 import com.eshop.serviceweb.common.Constants;
 import com.eshop.serviceweb.common.model.ResultEntity;
+import com.eshop.serviceweb.common.util.JwtTokenUtil;
 import com.eshop.serviceweb.service.IRedisService;
 import com.eshop.serviceweb.service.impl.RedisService;
 import org.apache.shiro.web.filter.AccessControlFilter;
