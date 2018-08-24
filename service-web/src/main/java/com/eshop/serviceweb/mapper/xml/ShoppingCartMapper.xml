@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.ShoppingCartMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.ShoppingCart">
+    <id column="cart_id" jdbcType="INTEGER" property="cartId" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="join_datetime" jdbcType="DATE" property="joinDatetime" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="is_delete" jdbcType="BIT" property="isDelete" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cart_id, member_id, goods_id, join_datetime, number, is_delete, created_by, created_date, 
+    last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shopping_cart
+    where cart_id = #{cartId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from shopping_cart
+    where cart_id = #{cartId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from shopping_cart
+    where cart_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.ShoppingCart">
+    insert into shopping_cart (cart_id, member_id, goods_id, 
+      join_datetime, number, is_delete, 
+      created_by, created_date, last_updated_by, 
+      last_updated_date, row_id)
+    values (#{cartId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
+      #{joinDatetime,jdbcType=DATE}, #{number,jdbcType=INTEGER}, #{isDelete,jdbcType=BIT}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.ShoppingCart">
+    insert into shopping_cart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cartId != null">
+        cart_id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="joinDatetime != null">
+        join_datetime,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cartId != null">
+        #{cartId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="joinDatetime != null">
+        #{joinDatetime,jdbcType=DATE},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.ShoppingCart">
+    update shopping_cart
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="joinDatetime != null">
+        join_datetime = #{joinDatetime,jdbcType=DATE},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cart_id = #{cartId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.ShoppingCart">
+    update shopping_cart
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="joinDatetime != null">
+        join_datetime = #{joinDatetime,jdbcType=DATE},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BIT},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cart_id = #{cartId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.ShoppingCart">
+    update shopping_cart
+    set member_id = #{memberId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      join_datetime = #{joinDatetime,jdbcType=DATE},
+      number = #{number,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=BIT},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where cart_id = #{cartId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="cartId != null">
+         and cart_id = #{cartId,jdbcType=INTEGER}
+      </if>
+      <if test="memberId != null">
+         and member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsId != null">
+         and goods_id = #{goodsId,jdbcType=INTEGER}
+      </if>
+      <if test="joinDatetime != null">
+         and join_datetime = #{joinDatetime,jdbcType=DATE}
+      </if>
+      <if test="number != null">
+         and number = #{number,jdbcType=INTEGER}
+      </if>
+      <if test="isDelete != null">
+         and is_delete = #{isDelete,jdbcType=BIT}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from shopping_cart
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.ShoppingCart" resultMap="BaseResultMap">
+    select * from shopping_cart
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.ShoppingCart" resultMap="BaseResultMap">
+    select * from shopping_cart
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.ShoppingCart" resultMap="BaseResultMap" useCache="false">
+    select * from shopping_cart
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.ShoppingCart" resultMap="BaseResultMap" useCache="false">
+    select * from shopping_cart
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

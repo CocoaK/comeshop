@@ -12,7 +12,7 @@
     <result column="photograph" jdbcType="VARCHAR" property="photograph" />
     <result column="registration_date" jdbcType="DATE" property="registrationDate" />
     <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="recommend" jdbcType="INTEGER" property="recommend" />
+    <result column="referee_member_id" jdbcType="INTEGER" property="refereeMemberId" />
     <result column="integration" jdbcType="INTEGER" property="integration" />
     <result column="is_active" jdbcType="BIT" property="isActive" />
     <result column="inactive_date" jdbcType="DATE" property="inactiveDate" />
@@ -29,9 +29,9 @@
   </resultMap>
   <sql id="Base_Column_List">
     member_id, member_name, member_pwd, pwd_expiry_time, tel_no, email, remarks, photograph, 
-    registration_date, source, recommend, integration, is_active, inactive_date, grade_code, 
-    grade_expiry_date, open_id, access_token, bu_code, created_by, created_date, last_updated_by, 
-    last_updated_date, row_id
+    registration_date, source, referee_member_id, integration, is_active, inactive_date, 
+    grade_code, grade_expiry_date, open_id, access_token, bu_code, created_by, created_date, 
+    last_updated_by, last_updated_date, row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -53,7 +53,7 @@
     insert into member (member_id, member_name, member_pwd, 
       pwd_expiry_time, tel_no, email, 
       remarks, photograph, registration_date, 
-      source, recommend, integration, 
+      source, referee_member_id, integration, 
       is_active, inactive_date, grade_code, 
       grade_expiry_date, open_id, access_token, 
       bu_code, created_by, created_date, 
@@ -62,7 +62,7 @@
     values (#{memberId,jdbcType=INTEGER}, #{memberName,jdbcType=VARCHAR}, #{memberPwd,jdbcType=VARCHAR}, 
       #{pwdExpiryTime,jdbcType=DATE}, #{telNo,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{remarks,jdbcType=VARCHAR}, #{photograph,jdbcType=VARCHAR}, #{registrationDate,jdbcType=DATE}, 
-      #{source,jdbcType=VARCHAR}, #{recommend,jdbcType=INTEGER}, #{integration,jdbcType=INTEGER}, 
+      #{source,jdbcType=VARCHAR}, #{refereeMemberId,jdbcType=INTEGER}, #{integration,jdbcType=INTEGER}, 
       #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=DATE}, #{gradeCode,jdbcType=VARCHAR}, 
       #{gradeExpiryDate,jdbcType=DATE}, #{openId,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR}, 
       #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, 
@@ -102,8 +102,8 @@
       <if test="source != null">
         source,
       </if>
-      <if test="recommend != null">
-        recommend,
+      <if test="refereeMemberId != null">
+        referee_member_id,
       </if>
       <if test="integration != null">
         integration,
@@ -176,8 +176,8 @@
       <if test="source != null">
         #{source,jdbcType=VARCHAR},
       </if>
-      <if test="recommend != null">
-        #{recommend,jdbcType=INTEGER},
+      <if test="refereeMemberId != null">
+        #{refereeMemberId,jdbcType=INTEGER},
       </if>
       <if test="integration != null">
         #{integration,jdbcType=INTEGER},
@@ -250,8 +250,8 @@
       <if test="source != null">
         source = #{source,jdbcType=VARCHAR},
       </if>
-      <if test="recommend != null">
-        recommend = #{recommend,jdbcType=INTEGER},
+      <if test="refereeMemberId != null">
+        referee_member_id = #{refereeMemberId,jdbcType=INTEGER},
       </if>
       <if test="integration != null">
         integration = #{integration,jdbcType=INTEGER},
@@ -325,8 +325,8 @@
       <if test="source != null">
         source = #{source,jdbcType=VARCHAR},
       </if>
-      <if test="recommend != null">
-        recommend = #{recommend,jdbcType=INTEGER},
+      <if test="refereeMemberId != null">
+        referee_member_id = #{refereeMemberId,jdbcType=INTEGER},
       </if>
       <if test="integration != null">
         integration = #{integration,jdbcType=INTEGER},
@@ -383,7 +383,7 @@
       photograph = #{photograph,jdbcType=VARCHAR},
       registration_date = #{registrationDate,jdbcType=DATE},
       source = #{source,jdbcType=VARCHAR},
-      recommend = #{recommend,jdbcType=INTEGER},
+      referee_member_id = #{refereeMemberId,jdbcType=INTEGER},
       integration = #{integration,jdbcType=INTEGER},
       is_active = #{isActive,jdbcType=BIT},
       inactive_date = #{inactiveDate,jdbcType=DATE},
@@ -431,8 +431,8 @@
       <if test="source != null">
          and source = #{source,jdbcType=VARCHAR}
       </if>
-      <if test="recommend != null">
-         and recommend = #{recommend,jdbcType=INTEGER}
+      <if test="refereeMemberId != null">
+         and referee_member_id = #{refereeMemberId,jdbcType=INTEGER}
       </if>
       <if test="integration != null">
          and integration = #{integration,jdbcType=INTEGER}

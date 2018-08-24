@@ -10,10 +10,5 @@
         <module name="service-web" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="comeshop" target="1.5" />
-      <module name="service-app" target="1.5" />
-      <module name="service-web" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

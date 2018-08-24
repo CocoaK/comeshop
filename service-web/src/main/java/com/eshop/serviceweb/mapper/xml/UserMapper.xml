@@ -15,9 +15,9 @@
     <result column="inactive_date" jdbcType="DATE" property="inactiveDate" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
-    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -52,8 +52,8 @@
       #{userPwd,jdbcType=VARCHAR}, #{pwdExpiryTime,jdbcType=DATE}, #{telNo,jdbcType=VARCHAR}, 
       #{remarks,jdbcType=VARCHAR}, #{isLocked,jdbcType=BIT}, #{lockDate,jdbcType=DATE}, 
       #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=DATE}, #{buCode,jdbcType=VARCHAR}, 
-      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
-      #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR})
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.User">
     insert into user
@@ -204,13 +204,13 @@
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="lastUpdatedBy != null">
         last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate != null">
-        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -258,7 +258,7 @@
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         last_updated_by = #{currentUser,jdbcType=VARCHAR},
@@ -288,9 +288,9 @@
       inactive_date = #{inactiveDate,jdbcType=DATE},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
@@ -336,13 +336,13 @@
          and created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=DATE}
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
          and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}

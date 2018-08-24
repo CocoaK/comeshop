@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.GoodsCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.GoodsCategory">
+    <id column="goods_category_id" jdbcType="INTEGER" property="goodsCategoryId" />
+    <result column="goods_category_code" jdbcType="VARCHAR" property="goodsCategoryCode" />
+    <result column="goods_category_name" jdbcType="VARCHAR" property="goodsCategoryName" />
+    <result column="profit_margin" jdbcType="INTEGER" property="profitMargin" />
+    <result column="is_active" jdbcType="BIT" property="isActive" />
+    <result column="inactive_date" jdbcType="DATE" property="inactiveDate" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    goods_category_id, goods_category_code, goods_category_name, profit_margin, is_active, 
+    inactive_date, photo, created_by, created_date, last_updated_by, last_updated_date, 
+    row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods_category
+    where goods_category_id = #{goodsCategoryId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from goods_category
+    where goods_category_id = #{goodsCategoryId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from goods_category
+    where goods_category_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.GoodsCategory">
+    insert into goods_category (goods_category_id, goods_category_code, 
+      goods_category_name, profit_margin, is_active, 
+      inactive_date, photo, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id)
+    values (#{goodsCategoryId,jdbcType=INTEGER}, #{goodsCategoryCode,jdbcType=VARCHAR}, 
+      #{goodsCategoryName,jdbcType=VARCHAR}, #{profitMargin,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, 
+      #{inactiveDate,jdbcType=DATE}, #{photo,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=DATE}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, 
+      #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.GoodsCategory">
+    insert into goods_category
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsCategoryId != null">
+        goods_category_id,
+      </if>
+      <if test="goodsCategoryCode != null">
+        goods_category_code,
+      </if>
+      <if test="goodsCategoryName != null">
+        goods_category_name,
+      </if>
+      <if test="profitMargin != null">
+        profit_margin,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsCategoryId != null">
+        #{goodsCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCategoryCode != null">
+        #{goodsCategoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCategoryName != null">
+        #{goodsCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="profitMargin != null">
+        #{profitMargin,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        #{inactiveDate,jdbcType=DATE},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.GoodsCategory">
+    update goods_category
+    <set>
+      <if test="goodsCategoryCode != null">
+        goods_category_code = #{goodsCategoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCategoryName != null">
+        goods_category_name = #{goodsCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="profitMargin != null">
+        profit_margin = #{profitMargin,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date = #{inactiveDate,jdbcType=DATE},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where goods_category_id = #{goodsCategoryId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.GoodsCategory">
+    update goods_category
+    <set>
+      <if test="goodsCategoryCode != null">
+        goods_category_code = #{goodsCategoryCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCategoryName != null">
+        goods_category_name = #{goodsCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="profitMargin != null">
+        profit_margin = #{profitMargin,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date = #{inactiveDate,jdbcType=DATE},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where goods_category_id = #{goodsCategoryId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.GoodsCategory">
+    update goods_category
+    set goods_category_code = #{goodsCategoryCode,jdbcType=VARCHAR},
+      goods_category_name = #{goodsCategoryName,jdbcType=VARCHAR},
+      profit_margin = #{profitMargin,jdbcType=INTEGER},
+      is_active = #{isActive,jdbcType=BIT},
+      inactive_date = #{inactiveDate,jdbcType=DATE},
+      photo = #{photo,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=DATE},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where goods_category_id = #{goodsCategoryId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="goodsCategoryId != null">
+         and goods_category_id = #{goodsCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsCategoryCode != null">
+         and goods_category_code = #{goodsCategoryCode,jdbcType=VARCHAR}
+      </if>
+      <if test="goodsCategoryName != null">
+         and goods_category_name = #{goodsCategoryName,jdbcType=VARCHAR}
+      </if>
+      <if test="profitMargin != null">
+         and profit_margin = #{profitMargin,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null">
+         and is_active = #{isActive,jdbcType=BIT}
+      </if>
+      <if test="inactiveDate != null">
+         and inactive_date = #{inactiveDate,jdbcType=DATE}
+      </if>
+      <if test="photo != null">
+         and photo = #{photo,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=DATE}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from goods_category
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.GoodsCategory" resultMap="BaseResultMap">
+    select * from goods_category
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.GoodsCategory" resultMap="BaseResultMap">
+    select * from goods_category
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.GoodsCategory" resultMap="BaseResultMap" useCache="false">
+    select * from goods_category
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.GoodsCategory" resultMap="BaseResultMap" useCache="false">
+    select * from goods_category
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

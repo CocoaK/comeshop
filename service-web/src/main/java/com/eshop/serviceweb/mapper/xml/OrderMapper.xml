@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Order">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_code" jdbcType="VARCHAR" property="orderCode" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="is_rebate" jdbcType="BIT" property="isRebate" />
+    <result column="goods_area_id" jdbcType="INTEGER" property="goodsAreaId" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, order_code, member_id, status, is_rebate, goods_area_id, remarks, created_by, 
+    created_date, last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from order
+    where order_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.Order">
+    insert into order (order_id, order_code, member_id, 
+      status, is_rebate, goods_area_id, 
+      remarks, created_by, created_date, 
+      last_updated_by, last_updated_date, row_id
+      )
+    values (#{orderId,jdbcType=INTEGER}, #{orderCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{isRebate,jdbcType=BIT}, #{goodsAreaId,jdbcType=INTEGER}, 
+      #{remarks,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, 
+      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Order">
+    insert into order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderCode != null">
+        order_code,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="isRebate != null">
+        is_rebate,
+      </if>
+      <if test="goodsAreaId != null">
+        goods_area_id,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderCode != null">
+        #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isRebate != null">
+        #{isRebate,jdbcType=BIT},
+      </if>
+      <if test="goodsAreaId != null">
+        #{goodsAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.Order">
+    update order
+    <set>
+      <if test="orderCode != null">
+        order_code = #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isRebate != null">
+        is_rebate = #{isRebate,jdbcType=BIT},
+      </if>
+      <if test="goodsAreaId != null">
+        goods_area_id = #{goodsAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Order">
+    update order
+    <set>
+      <if test="orderCode != null">
+        order_code = #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isRebate != null">
+        is_rebate = #{isRebate,jdbcType=BIT},
+      </if>
+      <if test="goodsAreaId != null">
+        goods_area_id = #{goodsAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.Order">
+    update order
+    set order_code = #{orderCode,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      is_rebate = #{isRebate,jdbcType=BIT},
+      goods_area_id = #{goodsAreaId,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=DATE},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="orderId != null">
+         and order_id = #{orderId,jdbcType=INTEGER}
+      </if>
+      <if test="orderCode != null">
+         and order_code = #{orderCode,jdbcType=VARCHAR}
+      </if>
+      <if test="memberId != null">
+         and member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+         and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="isRebate != null">
+         and is_rebate = #{isRebate,jdbcType=BIT}
+      </if>
+      <if test="goodsAreaId != null">
+         and goods_area_id = #{goodsAreaId,jdbcType=INTEGER}
+      </if>
+      <if test="remarks != null">
+         and remarks = #{remarks,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=DATE}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from order
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
+    select * from order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
+    select * from order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
+    select * from order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
+    select * from order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

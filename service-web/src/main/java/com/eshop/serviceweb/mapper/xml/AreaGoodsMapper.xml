@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.AreaGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.AreaGoods">
+    <id column="area_id" jdbcType="INTEGER" property="areaId" />
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="is_active" jdbcType="BIT" property="isActive" />
+    <result column="inactive_date" jdbcType="DATE" property="inactiveDate" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    area_id, goods_id, is_active, inactive_date, created_by, created_date, last_updated_by, 
+    last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from area_goods
+    where area_id = #{areaId,jdbcType=INTEGER}
+      and goods_id = #{goodsId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="map">
+    delete from area_goods
+    where area_id = #{areaId,jdbcType=INTEGER}
+      and goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from area_goods
+    where area_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      and goods_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.AreaGoods">
+    insert into area_goods (area_id, goods_id, is_active, 
+      inactive_date, created_by, created_date, 
+      last_updated_by, last_updated_date, row_id
+      )
+    values (#{areaId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, 
+      #{inactiveDate,jdbcType=DATE}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, 
+      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.AreaGoods">
+    insert into area_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="areaId != null">
+        area_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="areaId != null">
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        #{inactiveDate,jdbcType=DATE},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.AreaGoods">
+    update area_goods
+    <set>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date = #{inactiveDate,jdbcType=DATE},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where area_id = #{areaId,jdbcType=INTEGER}
+      and goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.AreaGoods">
+    update area_goods
+    <set>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date = #{inactiveDate,jdbcType=DATE},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=DATE},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where area_id = #{areaId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      and goods_id = #{goodsId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.AreaGoods">
+    update area_goods
+    set is_active = #{isActive,jdbcType=BIT},
+      inactive_date = #{inactiveDate,jdbcType=DATE},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=DATE},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where area_id = #{areaId,jdbcType=INTEGER}
+      and goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="areaId != null">
+         and area_id = #{areaId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsId != null">
+         and goods_id = #{goodsId,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null">
+         and is_active = #{isActive,jdbcType=BIT}
+      </if>
+      <if test="inactiveDate != null">
+         and inactive_date = #{inactiveDate,jdbcType=DATE}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=DATE}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from area_goods
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.AreaGoods" resultMap="BaseResultMap">
+    select * from area_goods
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.AreaGoods" resultMap="BaseResultMap">
+    select * from area_goods
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.AreaGoods" resultMap="BaseResultMap" useCache="false">
+    select * from area_goods
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.AreaGoods" resultMap="BaseResultMap" useCache="false">
+    select * from area_goods
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>
