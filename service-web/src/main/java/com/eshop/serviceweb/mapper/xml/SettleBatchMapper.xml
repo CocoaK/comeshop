@@ -278,6 +278,14 @@
       </if>
     </trim>
   </sql>
+
+  <sql id="Order_Count">
+    (select count(1) from mc_order where receipt_time &lt;= settle_time)
+  </sql>
+  <sql id="Order_Amount">
+    (select sum(amount) from mc_order where receipt_time &lt;= settle_time)
+  </sql>
+
   <select id="getAll" resultMap="BaseResultMap">
     select * from ac_settle_batch
   </select>
@@ -290,7 +298,7 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap" useCache="false">
-    select * from ac_settle_batch
+    select <include refid="Order_Count" /> order_count ,<include refid="Order_Amount" /> order_amount , a.* from ac_settle_batch a
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap" useCache="false">
