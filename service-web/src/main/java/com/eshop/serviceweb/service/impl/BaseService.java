@@ -72,12 +72,12 @@ public abstract class BaseService<T> implements IBaseService<T> {
     @Transactional
     @Override
     public int delete(String id) {
-        return getBaseMapper().delete(id);
+        return getBaseMapper().delete(Integer.parseInt(id));
     }
 
     @Override
     public T getOne(String id) {
-        return getBaseMapper().getOne(id);
+        return getBaseMapper().getOne(Integer.parseInt(id));
     }
 
     @Transactional

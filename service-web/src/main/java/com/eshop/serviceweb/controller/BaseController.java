@@ -75,7 +75,7 @@ public abstract class BaseController<T> {
 
     /**不缓存分页*/
     @RequestMapping("/queryPageList")
-    public ResultList<List<T>> queryPageList(@Validated @RequestBody PageVO<T> pageVO) {
+    public ResultList<List<T>> queryPageList(@RequestBody PageVO<T> pageVO) {
         ResultList<List<T>> resultList = getBaseService().queryPageList(pageVO);
         CryptUtil.crypt(resultList.getData());
         return resultList;

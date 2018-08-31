@@ -1,5 +1,7 @@
 package com.eshop.serviceweb.common.util;
 
+import java.util.Random;
+
 /**
  * 字符串工具类
  */
@@ -60,5 +62,45 @@ public class StringUtil {
             return "强";
         }
         return passwordStr;
+    }
+
+    /**
+     * 生成随机数
+     * @param length 位数，位数不大于9
+     * @return length位随机数
+     */
+    public static String randomNum(int length){
+        if(length>9){
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<length-1;i++){
+            sb.append("0");
+        }
+        int x = Integer.parseInt("9"+sb.toString());
+        int y = Integer.parseInt("1"+sb.toString());
+        Integer i = new Random().nextInt(x)+y;
+        return i.toString();
+    }
+
+    /**
+     * 生成随机数
+     * @param length 位数，位数不大于9
+     * @return length位随机数
+     */
+    public static String covertIntToStr(int value){
+        String temp = value+"";
+        if(temp.length()<11){
+            StringBuilder sb = new StringBuilder();
+            for(int i=0;i<11-temp.length();i++){
+                sb.append("0");
+            }
+            temp = sb.toString()+temp;
+        }
+        return temp;
+    }
+
+    public static void main(String[] args){
+        System.out.println("value:"+covertIntToStr(12345));
     }
 }

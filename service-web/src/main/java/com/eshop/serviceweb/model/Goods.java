@@ -1,33 +1,24 @@
 package com.eshop.serviceweb.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Goods extends BaseModel {
     private Integer goodsId;
 
-    private Integer shopsId;
+    private Integer shopId;
 
-    private Integer goodsCategoryId;
+    private Integer categoryId;
+
+    private String goodsCode;
 
     private String goodsName;
 
-    private Integer price;
+    private String goodsBrief;
 
-    private Integer discountPrice;
+    private BigDecimal price;
 
-    private Date shelfDatetime;
-
-    private Date expiryTime;
-
-    private Date downDatetime;
-
-    private Integer number;
-
-    private String photo;
-
-    private Integer reappearance;
-
-    private String remarks;
+    private String buCode;
 
     private String createdBy;
 
@@ -39,7 +30,7 @@ public class Goods extends BaseModel {
 
     private String rowId;
 
-    private String detail;
+    private String goodsDesc;
 
     public Integer getGoodsId() {
         return goodsId;
@@ -49,20 +40,28 @@ public class Goods extends BaseModel {
         this.goodsId = goodsId;
     }
 
-    public Integer getShopsId() {
-        return shopsId;
+    public Integer getShopId() {
+        return shopId;
     }
 
-    public void setShopsId(Integer shopsId) {
-        this.shopsId = shopsId;
+    public void setShopId(Integer shopId) {
+        this.shopId = shopId;
     }
 
-    public Integer getGoodsCategoryId() {
-        return goodsCategoryId;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setGoodsCategoryId(Integer goodsCategoryId) {
-        this.goodsCategoryId = goodsCategoryId;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getGoodsCode() {
+        return goodsCode;
+    }
+
+    public void setGoodsCode(String goodsCode) {
+        this.goodsCode = goodsCode == null ? null : goodsCode.trim();
     }
 
     public String getGoodsName() {
@@ -73,76 +72,28 @@ public class Goods extends BaseModel {
         this.goodsName = goodsName == null ? null : goodsName.trim();
     }
 
-    public Integer getPrice() {
+    public String getGoodsBrief() {
+        return goodsBrief;
+    }
+
+    public void setGoodsBrief(String goodsBrief) {
+        this.goodsBrief = goodsBrief == null ? null : goodsBrief.trim();
+    }
+
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public Integer getDiscountPrice() {
-        return discountPrice;
+    public String getBuCode() {
+        return buCode;
     }
 
-    public void setDiscountPrice(Integer discountPrice) {
-        this.discountPrice = discountPrice;
-    }
-
-    public Date getShelfDatetime() {
-        return shelfDatetime;
-    }
-
-    public void setShelfDatetime(Date shelfDatetime) {
-        this.shelfDatetime = shelfDatetime;
-    }
-
-    public Date getExpiryTime() {
-        return expiryTime;
-    }
-
-    public void setExpiryTime(Date expiryTime) {
-        this.expiryTime = expiryTime;
-    }
-
-    public Date getDownDatetime() {
-        return downDatetime;
-    }
-
-    public void setDownDatetime(Date downDatetime) {
-        this.downDatetime = downDatetime;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo == null ? null : photo.trim();
-    }
-
-    public Integer getReappearance() {
-        return reappearance;
-    }
-
-    public void setReappearance(Integer reappearance) {
-        this.reappearance = reappearance;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks == null ? null : remarks.trim();
+    public void setBuCode(String buCode) {
+        this.buCode = buCode == null ? null : buCode.trim();
     }
 
     public String getCreatedBy() {
@@ -185,11 +136,11 @@ public class Goods extends BaseModel {
         this.rowId = rowId == null ? null : rowId.trim();
     }
 
-    public String getDetail() {
-        return detail;
+    public String getGoodsDesc() {
+        return goodsDesc;
     }
 
-    public void setDetail(String detail) {
-        this.detail = detail == null ? null : detail.trim();
+    public void setGoodsDesc(String goodsDesc) {
+        this.goodsDesc = goodsDesc == null ? null : goodsDesc.trim();
     }
 }

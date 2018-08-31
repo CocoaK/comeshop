@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.ZoneMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Zone">
+    <id column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="zone_type" jdbcType="VARCHAR" property="zoneType" />
+    <result column="disp_seq" jdbcType="INTEGER" property="dispSeq" />
+    <result column="is_active" jdbcType="BIT" property="isActive" />
+    <result column="inactive_date" jdbcType="TIMESTAMP" property="inactiveDate" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    zone_code, zone_name, zone_type, disp_seq, is_active, inactive_date, bu_code, created_by, 
+    created_date, last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sh_zone
+    where zone_code = #{zoneCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="delete" parameterType="java.lang.String">
+    delete from sh_zone
+    where zone_code = #{zoneCode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from sh_zone
+    where zone_code = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.Zone">
+    insert into sh_zone (zone_code, zone_name, zone_type, 
+      disp_seq, is_active, inactive_date, 
+      bu_code, created_by, created_date, 
+      last_updated_by, last_updated_date, row_id
+      )
+    values (#{zoneCode,jdbcType=VARCHAR}, #{zoneName,jdbcType=VARCHAR}, #{zoneType,jdbcType=VARCHAR}, 
+      #{dispSeq,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=TIMESTAMP}, 
+      #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Zone">
+    insert into sh_zone
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="zoneCode != null">
+        zone_code,
+      </if>
+      <if test="zoneName != null">
+        zone_name,
+      </if>
+      <if test="zoneType != null">
+        zone_type,
+      </if>
+      <if test="dispSeq != null">
+        disp_seq,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="zoneCode != null">
+        #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneName != null">
+        #{zoneName,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneType != null">
+        #{zoneType,jdbcType=VARCHAR},
+      </if>
+      <if test="dispSeq != null">
+        #{dispSeq,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        #{inactiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.Zone">
+    update sh_zone
+    <set>
+      <if test="zoneName != null">
+        zone_name = #{zoneName,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneType != null">
+        zone_type = #{zoneType,jdbcType=VARCHAR},
+      </if>
+      <if test="dispSeq != null">
+        disp_seq = #{dispSeq,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where zone_code = #{zoneCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Zone">
+    update sh_zone
+    <set>
+      <if test="zoneName != null">
+        zone_name = #{zoneName,jdbcType=VARCHAR},
+      </if>
+      <if test="zoneType != null">
+        zone_type = #{zoneType,jdbcType=VARCHAR},
+      </if>
+      <if test="dispSeq != null">
+        disp_seq = #{dispSeq,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="inactiveDate != null">
+        inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where zone_code = #{zoneCode,jdbcType=VARCHAR}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.Zone">
+    update sh_zone
+    set zone_name = #{zoneName,jdbcType=VARCHAR},
+      zone_type = #{zoneType,jdbcType=VARCHAR},
+      disp_seq = #{dispSeq,jdbcType=INTEGER},
+      is_active = #{isActive,jdbcType=BIT},
+      inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where zone_code = #{zoneCode,jdbcType=VARCHAR}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="zoneCode != null">
+         and zone_code = #{zoneCode,jdbcType=VARCHAR}
+      </if>
+      <if test="zoneName != null">
+         and zone_name = #{zoneName,jdbcType=VARCHAR}
+      </if>
+      <if test="zoneType != null">
+         and zone_type = #{zoneType,jdbcType=VARCHAR}
+      </if>
+      <if test="dispSeq != null">
+         and disp_seq = #{dispSeq,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null">
+         and is_active = #{isActive,jdbcType=BIT}
+      </if>
+      <if test="inactiveDate != null">
+         and inactive_date = #{inactiveDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from sh_zone
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.Zone" resultMap="BaseResultMap">
+    select * from sh_zone
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Zone" resultMap="BaseResultMap">
+    select * from sh_zone
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Zone" resultMap="BaseResultMap" useCache="false">
+    select * from sh_zone
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.Zone" resultMap="BaseResultMap" useCache="false">
+    select * from sh_zone
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

@@ -3,110 +3,85 @@
 <mapper namespace="com.eshop.serviceweb.mapper.GoodsMapper">
   <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Goods">
     <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
-    <result column="shops_id" jdbcType="INTEGER" property="shopsId" />
-    <result column="goods_category_id" jdbcType="INTEGER" property="goodsCategoryId" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
-    <result column="price" jdbcType="INTEGER" property="price" />
-    <result column="discount_price" jdbcType="INTEGER" property="discountPrice" />
-    <result column="shelf_datetime" jdbcType="DATE" property="shelfDatetime" />
-    <result column="expiry_time" jdbcType="DATE" property="expiryTime" />
-    <result column="down_datetime" jdbcType="DATE" property="downDatetime" />
-    <result column="number" jdbcType="INTEGER" property="number" />
-    <result column="photo" jdbcType="VARCHAR" property="photo" />
-    <result column="reappearance" jdbcType="INTEGER" property="reappearance" />
-    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="goods_brief" jdbcType="VARCHAR" property="goodsBrief" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
-    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.eshop.serviceweb.model.Goods">
-    <result column="detail" jdbcType="LONGVARCHAR" property="detail" />
+    <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
   </resultMap>
   <sql id="Base_Column_List">
-    goods_id, shops_id, goods_category_id, goods_name, price, discount_price, shelf_datetime, 
-    expiry_time, down_datetime, number, photo, reappearance, remarks, created_by, created_date, 
-    last_updated_by, last_updated_date, row_id
+    goods_id, shop_id, category_id, goods_code, goods_name, goods_brief, price, bu_code, 
+    created_by, created_date, last_updated_by, last_updated_date, row_id
   </sql>
   <sql id="Blob_Column_List">
-    detail
+    goods_desc
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from goods
+    from sh_goods
     where goods_id = #{goodsId,jdbcType=INTEGER}
   </select>
   <delete id="delete" parameterType="java.lang.Integer">
-    delete from goods
+    delete from sh_goods
     where goods_id = #{goodsId,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
-    delete from goods
+    delete from sh_goods
     where goods_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.Goods">
-    insert into goods (goods_id, shops_id, goods_category_id, 
-      goods_name, price, discount_price, 
-      shelf_datetime, expiry_time, down_datetime, 
-      number, photo, reappearance, 
-      remarks, created_by, created_date, 
-      last_updated_by, last_updated_date, row_id, 
-      detail)
-    values (#{goodsId,jdbcType=INTEGER}, #{shopsId,jdbcType=INTEGER}, #{goodsCategoryId,jdbcType=INTEGER}, 
-      #{goodsName,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, #{discountPrice,jdbcType=INTEGER}, 
-      #{shelfDatetime,jdbcType=DATE}, #{expiryTime,jdbcType=DATE}, #{downDatetime,jdbcType=DATE}, 
-      #{number,jdbcType=INTEGER}, #{photo,jdbcType=VARCHAR}, #{reappearance,jdbcType=INTEGER}, 
-      #{remarks,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, 
-      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}, 
-      #{detail,jdbcType=LONGVARCHAR})
+    insert into sh_goods (goods_id, shop_id, category_id, 
+      goods_code, goods_name, goods_brief, 
+      price, bu_code, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id, goods_desc)
+    values (#{goodsId,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, 
+      #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsBrief,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
+      #{rowId,jdbcType=VARCHAR}, #{goodsDesc,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Goods">
-    insert into goods
+    insert into sh_goods
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
         goods_id,
       </if>
-      <if test="shopsId != null">
-        shops_id,
+      <if test="shopId != null">
+        shop_id,
       </if>
-      <if test="goodsCategoryId != null">
-        goods_category_id,
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="goodsCode != null">
+        goods_code,
       </if>
       <if test="goodsName != null">
         goods_name,
       </if>
+      <if test="goodsBrief != null">
+        goods_brief,
+      </if>
       <if test="price != null">
         price,
       </if>
-      <if test="discountPrice != null">
-        discount_price,
-      </if>
-      <if test="shelfDatetime != null">
-        shelf_datetime,
-      </if>
-      <if test="expiryTime != null">
-        expiry_time,
-      </if>
-      <if test="downDatetime != null">
-        down_datetime,
-      </if>
-      <if test="number != null">
-        number,
-      </if>
-      <if test="photo != null">
-        photo,
-      </if>
-      <if test="reappearance != null">
-        reappearance,
-      </if>
-      <if test="remarks != null">
-        remarks,
+      <if test="buCode != null">
+        bu_code,
       </if>
       <if test="currentUser != null">
         created_by,
@@ -123,49 +98,34 @@
       <if test="rowId != null">
         row_id,
       </if>
-      <if test="detail != null">
-        detail,
+      <if test="goodsDesc != null">
+        goods_desc,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
         #{goodsId,jdbcType=INTEGER},
       </if>
-      <if test="shopsId != null">
-        #{shopsId,jdbcType=INTEGER},
+      <if test="shopId != null">
+        #{shopId,jdbcType=INTEGER},
       </if>
-      <if test="goodsCategoryId != null">
-        #{goodsCategoryId,jdbcType=INTEGER},
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCode != null">
+        #{goodsCode,jdbcType=VARCHAR},
       </if>
       <if test="goodsName != null">
         #{goodsName,jdbcType=VARCHAR},
       </if>
+      <if test="goodsBrief != null">
+        #{goodsBrief,jdbcType=VARCHAR},
+      </if>
       <if test="price != null">
-        #{price,jdbcType=INTEGER},
+        #{price,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null">
-        #{discountPrice,jdbcType=INTEGER},
-      </if>
-      <if test="shelfDatetime != null">
-        #{shelfDatetime,jdbcType=DATE},
-      </if>
-      <if test="expiryTime != null">
-        #{expiryTime,jdbcType=DATE},
-      </if>
-      <if test="downDatetime != null">
-        #{downDatetime,jdbcType=DATE},
-      </if>
-      <if test="number != null">
-        #{number,jdbcType=INTEGER},
-      </if>
-      <if test="photo != null">
-        #{photo,jdbcType=VARCHAR},
-      </if>
-      <if test="reappearance != null">
-        #{reappearance,jdbcType=INTEGER},
-      </if>
-      <if test="remarks != null">
-        #{remarks,jdbcType=VARCHAR},
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
@@ -182,115 +142,85 @@
       <if test="rowId != null">
         #{rowId,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
-        #{detail,jdbcType=LONGVARCHAR},
+      <if test="goodsDesc != null">
+        #{goodsDesc,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateActive" parameterType="com.eshop.serviceweb.model.Goods">
-    update goods
+    update sh_goods
     <set>
-      <if test="shopsId != null">
-        shops_id = #{shopsId,jdbcType=INTEGER},
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=INTEGER},
       </if>
-      <if test="goodsCategoryId != null">
-        goods_category_id = #{goodsCategoryId,jdbcType=INTEGER},
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCode != null">
+        goods_code = #{goodsCode,jdbcType=VARCHAR},
       </if>
       <if test="goodsName != null">
         goods_name = #{goodsName,jdbcType=VARCHAR},
       </if>
+      <if test="goodsBrief != null">
+        goods_brief = #{goodsBrief,jdbcType=VARCHAR},
+      </if>
       <if test="price != null">
-        price = #{price,jdbcType=INTEGER},
+        price = #{price,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null">
-        discount_price = #{discountPrice,jdbcType=INTEGER},
-      </if>
-      <if test="shelfDatetime != null">
-        shelf_datetime = #{shelfDatetime,jdbcType=DATE},
-      </if>
-      <if test="expiryTime != null">
-        expiry_time = #{expiryTime,jdbcType=DATE},
-      </if>
-      <if test="downDatetime != null">
-        down_datetime = #{downDatetime,jdbcType=DATE},
-      </if>
-      <if test="number != null">
-        number = #{number,jdbcType=INTEGER},
-      </if>
-      <if test="photo != null">
-        photo = #{photo,jdbcType=VARCHAR},
-      </if>
-      <if test="reappearance != null">
-        reappearance = #{reappearance,jdbcType=INTEGER},
-      </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="lastUpdatedBy != null">
         last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate != null">
-        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
-        detail = #{detail,jdbcType=LONGVARCHAR},
+      <if test="goodsDesc != null">
+        goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where goods_id = #{goodsId,jdbcType=INTEGER}
   </update>
   <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Goods">
-    update goods
+    update sh_goods
     <set>
-      <if test="shopsId != null">
-        shops_id = #{shopsId,jdbcType=INTEGER},
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=INTEGER},
       </if>
-      <if test="goodsCategoryId != null">
-        goods_category_id = #{goodsCategoryId,jdbcType=INTEGER},
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCode != null">
+        goods_code = #{goodsCode,jdbcType=VARCHAR},
       </if>
       <if test="goodsName != null">
         goods_name = #{goodsName,jdbcType=VARCHAR},
       </if>
+      <if test="goodsBrief != null">
+        goods_brief = #{goodsBrief,jdbcType=VARCHAR},
+      </if>
       <if test="price != null">
-        price = #{price,jdbcType=INTEGER},
+        price = #{price,jdbcType=DECIMAL},
       </if>
-      <if test="discountPrice != null">
-        discount_price = #{discountPrice,jdbcType=INTEGER},
-      </if>
-      <if test="shelfDatetime != null">
-        shelf_datetime = #{shelfDatetime,jdbcType=DATE},
-      </if>
-      <if test="expiryTime != null">
-        expiry_time = #{expiryTime,jdbcType=DATE},
-      </if>
-      <if test="downDatetime != null">
-        down_datetime = #{downDatetime,jdbcType=DATE},
-      </if>
-      <if test="number != null">
-        number = #{number,jdbcType=INTEGER},
-      </if>
-      <if test="photo != null">
-        photo = #{photo,jdbcType=VARCHAR},
-      </if>
-      <if test="reappearance != null">
-        reappearance = #{reappearance,jdbcType=INTEGER},
-      </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         last_updated_by = #{currentUser,jdbcType=VARCHAR},
@@ -301,8 +231,8 @@
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
       </if>
-      <if test="detail != null">
-        detail = #{detail,jdbcType=LONGVARCHAR},
+      <if test="goodsDesc != null">
+        goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where goods_id = #{goodsId,jdbcType=INTEGER}
@@ -310,45 +240,35 @@
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.eshop.serviceweb.model.Goods">
-    update goods
-    set shops_id = #{shopsId,jdbcType=INTEGER},
-      goods_category_id = #{goodsCategoryId,jdbcType=INTEGER},
+    update sh_goods
+    set shop_id = #{shopId,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
-      price = #{price,jdbcType=INTEGER},
-      discount_price = #{discountPrice,jdbcType=INTEGER},
-      shelf_datetime = #{shelfDatetime,jdbcType=DATE},
-      expiry_time = #{expiryTime,jdbcType=DATE},
-      down_datetime = #{downDatetime,jdbcType=DATE},
-      number = #{number,jdbcType=INTEGER},
-      photo = #{photo,jdbcType=VARCHAR},
-      reappearance = #{reappearance,jdbcType=INTEGER},
-      remarks = #{remarks,jdbcType=VARCHAR},
+      goods_brief = #{goodsBrief,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR},
-      detail = #{detail,jdbcType=LONGVARCHAR}
+      goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR}
     where goods_id = #{goodsId,jdbcType=INTEGER}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.Goods">
-    update goods
-    set shops_id = #{shopsId,jdbcType=INTEGER},
-      goods_category_id = #{goodsCategoryId,jdbcType=INTEGER},
+    update sh_goods
+    set shop_id = #{shopId,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
-      price = #{price,jdbcType=INTEGER},
-      discount_price = #{discountPrice,jdbcType=INTEGER},
-      shelf_datetime = #{shelfDatetime,jdbcType=DATE},
-      expiry_time = #{expiryTime,jdbcType=DATE},
-      down_datetime = #{downDatetime,jdbcType=DATE},
-      number = #{number,jdbcType=INTEGER},
-      photo = #{photo,jdbcType=VARCHAR},
-      reappearance = #{reappearance,jdbcType=INTEGER},
-      remarks = #{remarks,jdbcType=VARCHAR},
+      goods_brief = #{goodsBrief,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
     where goods_id = #{goodsId,jdbcType=INTEGER}
   </update>
@@ -357,79 +277,64 @@
       <if test="goodsId != null">
          and goods_id = #{goodsId,jdbcType=INTEGER}
       </if>
-      <if test="shopsId != null">
-         and shops_id = #{shopsId,jdbcType=INTEGER}
+      <if test="shopId != null">
+         and shop_id = #{shopId,jdbcType=INTEGER}
       </if>
-      <if test="goodsCategoryId != null">
-         and goods_category_id = #{goodsCategoryId,jdbcType=INTEGER}
+      <if test="categoryId != null">
+         and category_id = #{categoryId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsCode != null">
+         and goods_code = #{goodsCode,jdbcType=VARCHAR}
       </if>
       <if test="goodsName != null">
          and goods_name = #{goodsName,jdbcType=VARCHAR}
       </if>
+      <if test="goodsBrief != null">
+         and goods_brief = #{goodsBrief,jdbcType=VARCHAR}
+      </if>
       <if test="price != null">
-         and price = #{price,jdbcType=INTEGER}
+         and price = #{price,jdbcType=DECIMAL}
       </if>
-      <if test="discountPrice != null">
-         and discount_price = #{discountPrice,jdbcType=INTEGER}
-      </if>
-      <if test="shelfDatetime != null">
-         and shelf_datetime = #{shelfDatetime,jdbcType=DATE}
-      </if>
-      <if test="expiryTime != null">
-         and expiry_time = #{expiryTime,jdbcType=DATE}
-      </if>
-      <if test="downDatetime != null">
-         and down_datetime = #{downDatetime,jdbcType=DATE}
-      </if>
-      <if test="number != null">
-         and number = #{number,jdbcType=INTEGER}
-      </if>
-      <if test="photo != null">
-         and photo = #{photo,jdbcType=VARCHAR}
-      </if>
-      <if test="reappearance != null">
-         and reappearance = #{reappearance,jdbcType=INTEGER}
-      </if>
-      <if test="remarks != null">
-         and remarks = #{remarks,jdbcType=VARCHAR}
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
          and created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=DATE}
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
          and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}
       </if>
-      <if test="detail != null">
-         and detail = #{detail,jdbcType=LONGVARCHAR}
+      <if test="goodsDesc != null">
+         and goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from goods
+    select * from sh_goods
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.Goods" resultMap="BaseResultMap">
-    select * from goods
+    select * from sh_goods
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.Goods" resultMap="BaseResultMap">
-    select * from goods
+    select * from sh_goods
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Goods" resultMap="BaseResultMap" useCache="false">
-    select * from goods
+    select * from sh_goods
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.Goods" resultMap="BaseResultMap" useCache="false">
-    select * from goods
+    select * from sh_goods
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />

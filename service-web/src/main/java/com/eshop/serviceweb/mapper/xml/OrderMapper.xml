@@ -5,50 +5,61 @@
     <id column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="order_code" jdbcType="VARCHAR" property="orderCode" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="member_address_id" jdbcType="INTEGER" property="memberAddressId" />
+    <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
+    <result column="total_discount_amt" jdbcType="DECIMAL" property="totalDiscountAmt" />
+    <result column="total_profit_amt" jdbcType="DECIMAL" property="totalProfitAmt" />
+    <result column="total_rebate_amt" jdbcType="DECIMAL" property="totalRebateAmt" />
+    <result column="ar_mp" jdbcType="INTEGER" property="arMp" />
+    <result column="ap_mp" jdbcType="INTEGER" property="apMp" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
     <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="is_rebate" jdbcType="BIT" property="isRebate" />
-    <result column="goods_area_id" jdbcType="INTEGER" property="goodsAreaId" />
-    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
-    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    order_id, order_code, member_id, status, is_rebate, goods_area_id, remarks, created_by, 
-    created_date, last_updated_by, last_updated_date, row_id
+    order_id, order_code, member_id, member_address_id, total_price, total_discount_amt, 
+    total_profit_amt, total_rebate_amt, ar_mp, ap_mp, payment_time, status, bu_code, 
+    created_by, created_date, last_updated_by, last_updated_date, row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from order
+    from mc_order
     where order_id = #{orderId,jdbcType=INTEGER}
   </select>
   <delete id="delete" parameterType="java.lang.Integer">
-    delete from order
+    delete from mc_order
     where order_id = #{orderId,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
-    delete from order
+    delete from mc_order
     where order_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.Order">
-    insert into order (order_id, order_code, member_id, 
-      status, is_rebate, goods_area_id, 
-      remarks, created_by, created_date, 
+    insert into mc_order (order_id, order_code, member_id, 
+      member_address_id, total_price, total_discount_amt, 
+      total_profit_amt, total_rebate_amt, ar_mp, 
+      ap_mp, payment_time, status, 
+      bu_code, created_by, created_date, 
       last_updated_by, last_updated_date, row_id
       )
     values (#{orderId,jdbcType=INTEGER}, #{orderCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, 
-      #{status,jdbcType=VARCHAR}, #{isRebate,jdbcType=BIT}, #{goodsAreaId,jdbcType=INTEGER}, 
-      #{remarks,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, 
-      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}
+      #{memberAddressId,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, #{totalDiscountAmt,jdbcType=DECIMAL}, 
+      #{totalProfitAmt,jdbcType=DECIMAL}, #{totalRebateAmt,jdbcType=DECIMAL}, #{arMp,jdbcType=INTEGER}, 
+      #{apMp,jdbcType=INTEGER}, #{paymentTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Order">
-    insert into order
+    insert into mc_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderId != null">
         order_id,
@@ -59,17 +70,35 @@
       <if test="memberId != null">
         member_id,
       </if>
+      <if test="memberAddressId != null">
+        member_address_id,
+      </if>
+      <if test="totalPrice != null">
+        total_price,
+      </if>
+      <if test="totalDiscountAmt != null">
+        total_discount_amt,
+      </if>
+      <if test="totalProfitAmt != null">
+        total_profit_amt,
+      </if>
+      <if test="totalRebateAmt != null">
+        total_rebate_amt,
+      </if>
+      <if test="arMp != null">
+        ar_mp,
+      </if>
+      <if test="apMp != null">
+        ap_mp,
+      </if>
+      <if test="paymentTime != null">
+        payment_time,
+      </if>
       <if test="status != null">
         status,
       </if>
-      <if test="isRebate != null">
-        is_rebate,
-      </if>
-      <if test="goodsAreaId != null">
-        goods_area_id,
-      </if>
-      <if test="remarks != null">
-        remarks,
+      <if test="buCode != null">
+        bu_code,
       </if>
       <if test="currentUser != null">
         created_by,
@@ -97,17 +126,35 @@
       <if test="memberId != null">
         #{memberId,jdbcType=INTEGER},
       </if>
+      <if test="memberAddressId != null">
+        #{memberAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="totalDiscountAmt != null">
+        #{totalDiscountAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="totalProfitAmt != null">
+        #{totalProfitAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="totalRebateAmt != null">
+        #{totalRebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="arMp != null">
+        #{arMp,jdbcType=INTEGER},
+      </if>
+      <if test="apMp != null">
+        #{apMp,jdbcType=INTEGER},
+      </if>
+      <if test="paymentTime != null">
+        #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="isRebate != null">
-        #{isRebate,jdbcType=BIT},
-      </if>
-      <if test="goodsAreaId != null">
-        #{goodsAreaId,jdbcType=INTEGER},
-      </if>
-      <if test="remarks != null">
-        #{remarks,jdbcType=VARCHAR},
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
@@ -127,7 +174,7 @@
     </trim>
   </insert>
   <update id="updateActive" parameterType="com.eshop.serviceweb.model.Order">
-    update order
+    update mc_order
     <set>
       <if test="orderCode != null">
         order_code = #{orderCode,jdbcType=VARCHAR},
@@ -135,29 +182,47 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
+      <if test="memberAddressId != null">
+        member_address_id = #{memberAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="totalDiscountAmt != null">
+        total_discount_amt = #{totalDiscountAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="totalProfitAmt != null">
+        total_profit_amt = #{totalProfitAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="totalRebateAmt != null">
+        total_rebate_amt = #{totalRebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="arMp != null">
+        ar_mp = #{arMp,jdbcType=INTEGER},
+      </if>
+      <if test="apMp != null">
+        ap_mp = #{apMp,jdbcType=INTEGER},
+      </if>
+      <if test="paymentTime != null">
+        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="isRebate != null">
-        is_rebate = #{isRebate,jdbcType=BIT},
-      </if>
-      <if test="goodsAreaId != null">
-        goods_area_id = #{goodsAreaId,jdbcType=INTEGER},
-      </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="lastUpdatedBy != null">
         last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate != null">
-        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -166,7 +231,7 @@
     where order_id = #{orderId,jdbcType=INTEGER}
   </update>
   <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Order">
-    update order
+    update mc_order
     <set>
       <if test="orderCode != null">
         order_code = #{orderCode,jdbcType=VARCHAR},
@@ -174,23 +239,41 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
+      <if test="memberAddressId != null">
+        member_address_id = #{memberAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="totalDiscountAmt != null">
+        total_discount_amt = #{totalDiscountAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="totalProfitAmt != null">
+        total_profit_amt = #{totalProfitAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="totalRebateAmt != null">
+        total_rebate_amt = #{totalRebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="arMp != null">
+        ar_mp = #{arMp,jdbcType=INTEGER},
+      </if>
+      <if test="apMp != null">
+        ap_mp = #{apMp,jdbcType=INTEGER},
+      </if>
+      <if test="paymentTime != null">
+        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="isRebate != null">
-        is_rebate = #{isRebate,jdbcType=BIT},
-      </if>
-      <if test="goodsAreaId != null">
-        goods_area_id = #{goodsAreaId,jdbcType=INTEGER},
-      </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         last_updated_by = #{currentUser,jdbcType=VARCHAR},
@@ -207,17 +290,23 @@
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.Order">
-    update order
+    update mc_order
     set order_code = #{orderCode,jdbcType=VARCHAR},
       member_id = #{memberId,jdbcType=INTEGER},
+      member_address_id = #{memberAddressId,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      total_discount_amt = #{totalDiscountAmt,jdbcType=DECIMAL},
+      total_profit_amt = #{totalProfitAmt,jdbcType=DECIMAL},
+      total_rebate_amt = #{totalRebateAmt,jdbcType=DECIMAL},
+      ar_mp = #{arMp,jdbcType=INTEGER},
+      ap_mp = #{apMp,jdbcType=INTEGER},
+      payment_time = #{paymentTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=VARCHAR},
-      is_rebate = #{isRebate,jdbcType=BIT},
-      goods_area_id = #{goodsAreaId,jdbcType=INTEGER},
-      remarks = #{remarks,jdbcType=VARCHAR},
+      bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
     where order_id = #{orderId,jdbcType=INTEGER}
   </update>
@@ -232,29 +321,47 @@
       <if test="memberId != null">
          and member_id = #{memberId,jdbcType=INTEGER}
       </if>
+      <if test="memberAddressId != null">
+         and member_address_id = #{memberAddressId,jdbcType=INTEGER}
+      </if>
+      <if test="totalPrice != null">
+         and total_price = #{totalPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="totalDiscountAmt != null">
+         and total_discount_amt = #{totalDiscountAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="totalProfitAmt != null">
+         and total_profit_amt = #{totalProfitAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="totalRebateAmt != null">
+         and total_rebate_amt = #{totalRebateAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="arMp != null">
+         and ar_mp = #{arMp,jdbcType=INTEGER}
+      </if>
+      <if test="apMp != null">
+         and ap_mp = #{apMp,jdbcType=INTEGER}
+      </if>
+      <if test="paymentTime != null">
+         and payment_time = #{paymentTime,jdbcType=TIMESTAMP}
+      </if>
       <if test="status != null">
          and status = #{status,jdbcType=VARCHAR}
       </if>
-      <if test="isRebate != null">
-         and is_rebate = #{isRebate,jdbcType=BIT}
-      </if>
-      <if test="goodsAreaId != null">
-         and goods_area_id = #{goodsAreaId,jdbcType=INTEGER}
-      </if>
-      <if test="remarks != null">
-         and remarks = #{remarks,jdbcType=VARCHAR}
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
          and created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=DATE}
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
          and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}
@@ -262,22 +369,22 @@
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from order
+    select * from mc_order
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
-    select * from order
+    select * from mc_order
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
-    select * from order
+    select * from mc_order
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
-    select * from order
+    select * from mc_order
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
-    select * from order
+    select * from mc_order
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />

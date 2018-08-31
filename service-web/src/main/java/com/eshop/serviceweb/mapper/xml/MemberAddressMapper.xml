@@ -4,56 +4,58 @@
   <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberAddress">
     <id column="member_address_id" jdbcType="INTEGER" property="memberAddressId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
-    <result column="province" jdbcType="VARCHAR" property="province" />
-    <result column="city" jdbcType="VARCHAR" property="city" />
-    <result column="area" jdbcType="VARCHAR" property="area" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="post_code" jdbcType="VARCHAR" property="postCode" />
-    <result column="tel_no" jdbcType="VARCHAR" property="telNo" />
-    <result column="contacts" jdbcType="VARCHAR" property="contacts" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="receiving_province" jdbcType="VARCHAR" property="receivingProvince" />
+    <result column="receiving_city" jdbcType="VARCHAR" property="receivingCity" />
+    <result column="receiving_area" jdbcType="VARCHAR" property="receivingArea" />
+    <result column="receiving_address" jdbcType="VARCHAR" property="receivingAddress" />
+    <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
     <result column="is_default" jdbcType="BIT" property="isDefault" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
-    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    member_address_id, member_id, province, city, area, address, post_code, tel_no, contacts, 
-    is_default, created_by, created_date, last_updated_by, last_updated_date, row_id
+    member_address_id, member_id, receiver_name, telephone, receiving_province, receiving_city, 
+    receiving_area, receiving_address, postal_code, is_default, bu_code, created_by, 
+    created_date, last_updated_by, last_updated_date, row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from member_address
+    from mc_member_address
     where member_address_id = #{memberAddressId,jdbcType=INTEGER}
   </select>
   <delete id="delete" parameterType="java.lang.Integer">
-    delete from member_address
+    delete from mc_member_address
     where member_address_id = #{memberAddressId,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
-    delete from member_address
+    delete from mc_member_address
     where member_address_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberAddress">
-    insert into member_address (member_address_id, member_id, province, 
-      city, area, address, 
-      post_code, tel_no, contacts, 
-      is_default, created_by, created_date, 
-      last_updated_by, last_updated_date, row_id
-      )
-    values (#{memberAddressId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{postCode,jdbcType=VARCHAR}, #{telNo,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, 
-      #{isDefault,jdbcType=BIT}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, 
-      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}
-      )
+    insert into mc_member_address (member_address_id, member_id, receiver_name, 
+      telephone, receiving_province, receiving_city, 
+      receiving_area, receiving_address, postal_code, 
+      is_default, bu_code, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id)
+    values (#{memberAddressId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{receivingProvince,jdbcType=VARCHAR}, #{receivingCity,jdbcType=VARCHAR}, 
+      #{receivingArea,jdbcType=VARCHAR}, #{receivingAddress,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+      #{isDefault,jdbcType=BIT}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
+      #{rowId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberAddress">
-    insert into member_address
+    insert into mc_member_address
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberAddressId != null">
         member_address_id,
@@ -61,29 +63,32 @@
       <if test="memberId != null">
         member_id,
       </if>
-      <if test="province != null">
-        province,
+      <if test="receiverName != null">
+        receiver_name,
       </if>
-      <if test="city != null">
-        city,
+      <if test="telephone != null">
+        telephone,
       </if>
-      <if test="area != null">
-        area,
+      <if test="receivingProvince != null">
+        receiving_province,
       </if>
-      <if test="address != null">
-        address,
+      <if test="receivingCity != null">
+        receiving_city,
       </if>
-      <if test="postCode != null">
-        post_code,
+      <if test="receivingArea != null">
+        receiving_area,
       </if>
-      <if test="telNo != null">
-        tel_no,
+      <if test="receivingAddress != null">
+        receiving_address,
       </if>
-      <if test="contacts != null">
-        contacts,
+      <if test="postalCode != null">
+        postal_code,
       </if>
       <if test="isDefault != null">
         is_default,
+      </if>
+      <if test="buCode != null">
+        bu_code,
       </if>
       <if test="currentUser != null">
         created_by,
@@ -108,29 +113,32 @@
       <if test="memberId != null">
         #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="province != null">
-        #{province,jdbcType=VARCHAR},
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
-        #{city,jdbcType=VARCHAR},
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
       </if>
-      <if test="area != null">
-        #{area,jdbcType=VARCHAR},
+      <if test="receivingProvince != null">
+        #{receivingProvince,jdbcType=VARCHAR},
       </if>
-      <if test="address != null">
-        #{address,jdbcType=VARCHAR},
+      <if test="receivingCity != null">
+        #{receivingCity,jdbcType=VARCHAR},
       </if>
-      <if test="postCode != null">
-        #{postCode,jdbcType=VARCHAR},
+      <if test="receivingArea != null">
+        #{receivingArea,jdbcType=VARCHAR},
       </if>
-      <if test="telNo != null">
-        #{telNo,jdbcType=VARCHAR},
+      <if test="receivingAddress != null">
+        #{receivingAddress,jdbcType=VARCHAR},
       </if>
-      <if test="contacts != null">
-        #{contacts,jdbcType=VARCHAR},
+      <if test="postalCode != null">
+        #{postalCode,jdbcType=VARCHAR},
       </if>
       <if test="isDefault != null">
         #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
@@ -150,46 +158,49 @@
     </trim>
   </insert>
   <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberAddress">
-    update member_address
+    update mc_member_address
     <set>
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="province != null">
-        province = #{province,jdbcType=VARCHAR},
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
-        city = #{city,jdbcType=VARCHAR},
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
       </if>
-      <if test="area != null">
-        area = #{area,jdbcType=VARCHAR},
+      <if test="receivingProvince != null">
+        receiving_province = #{receivingProvince,jdbcType=VARCHAR},
       </if>
-      <if test="address != null">
-        address = #{address,jdbcType=VARCHAR},
+      <if test="receivingCity != null">
+        receiving_city = #{receivingCity,jdbcType=VARCHAR},
       </if>
-      <if test="postCode != null">
-        post_code = #{postCode,jdbcType=VARCHAR},
+      <if test="receivingArea != null">
+        receiving_area = #{receivingArea,jdbcType=VARCHAR},
       </if>
-      <if test="telNo != null">
-        tel_no = #{telNo,jdbcType=VARCHAR},
+      <if test="receivingAddress != null">
+        receiving_address = #{receivingAddress,jdbcType=VARCHAR},
       </if>
-      <if test="contacts != null">
-        contacts = #{contacts,jdbcType=VARCHAR},
+      <if test="postalCode != null">
+        postal_code = #{postalCode,jdbcType=VARCHAR},
       </if>
       <if test="isDefault != null">
         is_default = #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="lastUpdatedBy != null">
         last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate != null">
-        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -198,40 +209,43 @@
     where member_address_id = #{memberAddressId,jdbcType=INTEGER}
   </update>
   <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberAddress">
-    update member_address
+    update mc_member_address
     <set>
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="province != null">
-        province = #{province,jdbcType=VARCHAR},
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
       </if>
-      <if test="city != null">
-        city = #{city,jdbcType=VARCHAR},
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
       </if>
-      <if test="area != null">
-        area = #{area,jdbcType=VARCHAR},
+      <if test="receivingProvince != null">
+        receiving_province = #{receivingProvince,jdbcType=VARCHAR},
       </if>
-      <if test="address != null">
-        address = #{address,jdbcType=VARCHAR},
+      <if test="receivingCity != null">
+        receiving_city = #{receivingCity,jdbcType=VARCHAR},
       </if>
-      <if test="postCode != null">
-        post_code = #{postCode,jdbcType=VARCHAR},
+      <if test="receivingArea != null">
+        receiving_area = #{receivingArea,jdbcType=VARCHAR},
       </if>
-      <if test="telNo != null">
-        tel_no = #{telNo,jdbcType=VARCHAR},
+      <if test="receivingAddress != null">
+        receiving_address = #{receivingAddress,jdbcType=VARCHAR},
       </if>
-      <if test="contacts != null">
-        contacts = #{contacts,jdbcType=VARCHAR},
+      <if test="postalCode != null">
+        postal_code = #{postalCode,jdbcType=VARCHAR},
       </if>
       <if test="isDefault != null">
         is_default = #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         last_updated_by = #{currentUser,jdbcType=VARCHAR},
@@ -248,20 +262,21 @@
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.MemberAddress">
-    update member_address
+    update mc_member_address
     set member_id = #{memberId,jdbcType=INTEGER},
-      province = #{province,jdbcType=VARCHAR},
-      city = #{city,jdbcType=VARCHAR},
-      area = #{area,jdbcType=VARCHAR},
-      address = #{address,jdbcType=VARCHAR},
-      post_code = #{postCode,jdbcType=VARCHAR},
-      tel_no = #{telNo,jdbcType=VARCHAR},
-      contacts = #{contacts,jdbcType=VARCHAR},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      receiving_province = #{receivingProvince,jdbcType=VARCHAR},
+      receiving_city = #{receivingCity,jdbcType=VARCHAR},
+      receiving_area = #{receivingArea,jdbcType=VARCHAR},
+      receiving_address = #{receivingAddress,jdbcType=VARCHAR},
+      postal_code = #{postalCode,jdbcType=VARCHAR},
       is_default = #{isDefault,jdbcType=BIT},
+      bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
     where member_address_id = #{memberAddressId,jdbcType=INTEGER}
   </update>
@@ -273,41 +288,44 @@
       <if test="memberId != null">
          and member_id = #{memberId,jdbcType=INTEGER}
       </if>
-      <if test="province != null">
-         and province = #{province,jdbcType=VARCHAR}
+      <if test="receiverName != null">
+         and receiver_name = #{receiverName,jdbcType=VARCHAR}
       </if>
-      <if test="city != null">
-         and city = #{city,jdbcType=VARCHAR}
+      <if test="telephone != null">
+         and telephone = #{telephone,jdbcType=VARCHAR}
       </if>
-      <if test="area != null">
-         and area = #{area,jdbcType=VARCHAR}
+      <if test="receivingProvince != null">
+         and receiving_province = #{receivingProvince,jdbcType=VARCHAR}
       </if>
-      <if test="address != null">
-         and address = #{address,jdbcType=VARCHAR}
+      <if test="receivingCity != null">
+         and receiving_city = #{receivingCity,jdbcType=VARCHAR}
       </if>
-      <if test="postCode != null">
-         and post_code = #{postCode,jdbcType=VARCHAR}
+      <if test="receivingArea != null">
+         and receiving_area = #{receivingArea,jdbcType=VARCHAR}
       </if>
-      <if test="telNo != null">
-         and tel_no = #{telNo,jdbcType=VARCHAR}
+      <if test="receivingAddress != null">
+         and receiving_address = #{receivingAddress,jdbcType=VARCHAR}
       </if>
-      <if test="contacts != null">
-         and contacts = #{contacts,jdbcType=VARCHAR}
+      <if test="postalCode != null">
+         and postal_code = #{postalCode,jdbcType=VARCHAR}
       </if>
       <if test="isDefault != null">
          and is_default = #{isDefault,jdbcType=BIT}
+      </if>
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
          and created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=DATE}
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
          and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}
@@ -315,22 +333,22 @@
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from member_address
+    select * from mc_member_address
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap">
-    select * from member_address
+    select * from mc_member_address
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap">
-    select * from member_address
+    select * from mc_member_address
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap" useCache="false">
-    select * from member_address
+    select * from mc_member_address
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap" useCache="false">
-    select * from member_address
+    select * from mc_member_address
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />

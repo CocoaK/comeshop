@@ -1,44 +1,47 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Member extends BaseModel {
     private Integer memberId;
+    @NotNull
+    private String userName;
+    @NotNull
+    private String password;
 
-    private String memberName;
-
-    private String memberPwd;
-
-    private Date pwdExpiryTime;
-
-    private String telNo;
-
+    private String payPassword;
+    @NotNull
+    private String telephone;
+    @NotNull
     private String email;
 
-    private String remarks;
+    private String avatarUrl;
 
-    private String photograph;
+    private String nickName;
 
-    private Date registrationDate;
+    private String gender;
 
-    private String source;
+    private Date joinDate;
 
-    private Integer recommend;
+    private Date expireDate;
+    @NotNull
+    private Integer mpAmt;
 
-    private Integer integration;
+    private String memberGrade;
 
+    private Date memberGradeExpireDate;
+
+    private Integer refMemberId;
+
+    private String qrCodeUrl;
+    @NotNull
     private Boolean isActive;
 
     private Date inactiveDate;
 
-    private String gradeCode;
-
-    private Date gradeExpiryDate;
-
-    private String openId;
-
-    private String accessToken;
-
+    private String remarks;
+    @NotNull
     private String buCode;
 
     private String createdBy;
@@ -48,7 +51,7 @@ public class Member extends BaseModel {
     private String lastUpdatedBy;
 
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public Integer getMemberId() {
@@ -59,36 +62,36 @@ public class Member extends BaseModel {
         this.memberId = memberId;
     }
 
-    public String getMemberName() {
-        return memberName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMemberName(String memberName) {
-        this.memberName = memberName == null ? null : memberName.trim();
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
-    public String getMemberPwd() {
-        return memberPwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setMemberPwd(String memberPwd) {
-        this.memberPwd = memberPwd == null ? null : memberPwd.trim();
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
     }
 
-    public Date getPwdExpiryTime() {
-        return pwdExpiryTime;
+    public String getPayPassword() {
+        return payPassword;
     }
 
-    public void setPwdExpiryTime(Date pwdExpiryTime) {
-        this.pwdExpiryTime = pwdExpiryTime;
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword == null ? null : payPassword.trim();
     }
 
-    public String getTelNo() {
-        return telNo;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setTelNo(String telNo) {
-        this.telNo = telNo == null ? null : telNo.trim();
+    public void setTelephone(String telephone) {
+        this.telephone = telephone == null ? null : telephone.trim();
     }
 
     public String getEmail() {
@@ -99,52 +102,84 @@ public class Member extends BaseModel {
         this.email = email == null ? null : email.trim();
     }
 
-    public String getRemarks() {
-        return remarks;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setRemarks(String remarks) {
-        this.remarks = remarks == null ? null : remarks.trim();
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl == null ? null : avatarUrl.trim();
     }
 
-    public String getPhotograph() {
-        return photograph;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setPhotograph(String photograph) {
-        this.photograph = photograph == null ? null : photograph.trim();
+    public void setNickName(String nickName) {
+        this.nickName = nickName == null ? null : nickName.trim();
     }
 
-    public Date getRegistrationDate() {
-        return registrationDate;
+    public String getGender() {
+        return gender;
     }
 
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
+    public void setGender(String gender) {
+        this.gender = gender == null ? null : gender.trim();
     }
 
-    public String getSource() {
-        return source;
+    public Date getJoinDate() {
+        return joinDate;
     }
 
-    public void setSource(String source) {
-        this.source = source == null ? null : source.trim();
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
     }
 
-    public Integer getRecommend() {
-        return recommend;
+    public Date getExpireDate() {
+        return expireDate;
     }
 
-    public void setRecommend(Integer recommend) {
-        this.recommend = recommend;
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
     }
 
-    public Integer getIntegration() {
-        return integration;
+    public Integer getMpAmt() {
+        return mpAmt;
     }
 
-    public void setIntegration(Integer integration) {
-        this.integration = integration;
+    public void setMpAmt(Integer mpAmt) {
+        this.mpAmt = mpAmt;
+    }
+
+    public String getMemberGrade() {
+        return memberGrade;
+    }
+
+    public void setMemberGrade(String memberGrade) {
+        this.memberGrade = memberGrade == null ? null : memberGrade.trim();
+    }
+
+    public Date getMemberGradeExpireDate() {
+        return memberGradeExpireDate;
+    }
+
+    public void setMemberGradeExpireDate(Date memberGradeExpireDate) {
+        this.memberGradeExpireDate = memberGradeExpireDate;
+    }
+
+    public Integer getRefMemberId() {
+        return refMemberId;
+    }
+
+    public void setRefMemberId(Integer refMemberId) {
+        this.refMemberId = refMemberId;
+    }
+
+    public String getQrCodeUrl() {
+        return qrCodeUrl;
+    }
+
+    public void setQrCodeUrl(String qrCodeUrl) {
+        this.qrCodeUrl = qrCodeUrl == null ? null : qrCodeUrl.trim();
     }
 
     public Boolean getIsActive() {
@@ -163,36 +198,12 @@ public class Member extends BaseModel {
         this.inactiveDate = inactiveDate;
     }
 
-    public String getGradeCode() {
-        return gradeCode;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setGradeCode(String gradeCode) {
-        this.gradeCode = gradeCode == null ? null : gradeCode.trim();
-    }
-
-    public Date getGradeExpiryDate() {
-        return gradeExpiryDate;
-    }
-
-    public void setGradeExpiryDate(Date gradeExpiryDate) {
-        this.gradeExpiryDate = gradeExpiryDate;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId == null ? null : openId.trim();
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken == null ? null : accessToken.trim();
+    public void setRemarks(String remarks) {
+        this.remarks = remarks == null ? null : remarks.trim();
     }
 
     public String getBuCode() {

@@ -7,11 +7,11 @@
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="is_active" jdbcType="BIT" property="isActive" />
-    <result column="inactive_date" jdbcType="DATE" property="inactiveDate" />
+    <result column="inactive_date" jdbcType="TIMESTAMP" property="inactiveDate" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
-    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -40,9 +40,9 @@
       created_by, created_date, last_updated_by, 
       last_updated_date, row_id)
     values (#{roleId,jdbcType=INTEGER}, #{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
-      #{remarks,jdbcType=VARCHAR}, #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=DATE}, 
-      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
-      #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR})
+      #{remarks,jdbcType=VARCHAR}, #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Role">
     insert into role
@@ -98,7 +98,7 @@
         #{isActive,jdbcType=BIT},
       </if>
       <if test="inactiveDate != null">
-        #{inactiveDate,jdbcType=DATE},
+        #{inactiveDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
@@ -133,19 +133,19 @@
         is_active = #{isActive,jdbcType=BIT},
       </if>
       <if test="inactiveDate != null">
-        inactive_date = #{inactiveDate,jdbcType=DATE},
+        inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="lastUpdatedBy != null">
         last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate != null">
-        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -169,13 +169,13 @@
         is_active = #{isActive,jdbcType=BIT},
       </if>
       <if test="inactiveDate != null">
-        inactive_date = #{inactiveDate,jdbcType=DATE},
+        inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         last_updated_by = #{currentUser,jdbcType=VARCHAR},
@@ -197,11 +197,11 @@
       role_name = #{roleName,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
       is_active = #{isActive,jdbcType=BIT},
-      inactive_date = #{inactiveDate,jdbcType=DATE},
+      inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
@@ -223,19 +223,19 @@
          and is_active = #{isActive,jdbcType=BIT}
       </if>
       <if test="inactiveDate != null">
-         and inactive_date = #{inactiveDate,jdbcType=DATE}
+         and inactive_date = #{inactiveDate,jdbcType=TIMESTAMP}
       </if>
       <if test="createdBy != null">
          and created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=DATE}
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
          and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}

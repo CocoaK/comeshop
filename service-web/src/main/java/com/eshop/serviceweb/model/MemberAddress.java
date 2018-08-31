@@ -1,27 +1,30 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class MemberAddress extends BaseModel {
     private Integer memberAddressId;
-
+    @NotNull
     private Integer memberId;
+    @NotNull
+    private String receiverName;
+    @NotNull
+    private String telephone;
+    @NotNull
+    private String receivingProvince;
+    @NotNull
+    private String receivingCity;
+    @NotNull
+    private String receivingArea;
+    @NotNull
+    private String receivingAddress;
 
-    private String province;
-
-    private String city;
-
-    private String area;
-
-    private String address;
-
-    private String postCode;
-
-    private String telNo;
-
-    private String contacts;
-
+    private String postalCode;
+    @NotNull
     private Boolean isDefault;
+    @NotNull
+    private String buCode;
 
     private String createdBy;
 
@@ -30,7 +33,7 @@ public class MemberAddress extends BaseModel {
     private String lastUpdatedBy;
 
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public Integer getMemberAddressId() {
@@ -49,60 +52,60 @@ public class MemberAddress extends BaseModel {
         this.memberId = memberId;
     }
 
-    public String getProvince() {
-        return province;
+    public String getReceiverName() {
+        return receiverName;
     }
 
-    public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName == null ? null : receiverName.trim();
     }
 
-    public String getCity() {
-        return city;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+    public void setTelephone(String telephone) {
+        this.telephone = telephone == null ? null : telephone.trim();
     }
 
-    public String getArea() {
-        return area;
+    public String getReceivingProvince() {
+        return receivingProvince;
     }
 
-    public void setArea(String area) {
-        this.area = area == null ? null : area.trim();
+    public void setReceivingProvince(String receivingProvince) {
+        this.receivingProvince = receivingProvince == null ? null : receivingProvince.trim();
     }
 
-    public String getAddress() {
-        return address;
+    public String getReceivingCity() {
+        return receivingCity;
     }
 
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+    public void setReceivingCity(String receivingCity) {
+        this.receivingCity = receivingCity == null ? null : receivingCity.trim();
     }
 
-    public String getPostCode() {
-        return postCode;
+    public String getReceivingArea() {
+        return receivingArea;
     }
 
-    public void setPostCode(String postCode) {
-        this.postCode = postCode == null ? null : postCode.trim();
+    public void setReceivingArea(String receivingArea) {
+        this.receivingArea = receivingArea == null ? null : receivingArea.trim();
     }
 
-    public String getTelNo() {
-        return telNo;
+    public String getReceivingAddress() {
+        return receivingAddress;
     }
 
-    public void setTelNo(String telNo) {
-        this.telNo = telNo == null ? null : telNo.trim();
+    public void setReceivingAddress(String receivingAddress) {
+        this.receivingAddress = receivingAddress == null ? null : receivingAddress.trim();
     }
 
-    public String getContacts() {
-        return contacts;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setContacts(String contacts) {
-        this.contacts = contacts == null ? null : contacts.trim();
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode == null ? null : postalCode.trim();
     }
 
     public Boolean getIsDefault() {
@@ -111,6 +114,14 @@ public class MemberAddress extends BaseModel {
 
     public void setIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
+    }
+
+    public String getBuCode() {
+        return buCode;
+    }
+
+    public void setBuCode(String buCode) {
+        this.buCode = buCode == null ? null : buCode.trim();
     }
 
     public String getCreatedBy() {

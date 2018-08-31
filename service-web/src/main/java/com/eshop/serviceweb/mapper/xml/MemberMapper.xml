@@ -3,110 +3,123 @@
 <mapper namespace="com.eshop.serviceweb.mapper.MemberMapper">
   <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Member">
     <id column="member_id" jdbcType="INTEGER" property="memberId" />
-    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
-    <result column="member_pwd" jdbcType="VARCHAR" property="memberPwd" />
-    <result column="pwd_expiry_time" jdbcType="DATE" property="pwdExpiryTime" />
-    <result column="tel_no" jdbcType="VARCHAR" property="telNo" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="pay_password" jdbcType="VARCHAR" property="payPassword" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
-    <result column="photograph" jdbcType="VARCHAR" property="photograph" />
-    <result column="registration_date" jdbcType="DATE" property="registrationDate" />
-    <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="referee_member_id" jdbcType="INTEGER" property="refereeMemberId" />
-    <result column="integration" jdbcType="INTEGER" property="integration" />
+    <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="join_date" jdbcType="DATE" property="joinDate" />
+    <result column="expire_date" jdbcType="DATE" property="expireDate" />
+    <result column="mp_amt" jdbcType="INTEGER" property="mpAmt" />
+    <result column="member_grade" jdbcType="VARCHAR" property="memberGrade" />
+    <result column="member_grade_expire_date" jdbcType="DATE" property="memberGradeExpireDate" />
+    <result column="ref_member_id" jdbcType="INTEGER" property="refMemberId" />
+    <result column="qr_code_url" jdbcType="VARCHAR" property="qrCodeUrl" />
     <result column="is_active" jdbcType="BIT" property="isActive" />
-    <result column="inactive_date" jdbcType="DATE" property="inactiveDate" />
-    <result column="grade_code" jdbcType="VARCHAR" property="gradeCode" />
-    <result column="grade_expiry_date" jdbcType="DATE" property="gradeExpiryDate" />
-    <result column="open_id" jdbcType="VARCHAR" property="openId" />
-    <result column="access_token" jdbcType="VARCHAR" property="accessToken" />
+    <result column="inactive_date" jdbcType="TIMESTAMP" property="inactiveDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
-    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    member_id, member_name, member_pwd, pwd_expiry_time, tel_no, email, remarks, photograph, 
-    registration_date, source, referee_member_id, integration, is_active, inactive_date, 
-    grade_code, grade_expiry_date, open_id, access_token, bu_code, created_by, created_date, 
+    member_id, user_name, password, pay_password, telephone, email, avatar_url, nick_name, 
+    gender, join_date, expire_date, mp_amt, member_grade, member_grade_expire_date, ref_member_id, 
+    qr_code_url, is_active, inactive_date, remarks, bu_code, created_by, created_date, 
     last_updated_by, last_updated_date, row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from member
+    from mc_member
     where member_id = #{memberId,jdbcType=INTEGER}
   </select>
   <delete id="delete" parameterType="java.lang.Integer">
-    delete from member
+    delete from mc_member
     where member_id = #{memberId,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
-    delete from member
+    delete from mc_member
     where member_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.Member">
-    insert into member (member_id, member_name, member_pwd, 
-      pwd_expiry_time, tel_no, email, 
-      remarks, photograph, registration_date, 
-      source, referee_member_id, integration, 
-      is_active, inactive_date, grade_code, 
-      grade_expiry_date, open_id, access_token, 
-      bu_code, created_by, created_date, 
-      last_updated_by, last_updated_date, row_id
-      )
-    values (#{memberId,jdbcType=INTEGER}, #{memberName,jdbcType=VARCHAR}, #{memberPwd,jdbcType=VARCHAR}, 
-      #{pwdExpiryTime,jdbcType=DATE}, #{telNo,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{remarks,jdbcType=VARCHAR}, #{photograph,jdbcType=VARCHAR}, #{registrationDate,jdbcType=DATE}, 
-      #{source,jdbcType=VARCHAR}, #{refereeMemberId,jdbcType=INTEGER}, #{integration,jdbcType=INTEGER}, 
-      #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=DATE}, #{gradeCode,jdbcType=VARCHAR}, 
-      #{gradeExpiryDate,jdbcType=DATE}, #{openId,jdbcType=VARCHAR}, #{accessToken,jdbcType=VARCHAR}, 
-      #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, 
-      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}
-      )
+    insert into mc_member (member_id, user_name, password, 
+      pay_password, telephone, email, 
+      avatar_url, nick_name, gender, 
+      join_date, expire_date, mp_amt, 
+      member_grade, member_grade_expire_date, ref_member_id, 
+      qr_code_url, is_active, inactive_date, 
+      remarks, bu_code, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id)
+    values (#{memberId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{payPassword,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{avatarUrl,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{joinDate,jdbcType=DATE}, #{expireDate,jdbcType=DATE}, #{mpAmt,jdbcType=INTEGER}, 
+      #{memberGrade,jdbcType=VARCHAR}, #{memberGradeExpireDate,jdbcType=DATE}, #{refMemberId,jdbcType=INTEGER}, 
+      #{qrCodeUrl,jdbcType=VARCHAR}, #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
+      #{rowId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Member">
-    insert into member
+    insert into mc_member
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberId != null">
         member_id,
       </if>
-      <if test="memberName != null">
-        member_name,
+      <if test="userName != null">
+        user_name,
       </if>
-      <if test="memberPwd != null">
-        member_pwd,
+      <if test="password != null">
+        password,
       </if>
-      <if test="pwdExpiryTime != null">
-        pwd_expiry_time,
+      <if test="payPassword != null">
+        pay_password,
       </if>
-      <if test="telNo != null">
-        tel_no,
+      <if test="telephone != null">
+        telephone,
       </if>
       <if test="email != null">
         email,
       </if>
-      <if test="remarks != null">
-        remarks,
+      <if test="avatarUrl != null">
+        avatar_url,
       </if>
-      <if test="photograph != null">
-        photograph,
+      <if test="nickName != null">
+        nick_name,
       </if>
-      <if test="registrationDate != null">
-        registration_date,
+      <if test="gender != null">
+        gender,
       </if>
-      <if test="source != null">
-        source,
+      <if test="joinDate != null">
+        join_date,
       </if>
-      <if test="refereeMemberId != null">
-        referee_member_id,
+      <if test="expireDate != null">
+        expire_date,
       </if>
-      <if test="integration != null">
-        integration,
+      <if test="mpAmt != null">
+        mp_amt,
+      </if>
+      <if test="memberGrade != null">
+        member_grade,
+      </if>
+      <if test="memberGradeExpireDate != null">
+        member_grade_expire_date,
+      </if>
+      <if test="refMemberId != null">
+        ref_member_id,
+      </if>
+      <if test="qrCodeUrl != null">
+        qr_code_url,
       </if>
       <if test="isActive != null">
         is_active,
@@ -114,17 +127,8 @@
       <if test="inactiveDate != null">
         inactive_date,
       </if>
-      <if test="gradeCode != null">
-        grade_code,
-      </if>
-      <if test="gradeExpiryDate != null">
-        grade_expiry_date,
-      </if>
-      <if test="openId != null">
-        open_id,
-      </if>
-      <if test="accessToken != null">
-        access_token,
+      <if test="remarks != null">
+        remarks,
       </if>
       <if test="buCode != null">
         bu_code,
@@ -149,56 +153,59 @@
       <if test="memberId != null">
         #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="memberName != null">
-        #{memberName,jdbcType=VARCHAR},
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="memberPwd != null">
-        #{memberPwd,jdbcType=VARCHAR},
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
       </if>
-      <if test="pwdExpiryTime != null">
-        #{pwdExpiryTime,jdbcType=DATE},
+      <if test="payPassword != null">
+        #{payPassword,jdbcType=VARCHAR},
       </if>
-      <if test="telNo != null">
-        #{telNo,jdbcType=VARCHAR},
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="remarks != null">
-        #{remarks,jdbcType=VARCHAR},
+      <if test="avatarUrl != null">
+        #{avatarUrl,jdbcType=VARCHAR},
       </if>
-      <if test="photograph != null">
-        #{photograph,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
       </if>
-      <if test="registrationDate != null">
-        #{registrationDate,jdbcType=DATE},
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
       </if>
-      <if test="source != null">
-        #{source,jdbcType=VARCHAR},
+      <if test="joinDate != null">
+        #{joinDate,jdbcType=DATE},
       </if>
-      <if test="refereeMemberId != null">
-        #{refereeMemberId,jdbcType=INTEGER},
+      <if test="expireDate != null">
+        #{expireDate,jdbcType=DATE},
       </if>
-      <if test="integration != null">
-        #{integration,jdbcType=INTEGER},
+      <if test="mpAmt != null">
+        #{mpAmt,jdbcType=INTEGER},
+      </if>
+      <if test="memberGrade != null">
+        #{memberGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="memberGradeExpireDate != null">
+        #{memberGradeExpireDate,jdbcType=DATE},
+      </if>
+      <if test="refMemberId != null">
+        #{refMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="qrCodeUrl != null">
+        #{qrCodeUrl,jdbcType=VARCHAR},
       </if>
       <if test="isActive != null">
         #{isActive,jdbcType=BIT},
       </if>
       <if test="inactiveDate != null">
-        #{inactiveDate,jdbcType=DATE},
+        #{inactiveDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gradeCode != null">
-        #{gradeCode,jdbcType=VARCHAR},
-      </if>
-      <if test="gradeExpiryDate != null">
-        #{gradeExpiryDate,jdbcType=DATE},
-      </if>
-      <if test="openId != null">
-        #{openId,jdbcType=VARCHAR},
-      </if>
-      <if test="accessToken != null">
-        #{accessToken,jdbcType=VARCHAR},
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
@@ -221,58 +228,61 @@
     </trim>
   </insert>
   <update id="updateActive" parameterType="com.eshop.serviceweb.model.Member">
-    update member
+    update mc_member
     <set>
-      <if test="memberName != null">
-        member_name = #{memberName,jdbcType=VARCHAR},
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="memberPwd != null">
-        member_pwd = #{memberPwd,jdbcType=VARCHAR},
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="pwdExpiryTime != null">
-        pwd_expiry_time = #{pwdExpiryTime,jdbcType=DATE},
+      <if test="payPassword != null">
+        pay_password = #{payPassword,jdbcType=VARCHAR},
       </if>
-      <if test="telNo != null">
-        tel_no = #{telNo,jdbcType=VARCHAR},
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
+      <if test="avatarUrl != null">
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
       </if>
-      <if test="photograph != null">
-        photograph = #{photograph,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
       </if>
-      <if test="registrationDate != null">
-        registration_date = #{registrationDate,jdbcType=DATE},
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
       </if>
-      <if test="source != null">
-        source = #{source,jdbcType=VARCHAR},
+      <if test="joinDate != null">
+        join_date = #{joinDate,jdbcType=DATE},
       </if>
-      <if test="refereeMemberId != null">
-        referee_member_id = #{refereeMemberId,jdbcType=INTEGER},
+      <if test="expireDate != null">
+        expire_date = #{expireDate,jdbcType=DATE},
       </if>
-      <if test="integration != null">
-        integration = #{integration,jdbcType=INTEGER},
+      <if test="mpAmt != null">
+        mp_amt = #{mpAmt,jdbcType=INTEGER},
+      </if>
+      <if test="memberGrade != null">
+        member_grade = #{memberGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="memberGradeExpireDate != null">
+        member_grade_expire_date = #{memberGradeExpireDate,jdbcType=DATE},
+      </if>
+      <if test="refMemberId != null">
+        ref_member_id = #{refMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="qrCodeUrl != null">
+        qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR},
       </if>
       <if test="isActive != null">
         is_active = #{isActive,jdbcType=BIT},
       </if>
       <if test="inactiveDate != null">
-        inactive_date = #{inactiveDate,jdbcType=DATE},
+        inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gradeCode != null">
-        grade_code = #{gradeCode,jdbcType=VARCHAR},
-      </if>
-      <if test="gradeExpiryDate != null">
-        grade_expiry_date = #{gradeExpiryDate,jdbcType=DATE},
-      </if>
-      <if test="openId != null">
-        open_id = #{openId,jdbcType=VARCHAR},
-      </if>
-      <if test="accessToken != null">
-        access_token = #{accessToken,jdbcType=VARCHAR},
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
@@ -281,13 +291,13 @@
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="lastUpdatedBy != null">
         last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate != null">
-        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -296,58 +306,61 @@
     where member_id = #{memberId,jdbcType=INTEGER}
   </update>
   <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Member">
-    update member
+    update mc_member
     <set>
-      <if test="memberName != null">
-        member_name = #{memberName,jdbcType=VARCHAR},
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="memberPwd != null">
-        member_pwd = #{memberPwd,jdbcType=VARCHAR},
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="pwdExpiryTime != null">
-        pwd_expiry_time = #{pwdExpiryTime,jdbcType=DATE},
+      <if test="payPassword != null">
+        pay_password = #{payPassword,jdbcType=VARCHAR},
       </if>
-      <if test="telNo != null">
-        tel_no = #{telNo,jdbcType=VARCHAR},
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
       </if>
       <if test="email != null">
         email = #{email,jdbcType=VARCHAR},
       </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
+      <if test="avatarUrl != null">
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
       </if>
-      <if test="photograph != null">
-        photograph = #{photograph,jdbcType=VARCHAR},
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
       </if>
-      <if test="registrationDate != null">
-        registration_date = #{registrationDate,jdbcType=DATE},
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
       </if>
-      <if test="source != null">
-        source = #{source,jdbcType=VARCHAR},
+      <if test="joinDate != null">
+        join_date = #{joinDate,jdbcType=DATE},
       </if>
-      <if test="refereeMemberId != null">
-        referee_member_id = #{refereeMemberId,jdbcType=INTEGER},
+      <if test="expireDate != null">
+        expire_date = #{expireDate,jdbcType=DATE},
       </if>
-      <if test="integration != null">
-        integration = #{integration,jdbcType=INTEGER},
+      <if test="mpAmt != null">
+        mp_amt = #{mpAmt,jdbcType=INTEGER},
+      </if>
+      <if test="memberGrade != null">
+        member_grade = #{memberGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="memberGradeExpireDate != null">
+        member_grade_expire_date = #{memberGradeExpireDate,jdbcType=DATE},
+      </if>
+      <if test="refMemberId != null">
+        ref_member_id = #{refMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="qrCodeUrl != null">
+        qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR},
       </if>
       <if test="isActive != null">
         is_active = #{isActive,jdbcType=BIT},
       </if>
       <if test="inactiveDate != null">
-        inactive_date = #{inactiveDate,jdbcType=DATE},
+        inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="gradeCode != null">
-        grade_code = #{gradeCode,jdbcType=VARCHAR},
-      </if>
-      <if test="gradeExpiryDate != null">
-        grade_expiry_date = #{gradeExpiryDate,jdbcType=DATE},
-      </if>
-      <if test="openId != null">
-        open_id = #{openId,jdbcType=VARCHAR},
-      </if>
-      <if test="accessToken != null">
-        access_token = #{accessToken,jdbcType=VARCHAR},
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
       </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
@@ -356,7 +369,7 @@
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         last_updated_by = #{currentUser,jdbcType=VARCHAR},
@@ -373,29 +386,30 @@
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.Member">
-    update member
-    set member_name = #{memberName,jdbcType=VARCHAR},
-      member_pwd = #{memberPwd,jdbcType=VARCHAR},
-      pwd_expiry_time = #{pwdExpiryTime,jdbcType=DATE},
-      tel_no = #{telNo,jdbcType=VARCHAR},
+    update mc_member
+    set user_name = #{userName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      pay_password = #{payPassword,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
-      remarks = #{remarks,jdbcType=VARCHAR},
-      photograph = #{photograph,jdbcType=VARCHAR},
-      registration_date = #{registrationDate,jdbcType=DATE},
-      source = #{source,jdbcType=VARCHAR},
-      referee_member_id = #{refereeMemberId,jdbcType=INTEGER},
-      integration = #{integration,jdbcType=INTEGER},
+      avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      join_date = #{joinDate,jdbcType=DATE},
+      expire_date = #{expireDate,jdbcType=DATE},
+      mp_amt = #{mpAmt,jdbcType=INTEGER},
+      member_grade = #{memberGrade,jdbcType=VARCHAR},
+      member_grade_expire_date = #{memberGradeExpireDate,jdbcType=DATE},
+      ref_member_id = #{refMemberId,jdbcType=INTEGER},
+      qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR},
       is_active = #{isActive,jdbcType=BIT},
-      inactive_date = #{inactiveDate,jdbcType=DATE},
-      grade_code = #{gradeCode,jdbcType=VARCHAR},
-      grade_expiry_date = #{gradeExpiryDate,jdbcType=DATE},
-      open_id = #{openId,jdbcType=VARCHAR},
-      access_token = #{accessToken,jdbcType=VARCHAR},
+      inactive_date = #{inactiveDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
     where member_id = #{memberId,jdbcType=INTEGER}
   </update>
@@ -404,56 +418,59 @@
       <if test="memberId != null">
          and member_id = #{memberId,jdbcType=INTEGER}
       </if>
-      <if test="memberName != null">
-         and member_name = #{memberName,jdbcType=VARCHAR}
+      <if test="userName != null">
+         and user_name = #{userName,jdbcType=VARCHAR}
       </if>
-      <if test="memberPwd != null">
-         and member_pwd = #{memberPwd,jdbcType=VARCHAR}
+      <if test="password != null">
+         and password = #{password,jdbcType=VARCHAR}
       </if>
-      <if test="pwdExpiryTime != null">
-         and pwd_expiry_time = #{pwdExpiryTime,jdbcType=DATE}
+      <if test="payPassword != null">
+         and pay_password = #{payPassword,jdbcType=VARCHAR}
       </if>
-      <if test="telNo != null">
-         and tel_no = #{telNo,jdbcType=VARCHAR}
+      <if test="telephone != null">
+         and telephone = #{telephone,jdbcType=VARCHAR}
       </if>
       <if test="email != null">
          and email = #{email,jdbcType=VARCHAR}
       </if>
-      <if test="remarks != null">
-         and remarks = #{remarks,jdbcType=VARCHAR}
+      <if test="avatarUrl != null">
+         and avatar_url = #{avatarUrl,jdbcType=VARCHAR}
       </if>
-      <if test="photograph != null">
-         and photograph = #{photograph,jdbcType=VARCHAR}
+      <if test="nickName != null">
+         and nick_name = #{nickName,jdbcType=VARCHAR}
       </if>
-      <if test="registrationDate != null">
-         and registration_date = #{registrationDate,jdbcType=DATE}
+      <if test="gender != null">
+         and gender = #{gender,jdbcType=VARCHAR}
       </if>
-      <if test="source != null">
-         and source = #{source,jdbcType=VARCHAR}
+      <if test="joinDate != null">
+         and join_date = #{joinDate,jdbcType=DATE}
       </if>
-      <if test="refereeMemberId != null">
-         and referee_member_id = #{refereeMemberId,jdbcType=INTEGER}
+      <if test="expireDate != null">
+         and expire_date = #{expireDate,jdbcType=DATE}
       </if>
-      <if test="integration != null">
-         and integration = #{integration,jdbcType=INTEGER}
+      <if test="mpAmt != null">
+         and mp_amt = #{mpAmt,jdbcType=INTEGER}
+      </if>
+      <if test="memberGrade != null">
+         and member_grade = #{memberGrade,jdbcType=VARCHAR}
+      </if>
+      <if test="memberGradeExpireDate != null">
+         and member_grade_expire_date = #{memberGradeExpireDate,jdbcType=DATE}
+      </if>
+      <if test="refMemberId != null">
+         and ref_member_id = #{refMemberId,jdbcType=INTEGER}
+      </if>
+      <if test="qrCodeUrl != null">
+         and qr_code_url = #{qrCodeUrl,jdbcType=VARCHAR}
       </if>
       <if test="isActive != null">
          and is_active = #{isActive,jdbcType=BIT}
       </if>
       <if test="inactiveDate != null">
-         and inactive_date = #{inactiveDate,jdbcType=DATE}
+         and inactive_date = #{inactiveDate,jdbcType=TIMESTAMP}
       </if>
-      <if test="gradeCode != null">
-         and grade_code = #{gradeCode,jdbcType=VARCHAR}
-      </if>
-      <if test="gradeExpiryDate != null">
-         and grade_expiry_date = #{gradeExpiryDate,jdbcType=DATE}
-      </if>
-      <if test="openId != null">
-         and open_id = #{openId,jdbcType=VARCHAR}
-      </if>
-      <if test="accessToken != null">
-         and access_token = #{accessToken,jdbcType=VARCHAR}
+      <if test="remarks != null">
+         and remarks = #{remarks,jdbcType=VARCHAR}
       </if>
       <if test="buCode != null">
          and bu_code = #{buCode,jdbcType=VARCHAR}
@@ -462,13 +479,13 @@
          and created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=DATE}
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
          and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}
@@ -476,22 +493,22 @@
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from member
+    select * from mc_member
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.Member" resultMap="BaseResultMap">
-    select * from member
+    select * from mc_member
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.Member" resultMap="BaseResultMap">
-    select * from member
+    select * from mc_member
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Member" resultMap="BaseResultMap" useCache="false">
-    select * from member
+    select * from mc_member
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.Member" resultMap="BaseResultMap" useCache="false">
-    select * from member
+    select * from mc_member
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />

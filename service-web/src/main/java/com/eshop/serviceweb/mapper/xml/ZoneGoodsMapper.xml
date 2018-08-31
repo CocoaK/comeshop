@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.ZoneGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.ZoneGoods">
+    <id column="zone_goods_id" jdbcType="INTEGER" property="zoneGoodsId" />
+    <result column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="shelf_time" jdbcType="TIMESTAMP" property="shelfTime" />
+    <result column="shelf_count" jdbcType="INTEGER" property="shelfCount" />
+    <result column="release_time" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="discount_amt" jdbcType="DECIMAL" property="discountAmt" />
+    <result column="profit_amt" jdbcType="DECIMAL" property="profitAmt" />
+    <result column="rebate_amt" jdbcType="DECIMAL" property="rebateAmt" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    zone_goods_id, zone_code, goods_id, status, shelf_time, shelf_count, release_time, 
+    discount_amt, profit_amt, rebate_amt, bu_code, created_by, created_date, last_updated_by, 
+    last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sh_zone_goods
+    where zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from sh_zone_goods
+    where zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from sh_zone_goods
+    where zone_goods_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.ZoneGoods">
+    insert into sh_zone_goods (zone_goods_id, zone_code, goods_id, 
+      status, shelf_time, shelf_count, 
+      release_time, discount_amt, profit_amt, 
+      rebate_amt, bu_code, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id)
+    values (#{zoneGoodsId,jdbcType=INTEGER}, #{zoneCode,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{shelfTime,jdbcType=TIMESTAMP}, #{shelfCount,jdbcType=INTEGER}, 
+      #{releaseTime,jdbcType=TIMESTAMP}, #{discountAmt,jdbcType=DECIMAL}, #{profitAmt,jdbcType=DECIMAL}, 
+      #{rebateAmt,jdbcType=DECIMAL}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
+      #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.ZoneGoods">
+    insert into sh_zone_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="zoneGoodsId != null">
+        zone_goods_id,
+      </if>
+      <if test="zoneCode != null">
+        zone_code,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="shelfTime != null">
+        shelf_time,
+      </if>
+      <if test="shelfCount != null">
+        shelf_count,
+      </if>
+      <if test="releaseTime != null">
+        release_time,
+      </if>
+      <if test="discountAmt != null">
+        discount_amt,
+      </if>
+      <if test="profitAmt != null">
+        profit_amt,
+      </if>
+      <if test="rebateAmt != null">
+        rebate_amt,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="zoneGoodsId != null">
+        #{zoneGoodsId,jdbcType=INTEGER},
+      </if>
+      <if test="zoneCode != null">
+        #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="shelfTime != null">
+        #{shelfTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shelfCount != null">
+        #{shelfCount,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null">
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discountAmt != null">
+        #{discountAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="profitAmt != null">
+        #{profitAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="rebateAmt != null">
+        #{rebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.ZoneGoods">
+    update sh_zone_goods
+    <set>
+      <if test="zoneCode != null">
+        zone_code = #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="shelfTime != null">
+        shelf_time = #{shelfTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shelfCount != null">
+        shelf_count = #{shelfCount,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null">
+        release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discountAmt != null">
+        discount_amt = #{discountAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="profitAmt != null">
+        profit_amt = #{profitAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="rebateAmt != null">
+        rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.ZoneGoods">
+    update sh_zone_goods
+    <set>
+      <if test="zoneCode != null">
+        zone_code = #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="shelfTime != null">
+        shelf_time = #{shelfTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shelfCount != null">
+        shelf_count = #{shelfCount,jdbcType=INTEGER},
+      </if>
+      <if test="releaseTime != null">
+        release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="discountAmt != null">
+        discount_amt = #{discountAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="profitAmt != null">
+        profit_amt = #{profitAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="rebateAmt != null">
+        rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.ZoneGoods">
+    update sh_zone_goods
+    set zone_code = #{zoneCode,jdbcType=VARCHAR},
+      goods_id = #{goodsId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      shelf_time = #{shelfTime,jdbcType=TIMESTAMP},
+      shelf_count = #{shelfCount,jdbcType=INTEGER},
+      release_time = #{releaseTime,jdbcType=TIMESTAMP},
+      discount_amt = #{discountAmt,jdbcType=DECIMAL},
+      profit_amt = #{profitAmt,jdbcType=DECIMAL},
+      rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="zoneGoodsId != null">
+         and zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+      </if>
+      <if test="zoneCode != null">
+         and zone_code = #{zoneCode,jdbcType=VARCHAR}
+      </if>
+      <if test="goodsId != null">
+         and goods_id = #{goodsId,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+         and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="shelfTime != null">
+         and shelf_time = #{shelfTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="shelfCount != null">
+         and shelf_count = #{shelfCount,jdbcType=INTEGER}
+      </if>
+      <if test="releaseTime != null">
+         and release_time = #{releaseTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="discountAmt != null">
+         and discount_amt = #{discountAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="profitAmt != null">
+         and profit_amt = #{profitAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="rebateAmt != null">
+         and rebate_amt = #{rebateAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from sh_zone_goods
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.ZoneGoods" resultMap="BaseResultMap">
+    select * from sh_zone_goods
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.ZoneGoods" resultMap="BaseResultMap">
+    select * from sh_zone_goods
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.ZoneGoods" resultMap="BaseResultMap" useCache="false">
+    select * from sh_zone_goods
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.ZoneGoods" resultMap="BaseResultMap" useCache="false">
+    select * from sh_zone_goods
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

@@ -1,21 +1,35 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order extends BaseModel {
     private Integer orderId;
 
     private String orderCode;
-
+    @NotNull
     private Integer memberId;
+    @NotNull
+    private Integer memberAddressId;
+    @NotNull
+    private BigDecimal totalPrice;
+    @NotNull
+    private BigDecimal totalDiscountAmt;
+    @NotNull
+    private BigDecimal totalProfitAmt;
+    @NotNull
+    private BigDecimal totalRebateAmt;
+    @NotNull
+    private Integer arMp;
+    @NotNull
+    private Integer apMp;
 
+    private Date paymentTime;
+    @NotNull
     private String status;
-
-    private Boolean isRebate;
-
-    private Integer goodsAreaId;
-
-    private String remarks;
+    @NotNull
+    private String buCode;
 
     private String createdBy;
 
@@ -24,7 +38,7 @@ public class Order extends BaseModel {
     private String lastUpdatedBy;
 
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public Integer getOrderId() {
@@ -51,6 +65,70 @@ public class Order extends BaseModel {
         this.memberId = memberId;
     }
 
+    public Integer getMemberAddressId() {
+        return memberAddressId;
+    }
+
+    public void setMemberAddressId(Integer memberAddressId) {
+        this.memberAddressId = memberAddressId;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public BigDecimal getTotalDiscountAmt() {
+        return totalDiscountAmt;
+    }
+
+    public void setTotalDiscountAmt(BigDecimal totalDiscountAmt) {
+        this.totalDiscountAmt = totalDiscountAmt;
+    }
+
+    public BigDecimal getTotalProfitAmt() {
+        return totalProfitAmt;
+    }
+
+    public void setTotalProfitAmt(BigDecimal totalProfitAmt) {
+        this.totalProfitAmt = totalProfitAmt;
+    }
+
+    public BigDecimal getTotalRebateAmt() {
+        return totalRebateAmt;
+    }
+
+    public void setTotalRebateAmt(BigDecimal totalRebateAmt) {
+        this.totalRebateAmt = totalRebateAmt;
+    }
+
+    public Integer getArMp() {
+        return arMp;
+    }
+
+    public void setArMp(Integer arMp) {
+        this.arMp = arMp;
+    }
+
+    public Integer getApMp() {
+        return apMp;
+    }
+
+    public void setApMp(Integer apMp) {
+        this.apMp = apMp;
+    }
+
+    public Date getPaymentTime() {
+        return paymentTime;
+    }
+
+    public void setPaymentTime(Date paymentTime) {
+        this.paymentTime = paymentTime;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -59,28 +137,12 @@ public class Order extends BaseModel {
         this.status = status == null ? null : status.trim();
     }
 
-    public Boolean getIsRebate() {
-        return isRebate;
+    public String getBuCode() {
+        return buCode;
     }
 
-    public void setIsRebate(Boolean isRebate) {
-        this.isRebate = isRebate;
-    }
-
-    public Integer getGoodsAreaId() {
-        return goodsAreaId;
-    }
-
-    public void setGoodsAreaId(Integer goodsAreaId) {
-        this.goodsAreaId = goodsAreaId;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks == null ? null : remarks.trim();
+    public void setBuCode(String buCode) {
+        this.buCode = buCode == null ? null : buCode.trim();
     }
 
     public String getCreatedBy() {

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.RebateDetailsMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.RebateDetails">
+    <id column="rebate_details_id" jdbcType="INTEGER" property="rebateDetailsId" />
+    <result column="settle_batch_id" jdbcType="INTEGER" property="settleBatchId" />
+    <result column="settle_details_id" jdbcType="INTEGER" property="settleDetailsId" />
+    <result column="queueing_type" jdbcType="VARCHAR" property="queueingType" />
+    <result column="queueing_time" jdbcType="TIMESTAMP" property="queueingTime" />
+    <result column="rebate_amt" jdbcType="DECIMAL" property="rebateAmt" />
+    <result column="rebate_mp" jdbcType="INTEGER" property="rebateMp" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rebate_details_id, settle_batch_id, settle_details_id, queueing_type, queueing_time, 
+    rebate_amt, rebate_mp, bu_code, created_by, created_date, last_updated_by, last_updated_date, 
+    row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ac_rebate_details
+    where rebate_details_id = #{rebateDetailsId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from ac_rebate_details
+    where rebate_details_id = #{rebateDetailsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from ac_rebate_details
+    where rebate_details_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.RebateDetails">
+    insert into ac_rebate_details (rebate_details_id, settle_batch_id, settle_details_id, 
+      queueing_type, queueing_time, rebate_amt, 
+      rebate_mp, bu_code, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id)
+    values (#{rebateDetailsId,jdbcType=INTEGER}, #{settleBatchId,jdbcType=INTEGER}, #{settleDetailsId,jdbcType=INTEGER}, 
+      #{queueingType,jdbcType=VARCHAR}, #{queueingTime,jdbcType=TIMESTAMP}, #{rebateAmt,jdbcType=DECIMAL}, 
+      #{rebateMp,jdbcType=INTEGER}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
+      #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.RebateDetails">
+    insert into ac_rebate_details
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rebateDetailsId != null">
+        rebate_details_id,
+      </if>
+      <if test="settleBatchId != null">
+        settle_batch_id,
+      </if>
+      <if test="settleDetailsId != null">
+        settle_details_id,
+      </if>
+      <if test="queueingType != null">
+        queueing_type,
+      </if>
+      <if test="queueingTime != null">
+        queueing_time,
+      </if>
+      <if test="rebateAmt != null">
+        rebate_amt,
+      </if>
+      <if test="rebateMp != null">
+        rebate_mp,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rebateDetailsId != null">
+        #{rebateDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="settleBatchId != null">
+        #{settleBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="settleDetailsId != null">
+        #{settleDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="queueingType != null">
+        #{queueingType,jdbcType=VARCHAR},
+      </if>
+      <if test="queueingTime != null">
+        #{queueingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rebateAmt != null">
+        #{rebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="rebateMp != null">
+        #{rebateMp,jdbcType=INTEGER},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.RebateDetails">
+    update ac_rebate_details
+    <set>
+      <if test="settleBatchId != null">
+        settle_batch_id = #{settleBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="settleDetailsId != null">
+        settle_details_id = #{settleDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="queueingType != null">
+        queueing_type = #{queueingType,jdbcType=VARCHAR},
+      </if>
+      <if test="queueingTime != null">
+        queueing_time = #{queueingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rebateAmt != null">
+        rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="rebateMp != null">
+        rebate_mp = #{rebateMp,jdbcType=INTEGER},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rebate_details_id = #{rebateDetailsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.RebateDetails">
+    update ac_rebate_details
+    <set>
+      <if test="settleBatchId != null">
+        settle_batch_id = #{settleBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="settleDetailsId != null">
+        settle_details_id = #{settleDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="queueingType != null">
+        queueing_type = #{queueingType,jdbcType=VARCHAR},
+      </if>
+      <if test="queueingTime != null">
+        queueing_time = #{queueingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rebateAmt != null">
+        rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="rebateMp != null">
+        rebate_mp = #{rebateMp,jdbcType=INTEGER},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rebate_details_id = #{rebateDetailsId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.RebateDetails">
+    update ac_rebate_details
+    set settle_batch_id = #{settleBatchId,jdbcType=INTEGER},
+      settle_details_id = #{settleDetailsId,jdbcType=INTEGER},
+      queueing_type = #{queueingType,jdbcType=VARCHAR},
+      queueing_time = #{queueingTime,jdbcType=TIMESTAMP},
+      rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
+      rebate_mp = #{rebateMp,jdbcType=INTEGER},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where rebate_details_id = #{rebateDetailsId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="rebateDetailsId != null">
+         and rebate_details_id = #{rebateDetailsId,jdbcType=INTEGER}
+      </if>
+      <if test="settleBatchId != null">
+         and settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
+      </if>
+      <if test="settleDetailsId != null">
+         and settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+      </if>
+      <if test="queueingType != null">
+         and queueing_type = #{queueingType,jdbcType=VARCHAR}
+      </if>
+      <if test="queueingTime != null">
+         and queueing_time = #{queueingTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rebateAmt != null">
+         and rebate_amt = #{rebateAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="rebateMp != null">
+         and rebate_mp = #{rebateMp,jdbcType=INTEGER}
+      </if>
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from ac_rebate_details
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.RebateDetails" resultMap="BaseResultMap">
+    select * from ac_rebate_details
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.RebateDetails" resultMap="BaseResultMap">
+    select * from ac_rebate_details
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.RebateDetails" resultMap="BaseResultMap" useCache="false">
+    select * from ac_rebate_details
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.RebateDetails" resultMap="BaseResultMap" useCache="false">
+    select * from ac_rebate_details
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

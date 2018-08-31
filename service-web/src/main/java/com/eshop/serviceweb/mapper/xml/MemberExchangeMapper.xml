@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.MemberExchangeMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberExchange">
+    <id column="member_exchange_id" jdbcType="INTEGER" property="memberExchangeId" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="application_date" jdbcType="DATE" property="applicationDate" />
+    <result column="exchange_amt" jdbcType="DECIMAL" property="exchangeAmt" />
+    <result column="exchange_mp" jdbcType="INTEGER" property="exchangeMp" />
+    <result column="account_type" jdbcType="VARCHAR" property="accountType" />
+    <result column="account_no" jdbcType="VARCHAR" property="accountNo" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="approved_by" jdbcType="VARCHAR" property="approvedBy" />
+    <result column="approval_time" jdbcType="TIMESTAMP" property="approvalTime" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    member_exchange_id, member_id, application_date, exchange_amt, exchange_mp, account_type, 
+    account_no, status, approved_by, approval_time, remarks, bu_code, created_by, created_date, 
+    last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mc_member_exchange
+    where member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from mc_member_exchange
+    where member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from mc_member_exchange
+    where member_exchange_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberExchange">
+    insert into mc_member_exchange (member_exchange_id, member_id, application_date, 
+      exchange_amt, exchange_mp, account_type, 
+      account_no, status, approved_by, 
+      approval_time, remarks, bu_code, 
+      created_by, created_date, last_updated_by, 
+      last_updated_date, row_id)
+    values (#{memberExchangeId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{applicationDate,jdbcType=DATE}, 
+      #{exchangeAmt,jdbcType=DECIMAL}, #{exchangeMp,jdbcType=INTEGER}, #{accountType,jdbcType=VARCHAR}, 
+      #{accountNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{approvedBy,jdbcType=VARCHAR}, 
+      #{approvalTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{buCode,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberExchange">
+    insert into mc_member_exchange
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberExchangeId != null">
+        member_exchange_id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="applicationDate != null">
+        application_date,
+      </if>
+      <if test="exchangeAmt != null">
+        exchange_amt,
+      </if>
+      <if test="exchangeMp != null">
+        exchange_mp,
+      </if>
+      <if test="accountType != null">
+        account_type,
+      </if>
+      <if test="accountNo != null">
+        account_no,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="approvedBy != null">
+        approved_by,
+      </if>
+      <if test="approvalTime != null">
+        approval_time,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberExchangeId != null">
+        #{memberExchangeId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="applicationDate != null">
+        #{applicationDate,jdbcType=DATE},
+      </if>
+      <if test="exchangeAmt != null">
+        #{exchangeAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="exchangeMp != null">
+        #{exchangeMp,jdbcType=INTEGER},
+      </if>
+      <if test="accountType != null">
+        #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNo != null">
+        #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="approvedBy != null">
+        #{approvedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalTime != null">
+        #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberExchange">
+    update mc_member_exchange
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="applicationDate != null">
+        application_date = #{applicationDate,jdbcType=DATE},
+      </if>
+      <if test="exchangeAmt != null">
+        exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="exchangeMp != null">
+        exchange_mp = #{exchangeMp,jdbcType=INTEGER},
+      </if>
+      <if test="accountType != null">
+        account_type = #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNo != null">
+        account_no = #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="approvedBy != null">
+        approved_by = #{approvedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalTime != null">
+        approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberExchange">
+    update mc_member_exchange
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="applicationDate != null">
+        application_date = #{applicationDate,jdbcType=DATE},
+      </if>
+      <if test="exchangeAmt != null">
+        exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="exchangeMp != null">
+        exchange_mp = #{exchangeMp,jdbcType=INTEGER},
+      </if>
+      <if test="accountType != null">
+        account_type = #{accountType,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNo != null">
+        account_no = #{accountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="approvedBy != null">
+        approved_by = #{approvedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalTime != null">
+        approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.MemberExchange">
+    update mc_member_exchange
+    set member_id = #{memberId,jdbcType=INTEGER},
+      application_date = #{applicationDate,jdbcType=DATE},
+      exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
+      exchange_mp = #{exchangeMp,jdbcType=INTEGER},
+      account_type = #{accountType,jdbcType=VARCHAR},
+      account_no = #{accountNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      approved_by = #{approvedBy,jdbcType=VARCHAR},
+      approval_time = #{approvalTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="memberExchangeId != null">
+         and member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
+      </if>
+      <if test="memberId != null">
+         and member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="applicationDate != null">
+         and application_date = #{applicationDate,jdbcType=DATE}
+      </if>
+      <if test="exchangeAmt != null">
+         and exchange_amt = #{exchangeAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="exchangeMp != null">
+         and exchange_mp = #{exchangeMp,jdbcType=INTEGER}
+      </if>
+      <if test="accountType != null">
+         and account_type = #{accountType,jdbcType=VARCHAR}
+      </if>
+      <if test="accountNo != null">
+         and account_no = #{accountNo,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+         and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="approvedBy != null">
+         and approved_by = #{approvedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="approvalTime != null">
+         and approval_time = #{approvalTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="remarks != null">
+         and remarks = #{remarks,jdbcType=VARCHAR}
+      </if>
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from mc_member_exchange
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberExchange" resultMap="BaseResultMap">
+    select * from mc_member_exchange
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberExchange" resultMap="BaseResultMap">
+    select * from mc_member_exchange
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberExchange" resultMap="BaseResultMap" useCache="false">
+    select * from mc_member_exchange
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberExchange" resultMap="BaseResultMap" useCache="false">
+    select * from mc_member_exchange
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>
