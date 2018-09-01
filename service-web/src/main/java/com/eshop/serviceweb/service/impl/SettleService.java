@@ -13,6 +13,8 @@ import com.eshop.serviceweb.service.ISettleService;
 import com.eshop.serviceweb.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class SettleService implements ISettleService {
     @Autowired
     private OrderDetailsMapper orderDetailsMapper;
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> execute(SettleBatch settleBatch){
         SettleBatch newestSettleBatch = settleBatchMapper.getNewestOne(settleBatch);
