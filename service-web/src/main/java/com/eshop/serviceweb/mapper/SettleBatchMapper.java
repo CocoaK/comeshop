@@ -4,5 +4,5 @@ import com.eshop.serviceweb.model.SettleBatch;
 
 public interface SettleBatchMapper extends BaseMapper<SettleBatch> {
 
-    SettleBatch getNewestOne();
+    SettleBatch getNewestOne(SettleBatch settleBatch);
 }

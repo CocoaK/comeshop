@@ -44,6 +44,7 @@
     select
     <include refid="Base_Column_List" />
     from ac_settle_batch
+    <include refid="Base_Query_Cause" />
     order by settle_time desc
     limit 1
   </select>

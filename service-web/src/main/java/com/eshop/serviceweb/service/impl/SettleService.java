@@ -33,7 +33,7 @@ public class SettleService implements ISettleService {
 
     @Override
     public ResultEntity<String> execute(SettleBatch settleBatch){
-        SettleBatch newestSettleBatch = settleBatchMapper.getNewestOne();
+        SettleBatch newestSettleBatch = settleBatchMapper.getNewestOne(settleBatch);
         ResultEntity<String> re = new ResultEntity<String>();
         settleBatch.setSettleTime(new Date());
         settleBatchMapper.insertActive(settleBatch);
