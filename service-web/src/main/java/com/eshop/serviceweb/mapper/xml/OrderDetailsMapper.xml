@@ -6,8 +6,8 @@
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="zone_goods_id" jdbcType="INTEGER" property="zoneGoodsId" />
     <result column="order_qty" jdbcType="INTEGER" property="orderQty" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
-    <result column="discount_amt" jdbcType="DECIMAL" property="discountAmt" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="net_amt" jdbcType="DECIMAL" property="netAmt" />
     <result column="profit_amt" jdbcType="DECIMAL" property="profitAmt" />
     <result column="rebate_amt" jdbcType="DECIMAL" property="rebateAmt" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
@@ -18,7 +18,7 @@
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    order_details_id, order_id, zone_goods_id, order_qty, price, discount_amt, profit_amt, 
+    order_details_id, order_id, zone_goods_id, order_qty, amount, net_amt, profit_amt, 
     rebate_amt, bu_code, created_by, created_date, last_updated_by, last_updated_date, 
     row_id
   </sql>
@@ -40,12 +40,12 @@
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.OrderDetails">
     insert into mc_order_details (order_details_id, order_id, zone_goods_id, 
-      order_qty, price, discount_amt, 
+      order_qty, amount, net_amt, 
       profit_amt, rebate_amt, bu_code, 
       created_by, created_date, last_updated_by, 
       last_updated_date, row_id)
     values (#{orderDetailsId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{zoneGoodsId,jdbcType=INTEGER}, 
-      #{orderQty,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{discountAmt,jdbcType=DECIMAL}, 
+      #{orderQty,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{netAmt,jdbcType=DECIMAL}, 
       #{profitAmt,jdbcType=DECIMAL}, #{rebateAmt,jdbcType=DECIMAL}, #{buCode,jdbcType=VARCHAR}, 
       #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
       #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
@@ -65,11 +65,11 @@
       <if test="orderQty != null">
         order_qty,
       </if>
-      <if test="price != null">
-        price,
+      <if test="amount != null">
+        amount,
       </if>
-      <if test="discountAmt != null">
-        discount_amt,
+      <if test="netAmt != null">
+        net_amt,
       </if>
       <if test="profitAmt != null">
         profit_amt,
@@ -109,11 +109,11 @@
       <if test="orderQty != null">
         #{orderQty,jdbcType=INTEGER},
       </if>
-      <if test="price != null">
-        #{price,jdbcType=DECIMAL},
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="discountAmt != null">
-        #{discountAmt,jdbcType=DECIMAL},
+      <if test="netAmt != null">
+        #{netAmt,jdbcType=DECIMAL},
       </if>
       <if test="profitAmt != null">
         #{profitAmt,jdbcType=DECIMAL},
@@ -153,11 +153,11 @@
       <if test="orderQty != null">
         order_qty = #{orderQty,jdbcType=INTEGER},
       </if>
-      <if test="price != null">
-        price = #{price,jdbcType=DECIMAL},
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="discountAmt != null">
-        discount_amt = #{discountAmt,jdbcType=DECIMAL},
+      <if test="netAmt != null">
+        net_amt = #{netAmt,jdbcType=DECIMAL},
       </if>
       <if test="profitAmt != null">
         profit_amt = #{profitAmt,jdbcType=DECIMAL},
@@ -198,11 +198,11 @@
       <if test="orderQty != null">
         order_qty = #{orderQty,jdbcType=INTEGER},
       </if>
-      <if test="price != null">
-        price = #{price,jdbcType=DECIMAL},
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="discountAmt != null">
-        discount_amt = #{discountAmt,jdbcType=DECIMAL},
+      <if test="netAmt != null">
+        net_amt = #{netAmt,jdbcType=DECIMAL},
       </if>
       <if test="profitAmt != null">
         profit_amt = #{profitAmt,jdbcType=DECIMAL},
@@ -238,8 +238,8 @@
     set order_id = #{orderId,jdbcType=INTEGER},
       zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER},
       order_qty = #{orderQty,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL},
-      discount_amt = #{discountAmt,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      net_amt = #{netAmt,jdbcType=DECIMAL},
       profit_amt = #{profitAmt,jdbcType=DECIMAL},
       rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
       bu_code = #{buCode,jdbcType=VARCHAR},
@@ -264,11 +264,11 @@
       <if test="orderQty != null">
          and order_qty = #{orderQty,jdbcType=INTEGER}
       </if>
-      <if test="price != null">
-         and price = #{price,jdbcType=DECIMAL}
+      <if test="amount != null">
+         and amount = #{amount,jdbcType=DECIMAL}
       </if>
-      <if test="discountAmt != null">
-         and discount_amt = #{discountAmt,jdbcType=DECIMAL}
+      <if test="netAmt != null">
+         and net_amt = #{netAmt,jdbcType=DECIMAL}
       </if>
       <if test="profitAmt != null">
          and profit_amt = #{profitAmt,jdbcType=DECIMAL}
@@ -314,6 +314,14 @@
   <select id="queryList" parameterType="com.eshop.serviceweb.model.OrderDetails" resultMap="BaseResultMap" useCache="false">
     select * from mc_order_details
     <include refid="Base_Query_Cause" />
+  </select>
+
+  <select id="getProfitAmtSum" parameterType="java.lang.Integer" resultType="java.math.BigDecimal" useCache="false">
+    select sum(profit_amt) from mc_order_details where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRebateAmtSum" parameterType="java.lang.Integer" resultType="java.math.BigDecimal" useCache="false">
+    select sum(rebate_amt) from mc_order_details where order_id = #{orderId,jdbcType=INTEGER}
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
 </mapper>

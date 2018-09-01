@@ -14,10 +14,6 @@ public class SettleDetails extends BaseModel {
 
     private BigDecimal rebateAmt;
 
-    private BigDecimal rebateBal;
-
-    private Integer rebateSeq;
-
     private String buCode;
 
     private String createdBy;
@@ -68,22 +64,6 @@ public class SettleDetails extends BaseModel {
 
     public void setRebateAmt(BigDecimal rebateAmt) {
         this.rebateAmt = rebateAmt;
-    }
-
-    public BigDecimal getRebateBal() {
-        return rebateBal;
-    }
-
-    public void setRebateBal(BigDecimal rebateBal) {
-        this.rebateBal = rebateBal;
-    }
-
-    public Integer getRebateSeq() {
-        return rebateSeq;
-    }
-
-    public void setRebateSeq(Integer rebateSeq) {
-        this.rebateSeq = rebateSeq;
     }
 
     public String getBuCode() {

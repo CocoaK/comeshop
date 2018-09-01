@@ -12,9 +12,9 @@ public class OrderDetails extends BaseModel {
 
     private Integer orderQty;
 
-    private BigDecimal price;
+    private BigDecimal amount;
 
-    private BigDecimal discountAmt;
+    private BigDecimal netAmt;
 
     private BigDecimal profitAmt;
 
@@ -64,20 +64,20 @@ public class OrderDetails extends BaseModel {
         this.orderQty = orderQty;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
-    public BigDecimal getDiscountAmt() {
-        return discountAmt;
+    public BigDecimal getNetAmt() {
+        return netAmt;
     }
 
-    public void setDiscountAmt(BigDecimal discountAmt) {
-        this.discountAmt = discountAmt;
+    public void setNetAmt(BigDecimal netAmt) {
+        this.netAmt = netAmt;
     }
 
     public BigDecimal getProfitAmt() {

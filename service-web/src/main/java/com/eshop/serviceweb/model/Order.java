@@ -1,34 +1,31 @@
 package com.eshop.serviceweb.model;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class Order extends BaseModel {
     private Integer orderId;
 
-    private String orderCode;
-    @NotNull
+    private String zoneCode;
+
     private Integer memberId;
-    @NotNull
+
     private Integer memberAddressId;
-    @NotNull
-    private BigDecimal totalPrice;
-    @NotNull
-    private BigDecimal totalDiscountAmt;
-    @NotNull
-    private BigDecimal totalProfitAmt;
-    @NotNull
-    private BigDecimal totalRebateAmt;
-    @NotNull
-    private Integer arMp;
-    @NotNull
-    private Integer apMp;
+
+    private String orderNo;
+
+    private BigDecimal amount;
+
+    private Integer mpAmt;
+
+    private String status;
 
     private Date paymentTime;
-    @NotNull
-    private String status;
-    @NotNull
+
+    private Date shippingTime;
+
+    private Date receiptTime;
+
     private String buCode;
 
     private String createdBy;
@@ -38,7 +35,7 @@ public class Order extends BaseModel {
     private String lastUpdatedBy;
 
     private Date lastUpdatedDate;
-    @NotNull
+
     private String rowId;
 
     public Integer getOrderId() {
@@ -49,12 +46,12 @@ public class Order extends BaseModel {
         this.orderId = orderId;
     }
 
-    public String getOrderCode() {
-        return orderCode;
+    public String getZoneCode() {
+        return zoneCode;
     }
 
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode == null ? null : orderCode.trim();
+    public void setZoneCode(String zoneCode) {
+        this.zoneCode = zoneCode == null ? null : zoneCode.trim();
     }
 
     public Integer getMemberId() {
@@ -73,52 +70,36 @@ public class Order extends BaseModel {
         this.memberAddressId = memberAddressId;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public String getOrderNo() {
+        return orderNo;
     }
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo == null ? null : orderNo.trim();
     }
 
-    public BigDecimal getTotalDiscountAmt() {
-        return totalDiscountAmt;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setTotalDiscountAmt(BigDecimal totalDiscountAmt) {
-        this.totalDiscountAmt = totalDiscountAmt;
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
-    public BigDecimal getTotalProfitAmt() {
-        return totalProfitAmt;
+    public Integer getMpAmt() {
+        return mpAmt;
     }
 
-    public void setTotalProfitAmt(BigDecimal totalProfitAmt) {
-        this.totalProfitAmt = totalProfitAmt;
+    public void setMpAmt(Integer mpAmt) {
+        this.mpAmt = mpAmt;
     }
 
-    public BigDecimal getTotalRebateAmt() {
-        return totalRebateAmt;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTotalRebateAmt(BigDecimal totalRebateAmt) {
-        this.totalRebateAmt = totalRebateAmt;
-    }
-
-    public Integer getArMp() {
-        return arMp;
-    }
-
-    public void setArMp(Integer arMp) {
-        this.arMp = arMp;
-    }
-
-    public Integer getApMp() {
-        return apMp;
-    }
-
-    public void setApMp(Integer apMp) {
-        this.apMp = apMp;
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public Date getPaymentTime() {
@@ -129,12 +110,20 @@ public class Order extends BaseModel {
         this.paymentTime = paymentTime;
     }
 
-    public String getStatus() {
-        return status;
+    public Date getShippingTime() {
+        return shippingTime;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setShippingTime(Date shippingTime) {
+        this.shippingTime = shippingTime;
+    }
+
+    public Date getReceiptTime() {
+        return receiptTime;
+    }
+
+    public void setReceiptTime(Date receiptTime) {
+        this.receiptTime = receiptTime;
     }
 
     public String getBuCode() {

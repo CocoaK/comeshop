@@ -7,8 +7,6 @@
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="profit_amt" jdbcType="DECIMAL" property="profitAmt" />
     <result column="rebate_amt" jdbcType="DECIMAL" property="rebateAmt" />
-    <result column="rebate_bal" jdbcType="DECIMAL" property="rebateBal" />
-    <result column="rebate_seq" jdbcType="INTEGER" property="rebateSeq" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -17,9 +15,8 @@
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    settle_details_id, settle_batch_id, order_id, profit_amt, rebate_amt, rebate_bal, 
-    rebate_seq, bu_code, created_by, created_date, last_updated_by, last_updated_date, 
-    row_id
+    settle_details_id, settle_batch_id, order_id, profit_amt, rebate_amt, bu_code, created_by, 
+    created_date, last_updated_by, last_updated_date, row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -39,15 +36,13 @@
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.SettleDetails">
     insert into ac_settle_details (settle_details_id, settle_batch_id, order_id, 
-      profit_amt, rebate_amt, rebate_bal, 
-      rebate_seq, bu_code, created_by, 
-      created_date, last_updated_by, last_updated_date, 
-      row_id)
+      profit_amt, rebate_amt, bu_code, 
+      created_by, created_date, last_updated_by, 
+      last_updated_date, row_id)
     values (#{settleDetailsId,jdbcType=INTEGER}, #{settleBatchId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
-      #{profitAmt,jdbcType=DECIMAL}, #{rebateAmt,jdbcType=DECIMAL}, #{rebateBal,jdbcType=DECIMAL}, 
-      #{rebateSeq,jdbcType=INTEGER}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
-      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
-      #{rowId,jdbcType=VARCHAR})
+      #{profitAmt,jdbcType=DECIMAL}, #{rebateAmt,jdbcType=DECIMAL}, #{buCode,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.SettleDetails">
     insert into ac_settle_details
@@ -66,12 +61,6 @@
       </if>
       <if test="rebateAmt != null">
         rebate_amt,
-      </if>
-      <if test="rebateBal != null">
-        rebate_bal,
-      </if>
-      <if test="rebateSeq != null">
-        rebate_seq,
       </if>
       <if test="buCode != null">
         bu_code,
@@ -108,12 +97,6 @@
       <if test="rebateAmt != null">
         #{rebateAmt,jdbcType=DECIMAL},
       </if>
-      <if test="rebateBal != null">
-        #{rebateBal,jdbcType=DECIMAL},
-      </if>
-      <if test="rebateSeq != null">
-        #{rebateSeq,jdbcType=INTEGER},
-      </if>
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
       </if>
@@ -148,12 +131,6 @@
       </if>
       <if test="rebateAmt != null">
         rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
-      </if>
-      <if test="rebateBal != null">
-        rebate_bal = #{rebateBal,jdbcType=DECIMAL},
-      </if>
-      <if test="rebateSeq != null">
-        rebate_seq = #{rebateSeq,jdbcType=INTEGER},
       </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
@@ -191,12 +168,6 @@
       <if test="rebateAmt != null">
         rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
       </if>
-      <if test="rebateBal != null">
-        rebate_bal = #{rebateBal,jdbcType=DECIMAL},
-      </if>
-      <if test="rebateSeq != null">
-        rebate_seq = #{rebateSeq,jdbcType=INTEGER},
-      </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
@@ -226,8 +197,6 @@
       order_id = #{orderId,jdbcType=INTEGER},
       profit_amt = #{profitAmt,jdbcType=DECIMAL},
       rebate_amt = #{rebateAmt,jdbcType=DECIMAL},
-      rebate_bal = #{rebateBal,jdbcType=DECIMAL},
-      rebate_seq = #{rebateSeq,jdbcType=INTEGER},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -252,12 +221,6 @@
       </if>
       <if test="rebateAmt != null">
          and rebate_amt = #{rebateAmt,jdbcType=DECIMAL}
-      </if>
-      <if test="rebateBal != null">
-         and rebate_bal = #{rebateBal,jdbcType=DECIMAL}
-      </if>
-      <if test="rebateSeq != null">
-         and rebate_seq = #{rebateSeq,jdbcType=INTEGER}
       </if>
       <if test="buCode != null">
          and bu_code = #{buCode,jdbcType=VARCHAR}
@@ -297,6 +260,14 @@
   <select id="queryList" parameterType="com.eshop.serviceweb.model.SettleDetails" resultMap="BaseResultMap" useCache="false">
     select * from ac_settle_details
     <include refid="Base_Query_Cause" />
+  </select>
+
+  <select id="getProfitAmtSum" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+    select sum(profit_amt) from ac_settle_details where settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
+  </select>
+
+  <select id="getRebateAmtSum" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+    select sum(rebate_amt) from ac_settle_details where settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
 </mapper>

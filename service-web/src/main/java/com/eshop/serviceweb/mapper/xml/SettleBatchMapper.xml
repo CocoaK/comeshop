@@ -16,16 +16,38 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+
+  <resultMap id="mapResult" extends="BaseResultMap" type="map">
+    <result column="order_count" jdbcType="INTEGER" property="orderCount" />
+    <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+    <result column="rabate_amount" jdbcType="DECIMAL" property="rebateAmount" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     settle_batch_id, settle_time, settle_type, settle_zone, settle_by, profit_amt, profit_bal, 
     bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
   </sql>
+
+  <sql id="Join_Column_List">
+    settle_batch_id, settle_time, settle_type, zone_name settle_zone, settle_by, profit_amt, profit_bal,
+    a.bu_code, a.created_by, a.created_date, a.last_updated_by, a.last_updated_date, a.row_id
+  </sql>
+
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from ac_settle_batch
     where settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
   </select>
+
+  <select id="getNewestOne" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ac_settle_batch
+    order by settle_time desc
+    limit 1
+  </select>
+
   <delete id="delete" parameterType="java.lang.Integer">
     delete from ac_settle_batch
     where settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
@@ -48,7 +70,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.SettleBatch">
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.SettleBatch" useGeneratedKeys="true" keyProperty="settleBatchId">
     insert into ac_settle_batch
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="settleBatchId != null">
@@ -276,14 +298,25 @@
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}
       </if>
+      <if test="beginTime != null">
+        and settle_time >= #{beginTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        and settle_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
     </trim>
   </sql>
 
-  <sql id="Order_Count">
-    (select count(1) from mc_order where receipt_time &lt;= settle_time)
-  </sql>
-  <sql id="Order_Amount">
-    (select sum(amount) from mc_order where receipt_time &lt;= settle_time)
+  <sql id="Settle_Query_Value">
+    <if test="settleZone != null and settleZone != 'A00002'">
+      (select count(1) from mc_order where receipt_time &lt;= settle_time) order_count,
+      (select sum(amount) from mc_order where receipt_time &lt;= settle_time) order_amount,
+    </if>
+    <if test="settleZone != null and settleZone == 'A00002'">
+      (select count(1) from mc_order where payment_time &lt;= settle_time) order_count,
+      (select sum(amount) from mc_order where payment_time &lt;= settle_time) order_amount,
+    </if>
+      (select sum(rebate_amt) from ac_settle_details where settle_batch_id = a.settle_batch_id) rebate_amt,
   </sql>
 
   <select id="getAll" resultMap="BaseResultMap">
@@ -293,12 +326,20 @@
     select * from ac_settle_batch
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap">
-    select * from ac_settle_batch
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult">
+    select
+    <include refid="Settle_Query_Value" />
+    <include refid="Join_Column_List" />
+    from ac_settle_batch a
+    left join sh_zone b on b.zone_code = a.settle_zone
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap" useCache="false">
-    select <include refid="Order_Count" /> order_count ,<include refid="Order_Amount" /> order_amount , a.* from ac_settle_batch a
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult" useCache="false">
+    select
+    <include refid="Settle_Query_Value" />
+    <include refid="Join_Column_List" />
+    from ac_settle_batch a
+    left join sh_zone b on b.zone_code = a.settle_zone
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap" useCache="false">
