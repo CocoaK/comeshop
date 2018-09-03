@@ -305,55 +305,55 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="orderId != null">
-         and order_id = #{orderId,jdbcType=INTEGER}
+         and a.order_id = #{orderId,jdbcType=INTEGER}
       </if>
       <if test="zoneCode != null">
-         and zone_code = #{zoneCode,jdbcType=VARCHAR}
+         and a.zone_code = #{zoneCode,jdbcType=VARCHAR}
       </if>
       <if test="memberId != null">
-         and member_id = #{memberId,jdbcType=INTEGER}
+         and a.member_id = #{memberId,jdbcType=INTEGER}
       </if>
       <if test="memberAddressId != null">
-         and member_address_id = #{memberAddressId,jdbcType=INTEGER}
+         and a.member_address_id = #{memberAddressId,jdbcType=INTEGER}
       </if>
       <if test="orderNo != null">
-         and order_no = #{orderNo,jdbcType=VARCHAR}
+         and a.order_no = #{orderNo,jdbcType=VARCHAR}
       </if>
       <if test="amount != null">
-         and amount = #{amount,jdbcType=DECIMAL}
+         and a.amount = #{amount,jdbcType=DECIMAL}
       </if>
       <if test="mpAmt != null">
-         and mp_amt = #{mpAmt,jdbcType=INTEGER}
+         and a.mp_amt = #{mpAmt,jdbcType=INTEGER}
       </if>
       <if test="status != null">
-         and status = #{status,jdbcType=VARCHAR}
+         and a.status = #{status,jdbcType=VARCHAR}
       </if>
       <if test="paymentTime != null">
-         and payment_time = #{paymentTime,jdbcType=TIMESTAMP}
+         and a.payment_time = #{paymentTime,jdbcType=TIMESTAMP}
       </if>
       <if test="shippingTime != null">
-         and shipping_time = #{shippingTime,jdbcType=TIMESTAMP}
+         and a.shipping_time = #{shippingTime,jdbcType=TIMESTAMP}
       </if>
       <if test="receiptTime != null">
-         and receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
+         and a.receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and a.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and a.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and a.created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
-         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+         and a.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+         and a.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
-         and row_id = #{rowId,jdbcType=VARCHAR}
+         and a.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
@@ -377,35 +377,37 @@
   </sql>
 
   <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_order
+    select * from mc_order a
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
-    select * from mc_order
+    select * from mc_order a
     <include refid="Base_Query_Cause" />
   </select>
 
   <select id="getSettleOrderList" parameterType="com.eshop.serviceweb.vo.OrderVO" resultMap="BaseResultMap">
-    select * from mc_order
+    select a.* from mc_order a join sh_zone b on b.zone_code = a.zone_code
     <include refid="Base_Query_Cause" />
     <include refid="Settle_Query_Time_Cause" />
+    and b.zone_type = 'COM'
   </select>
 
   <select id="getRechargeOrderList" parameterType="com.eshop.serviceweb.vo.OrderVO" resultMap="BaseResultMap">
-    select * from mc_order
+    select a.* from mc_order a join sh_zone b on b.zone_code = a.zone_code
     <include refid="Base_Query_Cause" />
     <include refid="Recharge_Query_Time_Cause" />
+    and b.zone_type = 'EXP'
   </select>
 
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
-    select * from mc_order
+    select * from mc_order a
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
-    select * from mc_order
+    select * from mc_order a
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
-    select * from mc_order
+    select * from mc_order a
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />

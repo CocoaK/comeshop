@@ -28,6 +28,10 @@ public interface BaseMapper<T> {
     Page<T> getPageList(T entity);
 
     Page<T> queryPageList(T entity);
+
+    Page<Object> queryPageListByVO(Object entity);
+
+    Page<Object> getPageListByVO(Object entity);
     /*** 带乐观锁删除 */
     int deleteByLock(DeleteVO deleteVO);
 }

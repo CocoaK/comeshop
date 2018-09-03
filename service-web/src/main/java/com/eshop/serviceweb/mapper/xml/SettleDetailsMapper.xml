@@ -14,6 +14,16 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+
+  <resultMap id="mapResult" type="map" extends="BaseResultMap">
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
+    <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
+  </resultMap>
   <sql id="Base_Column_List">
     settle_details_id, settle_batch_id, order_id, profit_amt, rebate_amt, bu_code, created_by, 
     created_date, last_updated_by, last_updated_date, row_id
@@ -242,6 +252,65 @@
       </if>
     </trim>
   </sql>
+  <sql id="Settle_Query">
+    SELECT
+    a.*,o.order_no,o.amount,o.payment_time,o.receipt_time,m.nick_name,m.telephone,g.grade_name,o.created_date order_time
+    FROM
+    ac_settle_details a
+    JOIN mc_order o ON o.order_id = a.order_id
+    JOIN mc_member m ON m.member_id = o.member_id
+    JOIN ac_settle_batch sb ON sb.settle_batch_id = a.settle_batch_id
+    JOIN mc_member_grade g ON g.grade_code = m.member_grade
+    where 1=1
+    <if test="settleDetailsId != null">
+      and a.settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+    </if>
+    <if test="settleBatchId != null">
+      and a.settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
+    </if>
+    <if test="orderId != null">
+      and a.order_id = #{orderId,jdbcType=INTEGER}
+    </if>
+    <if test="profitAmt != null">
+      and a.profit_amt = #{profitAmt,jdbcType=DECIMAL}
+    </if>
+    <if test="rebateAmt != null">
+      and a.rebate_amt = #{rebateAmt,jdbcType=DECIMAL}
+    </if>
+    <if test="buCode != null">
+      and a.bu_code = #{buCode,jdbcType=VARCHAR}
+    </if>
+    <if test="createdBy != null">
+      and a.created_by = #{createdBy,jdbcType=VARCHAR}
+    </if>
+    <if test="createdDate != null">
+      and a.created_date = #{createdDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="lastUpdatedBy != null">
+      and a.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+    </if>
+    <if test="lastUpdatedDate != null">
+      and a.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="rowId != null">
+      and a.row_id = #{rowId,jdbcType=VARCHAR}
+    </if>
+    <if test="orderNo != null">
+      and o.order_no = #{orderNo,jdbcType=VARCHAR}
+    </if>
+    <if test="amount != null">
+      and o.amount = #{amount,jdbcType=DECIMAL}
+    </if>
+    <if test="userName != null">
+      and m.user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="zoneCode != null">
+      and sb.zone_code = #{zoneCode,jdbcType=VARCHAR}
+    </if>
+    <if test="memberGrade != null">
+      and m.member_grade = #{memberGrade,jdbcType=VARCHAR}
+    </if>
+  </sql>
   <select id="getAll" resultMap="BaseResultMap">
     select * from ac_settle_details
   </select>
@@ -257,6 +326,13 @@
     select * from ac_settle_details
     <include refid="Base_Query_Cause" />
   </select>
+  <select id="getPageListByVO" parameterType="map" resultMap="mapResult">
+    <include refid="Settle_Query" />
+  </select>
+  <select id="queryPageListByVO" parameterType="map" resultMap="mapResult" useCache="false">
+    <include refid="Settle_Query" />
+  </select>
+
   <select id="queryList" parameterType="com.eshop.serviceweb.model.SettleDetails" resultMap="BaseResultMap" useCache="false">
     select * from ac_settle_details
     <include refid="Base_Query_Cause" />

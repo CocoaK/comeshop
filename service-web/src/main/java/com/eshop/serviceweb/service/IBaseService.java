@@ -138,5 +138,9 @@ public interface IBaseService<T> {
      */
     public <A> ResultEntity<ResultList<A>> proccessResultList(long total, long timetamp, A info);
 
+    ResultList<List<T>> queryPageListByObj(PageVO<Object> pageVO);
+
+    ResultList<List<T>> getPageListByObj(PageVO<Object> pageVO);
+
 }
 

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,6 +37,9 @@ public class SettleService implements ISettleService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> execute(SettleBatch settleBatch){
+        if(null != settleBatch && !StringUtils.isEmpty(settleBatch.getCurrentUser())){
+            settleBatch.setSettleBy(settleBatch.getCurrentUser());
+        }
         SettleBatch newestSettleBatch = settleBatchMapper.getNewestOne(settleBatch);
         ResultEntity<String> re = new ResultEntity<String>();
         settleBatch.setSettleTime(new Date());
@@ -43,7 +47,6 @@ public class SettleService implements ISettleService {
 
         SettleBatch settle  = settleBatchMapper.getOne(settleBatch.getSettleBatchId());
         OrderVO orderVO = new OrderVO();
-        orderVO.setZoneCode(settle.getSettleZone());
         orderVO.setEndTime(settleBatch.getSettleTime());
         orderVO.setStatus(Constants.ORDER_STATUS_RECEIPTED);
         List<Order> orders = new ArrayList<Order>();
@@ -65,7 +68,6 @@ public class SettleService implements ISettleService {
             od.setStatus(Constants.ORDER_STATUS_SETTLED);
             orderMapper.updateActive(od);
         }
-
         settle.setProfitAmt(settleDetailsMapper.getProfitAmtSum(settle.getSettleBatchId()));
         BigDecimal rebateAmount = newestSettleBatch.getProfitBal().add(settleDetailsMapper.getRebateAmtSum(settle.getSettleBatchId()));
         settle.setProfitBal(rebateAmount);

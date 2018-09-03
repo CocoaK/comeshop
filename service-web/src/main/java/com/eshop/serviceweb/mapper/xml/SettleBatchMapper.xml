@@ -20,7 +20,7 @@
   <resultMap id="mapResult" extends="BaseResultMap" type="map">
     <result column="order_count" jdbcType="INTEGER" property="orderCount" />
     <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
-    <result column="rabate_amount" jdbcType="DECIMAL" property="rebateAmount" />
+    <result column="rebateAmt" jdbcType="DECIMAL" property="rebateAmt" />
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -28,16 +28,17 @@
     bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
   </sql>
 
-  <sql id="Join_Column_List">
-    settle_batch_id, settle_time, settle_type, zone_name settle_zone, settle_by, profit_amt, profit_bal,
-    a.bu_code, a.created_by, a.created_date, a.last_updated_by, a.last_updated_date, a.row_id
-  </sql>
-
-  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from ac_settle_batch
-    where settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="mapResult">
+    SELECT
+      sb.*, count(o.order_id) order_count,sum(o.amount) order_amount,sum(sd.rebate_amt) rebateAmt
+    FROM
+      ac_settle_batch sb
+    JOIN ac_settle_details sd ON sd.settle_batch_id = sb.settle_batch_id
+    JOIN mc_order o ON o.order_id = sd.order_id
+    JOIN sh_zone z on z.zone_code = o.zone_code
+    WHERE
+      sb.settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
+    AND sb.settle_zone = z.zone_type
   </select>
 
   <select id="getNewestOne" resultMap="BaseResultMap">
@@ -309,15 +310,63 @@
   </sql>
 
   <sql id="Settle_Query_Value">
-    <if test="settleZone != null and settleZone != 'A00002'">
-      (select count(1) from mc_order where receipt_time &lt;= settle_time) order_count,
-      (select sum(amount) from mc_order where receipt_time &lt;= settle_time) order_amount,
+  SELECT
+	sb.*, count(o.order_id) order_count,
+	sum(o.amount) order_amount,
+	sum(sd.rebate_amt) rebateAmt
+  FROM
+      ac_settle_batch sb
+  JOIN ac_settle_details sd ON sd.settle_batch_id = sb.settle_batch_id
+  JOIN mc_order o ON o.order_id = sd.order_id
+  JOIN sh_zone z on z.zone_code = o.zone_code
+  WHERE 1=1
+  AND sb.settle_zone = z.zone_type
+    <if test="settleBatchId != null">
+      and sb.settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
     </if>
-    <if test="settleZone != null and settleZone == 'A00002'">
-      (select count(1) from mc_order where payment_time &lt;= settle_time) order_count,
-      (select sum(amount) from mc_order where payment_time &lt;= settle_time) order_amount,
+    <if test="settleTime != null">
+      and sb.settle_time = #{settleTime,jdbcType=TIMESTAMP}
     </if>
-      (select sum(rebate_amt) from ac_settle_details where settle_batch_id = a.settle_batch_id) rebate_amt,
+    <if test="settleType != null">
+      and sb.settle_type = #{settleType,jdbcType=VARCHAR}
+    </if>
+    <if test="settleZone != null">
+      and sb.settle_zone = #{settleZone,jdbcType=VARCHAR}
+    </if>
+    <if test="settleBy != null">
+      and sb.settle_by = #{settleBy,jdbcType=VARCHAR}
+    </if>
+    <if test="profitAmt != null">
+      and sb.profit_amt = #{profitAmt,jdbcType=DECIMAL}
+    </if>
+    <if test="profitBal != null">
+      and sb.profit_bal = #{profitBal,jdbcType=DECIMAL}
+    </if>
+    <if test="buCode != null">
+      and sb.bu_code = #{buCode,jdbcType=VARCHAR}
+    </if>
+    <if test="createdBy != null">
+      and sb.created_by = #{createdBy,jdbcType=VARCHAR}
+    </if>
+    <if test="createdDate != null">
+      and sb.created_date = #{createdDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="lastUpdatedBy != null">
+      and sb.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+    </if>
+    <if test="lastUpdatedDate != null">
+      and sb.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="rowId != null">
+      and sb.row_id = #{rowId,jdbcType=VARCHAR}
+    </if>
+    <if test="beginTime != null">
+      and sb.settle_time >= #{beginTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endTime != null">
+      and sb.settle_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+    </if>
+  group by sb.settle_batch_id
   </sql>
 
   <select id="getAll" resultMap="BaseResultMap">
@@ -328,20 +377,10 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult">
-    select
     <include refid="Settle_Query_Value" />
-    <include refid="Join_Column_List" />
-    from ac_settle_batch a
-    left join sh_zone b on b.zone_code = a.settle_zone
-    <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult" useCache="false">
-    select
     <include refid="Settle_Query_Value" />
-    <include refid="Join_Column_List" />
-    from ac_settle_batch a
-    left join sh_zone b on b.zone_code = a.settle_zone
-    <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap" useCache="false">
     select * from ac_settle_batch

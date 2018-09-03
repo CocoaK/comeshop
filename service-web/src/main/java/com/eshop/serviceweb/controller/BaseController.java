@@ -8,12 +8,14 @@ import com.eshop.serviceweb.vo.DeleteVO;
 import com.eshop.serviceweb.vo.KeyVO;
 import com.eshop.serviceweb.vo.PageVO;
 import com.github.pagehelper.Page;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.beans.PropertyEditorSupport;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -81,23 +83,39 @@ public abstract class BaseController<T> {
         return resultList;
     }
 
+    /**缓存分页支持*/
+    @RequestMapping("/getPageListByObj")
+    public ResultList<List<T>> getPageListByObj(@RequestBody PageVO<Object> pageVO) {
+        ResultList<List<T>> resultList = getBaseService().getPageListByObj(pageVO);
+        CryptUtil.crypt(resultList.getData());
+        return resultList;
+    }
+
+    /**不缓存分页*/
+    @RequestMapping("/queryPageListByObj")
+    public ResultList<List<T>> queryPageListByObj(@RequestBody PageVO<Object> pageVO) {
+        ResultList<List<T>> resultList = getBaseService().queryPageListByObj(pageVO);
+        CryptUtil.crypt(resultList.getData());
+        return resultList;
+    }
+
     public <A> ResultEntity<A> proccessResultEntity(int code,String msg,A data){
         return new ResultEntity<A>(code,msg,data);
     }
 
-	/*@InitBinder
-	protected  void initBinder(WebDataBinder binder) {
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-	}*/
+//	@InitBinder
+//	protected  void initBinder(WebDataBinder binder) {
+//	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+//	}
 
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String value) {
-                setValue(new Timestamp(Long.valueOf(value)));
-            }
-        });
-    }
+//    @InitBinder
+//    protected void initBinder(WebDataBinder binder) {
+//        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+//            @Override
+//            public void setAsText(String value) {
+//                setValue(new Timestamp(Long.valueOf(value)));
+//            }
+//        });
+//    }
 }

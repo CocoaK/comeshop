@@ -69,6 +69,22 @@ public abstract class BaseService<T> implements IBaseService<T> {
         return re;
     }
 
+    @Override
+    public ResultList<List<T>> getPageListByObj(PageVO<Object> pageVO){
+        Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
+        getBaseMapper().getPageListByVO(pageVO.getParams());
+        ResultList<List<T>> re = new ResultList<List<T>>(page.getTotal(), System.currentTimeMillis(), page);
+        return re;
+    }
+
+    @Override
+    public ResultList<List<T>> queryPageListByObj(PageVO<Object> pageVO){
+        Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
+        getBaseMapper().queryPageListByVO(pageVO.getParams());
+        ResultList<List<T>> re = new ResultList<List<T>>(page.getTotal(), System.currentTimeMillis(), page);
+        return re;
+    }
+
     @Transactional
     @Override
     public int delete(String id) {
