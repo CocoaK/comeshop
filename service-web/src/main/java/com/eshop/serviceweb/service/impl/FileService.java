@@ -29,9 +29,15 @@ public class FileService implements IFileService {
 		ResultEntity<String> re = new ResultEntity<String>();
 		String realName = "";
 		String url = "";
+        String realPath = null;
 		if (!file.isEmpty()) {
 			String fileName = file.getOriginalFilename();
 			String fileNameExtension = fileName.substring(fileName.indexOf("."), fileName.length());
+            realPath = checkFileExtName(fileNameExtension);
+            if(null == realPath){
+                re.setMsg("format not support");
+                return re;
+            }
 			// 生成实际存储的真实文件名
 			realName = UUID.randomUUID().toString() + fileNameExtension;
 			try {
@@ -63,18 +69,11 @@ public class FileService implements IFileService {
 				String fileName = file.getOriginalFilename();
 				//文件扩展名
 				String fileNameExtension = fileName.substring(fileName.indexOf("."), fileName.length());
-				if(imageFormat!=null && !"".equals(imageFormat)){
-					String[] exts = imageFormat.split(",");
-					List<String> list = Arrays.asList(exts);
-					if(list.contains(fileNameExtension.toLowerCase())){
-						realPath = uploadPath + "/image/";
-					}else if(list.contains(fileNameExtension.toLowerCase())){
-						realPath = uploadPath + "/video/";
-					}else{
-						re.setMsg("format not support");
-						return re;
-					}
-				}
+                realPath = checkFileExtName(fileName);
+                if(null == realPath){
+                    re.setMsg("format not support");
+                    return re;
+                }
 				// 生成实际存储的真实文件名
 				realName = UUID.randomUUID().toString() + fileNameExtension;
 				try {
@@ -109,11 +108,13 @@ public class FileService implements IFileService {
 		String fileFullPath = null;
 		try {
 			if (fileName != null) {
-				String saveFilepath = "";
+                //文件扩展名
+                String fileNameExtension = fileName.substring(fileName.indexOf("."), fileName.length());
+				String realPath  = checkFileExtName(fileNameExtension);
 				String uploadFileRootPath = uploadPath;
-				if (saveFilepath != null && uploadFileRootPath != null) {
+				if (realPath != null) {
 					//全路径
-					fileFullPath = uploadFileRootPath + saveFilepath + "/" + fileName;
+					fileFullPath = realPath + "/" + fileName;
 					File downLoadFile = new File(fileFullPath);
 					// 判断该文件是否存在
 					if (downLoadFile.exists()) {
@@ -179,4 +180,23 @@ public class FileService implements IFileService {
 			e.printStackTrace();
 		}
 	}
+
+    /**
+     *  检查文件扩展名
+     * @param fileExtName
+     * @return
+     */
+	private String checkFileExtName(String fileExtName){
+	    String realPath = null;
+        if(imageFormat!=null && !"".equals(imageFormat)){
+            String[] exts = imageFormat.split(",");
+            List<String> list = Arrays.asList(exts);
+            if(list.contains(fileExtName.toLowerCase())){
+                realPath = uploadPath + "/image/";
+            }else if(list.contains(fileExtName.toLowerCase())){
+                realPath = uploadPath + "/video/";
+            }
+        }
+        return realPath;
+    }
 }

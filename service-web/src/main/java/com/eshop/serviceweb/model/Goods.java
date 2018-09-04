@@ -1,23 +1,24 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class Goods extends BaseModel {
     private Integer goodsId;
-
+    @NotNull
     private Integer shopId;
-
+    @NotNull
     private Integer categoryId;
 
     private String goodsCode;
-
+    @NotNull
     private String goodsName;
-
+    @NotNull
     private String goodsBrief;
-
+    @NotNull
     private BigDecimal price;
-
+    @NotNull
     private String buCode;
 
     private String createdBy;

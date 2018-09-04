@@ -56,7 +56,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR}, #{goodsDesc,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Goods">
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Goods" useGeneratedKeys="true" keyProperty="goodsId">
     insert into sh_goods
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
