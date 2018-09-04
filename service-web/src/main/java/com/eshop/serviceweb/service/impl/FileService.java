@@ -19,8 +19,10 @@ public class FileService implements IFileService {
 	
 	@Value("${file.upload.path}")
 	private String uploadPath;
-	@Value("${file.upload.format}")
-	private String format;
+	@Value("${file.upload.imageFormat}")
+	private String imageFormat;
+	@Value("${file.upload.videoFormat}")
+	private String videoFormat;
 
 	@Override
 	public ResultEntity<String> upload(HttpServletRequest request, HttpServletResponse response, MultipartFile file) {
@@ -61,17 +63,16 @@ public class FileService implements IFileService {
 				String fileName = file.getOriginalFilename();
 				//文件扩展名
 				String fileNameExtension = fileName.substring(fileName.indexOf("."), fileName.length());
-				if(format!=null && !"".equals(format)){
-					String[] exts = format.split(",");
+				if(imageFormat!=null && !"".equals(imageFormat)){
+					String[] exts = imageFormat.split(",");
 					List<String> list = Arrays.asList(exts);
-					if(!list.contains(fileNameExtension.toLowerCase())){
-						re.setMsg("format not support");
-						return re;
-					}
-					if(isvideo){
+					if(list.contains(fileNameExtension.toLowerCase())){
+						realPath = uploadPath + "/image/";
+					}else if(list.contains(fileNameExtension.toLowerCase())){
 						realPath = uploadPath + "/video/";
 					}else{
-						realPath = uploadPath + "/image/";
+						re.setMsg("format not support");
+						return re;
 					}
 				}
 				// 生成实际存储的真实文件名
@@ -102,27 +103,12 @@ public class FileService implements IFileService {
 	}
 
 	private InputStream downLoadFile(HttpServletResponse response, String fileName) {
-		//文件名
-		String _fileName = null;
-		//文件格式
-		String fileFormat = null;
-		//文件大小
-		String fileSize = null;
-		//默认下载结果
-		String downLoadResult = "failed";
 		//输入流
 		InputStream inputStream = null;
 		//文件全路径
 		String fileFullPath = null;
 		try {
 			if (fileName != null) {
-				int index = fileName.lastIndexOf(".");// 获得文件格式
-				//文件格式
-				fileFormat = fileName.substring(index + 1);
-				//文件名
-				_fileName = fileName.substring(0, index);
-				//验证格式，并获得保路径
-				//String[] validResult = this.validFileFormate(fileFormat, kind);
 				String saveFilepath = "";
 				String uploadFileRootPath = uploadPath;
 				if (saveFilepath != null && uploadFileRootPath != null) {
@@ -132,20 +118,16 @@ public class FileService implements IFileService {
 					// 判断该文件是否存在
 					if (downLoadFile.exists()) {
 						//大小
-						fileSize = downLoadFile.length() + "";
+//						fileSize = downLoadFile.length() + "";
 						//将文件长度封装到response头部
 						response.addHeader("Content-Length", downLoadFile.length() + "");
 						//输入流
 						inputStream = new FileInputStream(fileFullPath);
-						//下载结果
-						downLoadResult = "success";
-					} else {
 					}
 				}
 			}
 		} catch (Exception e) {//异常
 			e.printStackTrace();
-			downLoadResult = "exception";
 		}
 		return inputStream;
 	}

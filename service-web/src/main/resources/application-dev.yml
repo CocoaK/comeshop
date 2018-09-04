@@ -54,5 +54,5 @@ pagehelper:
 file:
   upload:
     path: /upload/
-    image-format: jpg,png,gif
-    video-format: mp4,avi,mkv
+    imageFormat: jpg,png,gif
+    videoFormat: mp4,avi,mkv
