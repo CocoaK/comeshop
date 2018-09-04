@@ -65,7 +65,7 @@ public class SettleService implements ISettleService {
             settleDetails.setCurrentUser(settle.getLastUpdatedBy());
             settleDetails.setRowId("1");
             settleDetailsMapper.insertActive(settleDetails);
-            od.setStatus(Constants.ORDER_STATUS_SETTLED);
+            od.setStatus(Constants.ORDER_SETTLE_STATUS_SETTLED);
             orderMapper.updateActive(od);
         }
         settle.setProfitAmt(settleDetailsMapper.getProfitAmtSum(settle.getSettleBatchId()));

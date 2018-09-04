@@ -50,3 +50,9 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+
+file:
+  upload:
+    path: /upload/
+    image-format: jpg,png,gif
+    video-format: mp4,avi,mkv

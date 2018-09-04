@@ -25,8 +25,10 @@ public class Constants {
     public static final String ORDER_STATUS_APPRAISED= "5";
     /** 订单状态：退货*/
     public static final String ORDER_STATUS_RETURNED = "6";
-    /** 订单状态：已结算*/
-    public static final String ORDER_STATUS_SETTLED= "10";
+    /** 订单结算状态：未结算*/
+    public static final String ORDER_SETTLE_STATUS_UNSETTLED= "0";
+    /** 订单结算状态：已结算*/
+    public static final String ORDER_SETTLE_STATUS_SETTLED= "1";
 
     /** 分区：充值优惠区*/
     public static final String ZONE_RECHARGE = "A00002";
