@@ -1,7 +1,10 @@
 package com.eshop.serviceapp.shiro;
 
-import com.eshop.serviceapp.service.impl.UserService;
-import org.apache.shiro.authc.*;
+import com.eshop.serviceapp.model.Member;
+import com.eshop.serviceapp.service.impl.MemberService;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -16,7 +19,7 @@ public class MyShiroRealm extends AuthorizingRealm {
 //    @Autowired
 //    private SysRoleService roleService;
     @Autowired
-    private UserService userService;
+    private MemberService memberService;
 
     /**
      * 认证信息.(身份验证) : Authentication 是用来验证用户身份
@@ -25,28 +28,29 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         logger.info("---------------- 执行 Shiro 凭证认证 ----------------------");
-        UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-        String name = token.getUsername();
-        String password = String.valueOf(token.getPassword());
-       User u = new User();
-        u.setUsername(name);
-        u.setPassword(password);
-        // 从数据库获取对应用户名密码的用户
-        User user = userService.getByUser(u);
-        if (user != null) {
-            // 用户为禁用状态
-            if (user.getStatus() != 1) {
-                throw new DisabledAccountException();
-            }
-            logger.info("---------------- Shiro 凭证认证成功 ----------------------");
-            SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                    user, //用户
-                    user.getPassword(), //密码
-                    getName()  //realm name
-            );
-            return authenticationInfo;
-        }
-        throw new UnknownAccountException();
+//        UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+//        String name = token.getUsername();
+//        String password = String.valueOf(token.getPassword());
+//       User u = new User();
+//        u.setUserName(name);
+//        u.setUserPwd(password);
+//        // 从数据库获取对应用户名密码的用户
+//        User user = userService.getByUser(u);
+//        if (user != null) {
+//            // 用户为禁用状态
+//            if (user.getStatus() != 1) {
+//                throw new DisabledAccountException();
+//            }
+//            logger.info("---------------- Shiro 凭证认证成功 ----------------------");
+//            SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+//                    user, //用户
+//                    user.getPassword(), //密码
+//                    getName()  //realm name
+//            );
+//            return authenticationInfo;
+//        }
+//        throw new UnknownAccountException();
+        return null;
     }
 
     /**
@@ -57,8 +61,8 @@ public class MyShiroRealm extends AuthorizingRealm {
         logger.info("---------------- 执行 Shiro 权限获取 ---------------------");
         Object principal = principals.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-        if (principal instanceof User) {
-            User userLogin = (User) principal;
+        if (principal instanceof Member) {
+            Member userLogin = (Member) principal;
 //            Set<String> roles = roleService.findRoleNameByUserId(userLogin.getId());
 //            authorizationInfo.addRoles(roles);
 

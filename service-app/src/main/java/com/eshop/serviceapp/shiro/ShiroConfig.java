@@ -18,7 +18,6 @@ import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
 @Configuration
 public class ShiroConfig {
 
@@ -53,6 +52,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/js/**", "anon");
         filterChainDefinitionMap.put("/img/**", "anon");
         filterChainDefinitionMap.put("/auth/login", "anon");
+        filterChainDefinitionMap.put("/file/**", "anon");
         filterChainDefinitionMap.put("/auth/logout", "logout");
 //        filterChainDefinitionMap.put("/auth/kickout", "anon");
 //        filterChainDefinitionMap.put("/**", "authc,kickout");
@@ -135,23 +135,6 @@ public class ShiroConfig {
         return redisSessionDAO;
     }
 
-    /**
-     * 限制同一账号登录同时登录人数控制
-     *
-     * @return
-     */
-//    @Bean
-//    public KickoutSessionControlFilter kickoutSessionControlFilter() {
-//        KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
-//        kickoutSessionControlFilter.setCacheManager(cacheManager());
-//        kickoutSessionControlFilter.setSessionManager(sessionManager());
-//        kickoutSessionControlFilter.setKickoutAfter(false);
-//        kickoutSessionControlFilter.setMaxSession(1);
-//        kickoutSessionControlFilter.setKickoutUrl("/auth/kickout");
-//        return kickoutSessionControlFilter;
-//    }
-
-
     /***
      * 授权所用配置
      *
@@ -165,11 +148,6 @@ public class ShiroConfig {
     }
 
     /***
-     * 使授权注解起作用不如不想配置可以在pom文件中加入
-     * <dependency>
-     *<groupId>org.springframework.boot</groupId>
-     *<artifactId>spring-boot-starter-aop</artifactId>
-     *</dependency>
      * @param securityManager
      * @return
      */

@@ -1,7 +1,6 @@
 package com.eshop.serviceweb.vo;
 
 import com.eshop.serviceweb.model.Goods;
-
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 

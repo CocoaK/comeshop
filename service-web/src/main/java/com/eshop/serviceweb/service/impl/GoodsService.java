@@ -39,6 +39,7 @@ public class GoodsService extends BaseService<Goods> implements IGoodsService {
         zoneGoods.setCreatedBy(goodsVO.getCreatedBy());
         zoneGoods.setDiscountAmt(goodsVO.getDiscontAmt());
         zoneGoods.setGoodsId(goodsVO.getGoodsId());
+        zoneGoods.setGoodsQty(goodsVO.getGoodsQty());
         goodsVO.setGoodsCode("g"+System.currentTimeMillis());
 //        int result = add(goodsVO);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS

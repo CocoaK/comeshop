@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.MemberAddressMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberAddress">
+    <id column="member_address_id" jdbcType="INTEGER" property="memberAddressId" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="receiving_province" jdbcType="VARCHAR" property="receivingProvince" />
+    <result column="receiving_city" jdbcType="VARCHAR" property="receivingCity" />
+    <result column="receiving_area" jdbcType="VARCHAR" property="receivingArea" />
+    <result column="receiving_address" jdbcType="VARCHAR" property="receivingAddress" />
+    <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
+    <result column="is_default" jdbcType="BIT" property="isDefault" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    member_address_id, member_id, receiver_name, telephone, receiving_province, receiving_city, 
+    receiving_area, receiving_address, postal_code, is_default, bu_code, created_by, 
+    created_date, last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mc_member_address
+    where member_address_id = #{memberAddressId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from mc_member_address
+    where member_address_id = #{memberAddressId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from mc_member_address
+    where member_address_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberAddress">
+    insert into mc_member_address (member_address_id, member_id, receiver_name, 
+      telephone, receiving_province, receiving_city, 
+      receiving_area, receiving_address, postal_code, 
+      is_default, bu_code, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id)
+    values (#{memberAddressId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
+      #{telephone,jdbcType=VARCHAR}, #{receivingProvince,jdbcType=VARCHAR}, #{receivingCity,jdbcType=VARCHAR}, 
+      #{receivingArea,jdbcType=VARCHAR}, #{receivingAddress,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+      #{isDefault,jdbcType=BIT}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
+      #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberAddress">
+    insert into mc_member_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberAddressId != null">
+        member_address_id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="receivingProvince != null">
+        receiving_province,
+      </if>
+      <if test="receivingCity != null">
+        receiving_city,
+      </if>
+      <if test="receivingArea != null">
+        receiving_area,
+      </if>
+      <if test="receivingAddress != null">
+        receiving_address,
+      </if>
+      <if test="postalCode != null">
+        postal_code,
+      </if>
+      <if test="isDefault != null">
+        is_default,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberAddressId != null">
+        #{memberAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingProvince != null">
+        #{receivingProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingCity != null">
+        #{receivingCity,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingArea != null">
+        #{receivingArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingAddress != null">
+        #{receivingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null">
+        #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberAddress">
+    update mc_member_address
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingProvince != null">
+        receiving_province = #{receivingProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingCity != null">
+        receiving_city = #{receivingCity,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingArea != null">
+        receiving_area = #{receivingArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingAddress != null">
+        receiving_address = #{receivingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null">
+        postal_code = #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        is_default = #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where member_address_id = #{memberAddressId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberAddress">
+    update mc_member_address
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingProvince != null">
+        receiving_province = #{receivingProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingCity != null">
+        receiving_city = #{receivingCity,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingArea != null">
+        receiving_area = #{receivingArea,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingAddress != null">
+        receiving_address = #{receivingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="postalCode != null">
+        postal_code = #{postalCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null">
+        is_default = #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where member_address_id = #{memberAddressId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.MemberAddress">
+    update mc_member_address
+    set member_id = #{memberId,jdbcType=INTEGER},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      receiving_province = #{receivingProvince,jdbcType=VARCHAR},
+      receiving_city = #{receivingCity,jdbcType=VARCHAR},
+      receiving_area = #{receivingArea,jdbcType=VARCHAR},
+      receiving_address = #{receivingAddress,jdbcType=VARCHAR},
+      postal_code = #{postalCode,jdbcType=VARCHAR},
+      is_default = #{isDefault,jdbcType=BIT},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where member_address_id = #{memberAddressId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="memberAddressId != null">
+         and member_address_id = #{memberAddressId,jdbcType=INTEGER}
+      </if>
+      <if test="memberId != null">
+         and member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="receiverName != null">
+         and receiver_name = #{receiverName,jdbcType=VARCHAR}
+      </if>
+      <if test="telephone != null">
+         and telephone = #{telephone,jdbcType=VARCHAR}
+      </if>
+      <if test="receivingProvince != null">
+         and receiving_province = #{receivingProvince,jdbcType=VARCHAR}
+      </if>
+      <if test="receivingCity != null">
+         and receiving_city = #{receivingCity,jdbcType=VARCHAR}
+      </if>
+      <if test="receivingArea != null">
+         and receiving_area = #{receivingArea,jdbcType=VARCHAR}
+      </if>
+      <if test="receivingAddress != null">
+         and receiving_address = #{receivingAddress,jdbcType=VARCHAR}
+      </if>
+      <if test="postalCode != null">
+         and postal_code = #{postalCode,jdbcType=VARCHAR}
+      </if>
+      <if test="isDefault != null">
+         and is_default = #{isDefault,jdbcType=BIT}
+      </if>
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from mc_member_address
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap">
+    select * from mc_member_address
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap">
+    select * from mc_member_address
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap" useCache="false">
+    select * from mc_member_address
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberAddress" resultMap="BaseResultMap" useCache="false">
+    select * from mc_member_address
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

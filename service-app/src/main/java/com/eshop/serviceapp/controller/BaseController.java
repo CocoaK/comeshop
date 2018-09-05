@@ -4,14 +4,16 @@ import com.eshop.serviceapp.common.model.ResultEntity;
 import com.eshop.serviceapp.common.model.ResultList;
 import com.eshop.serviceapp.common.util.CryptUtil;
 import com.eshop.serviceapp.service.IBaseService;
+import com.eshop.serviceapp.vo.DeleteVO;
+import com.eshop.serviceapp.vo.KeyVO;
 import com.eshop.serviceapp.vo.PageVO;
 import com.github.pagehelper.Page;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-import java.beans.PropertyEditorSupport;
-import java.sql.Timestamp;
-import java.util.Date;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 @RestController
@@ -19,10 +21,16 @@ import java.util.List;
  * 基础转接控制器
  */
 /**增加跨域支持*/
-@CrossOrigin(origins = "*", maxAge = 3600)
+//@CrossOrigin(origins = "*", maxAge = 3600)
 public abstract class BaseController<T> {
 
     public abstract IBaseService<T> getBaseService();
+
+    @RequestMapping("/get")
+    public @ResponseBody
+    ResultEntity<T> getOne(@Validated @RequestBody KeyVO keyVO) {
+        return getBaseService().getOneResultEntity(keyVO.getId());
+    }
 
     @RequestMapping("/list")
     public @ResponseBody
@@ -32,23 +40,33 @@ public abstract class BaseController<T> {
 
     @RequestMapping("/add")
     public @ResponseBody
-    ResultEntity<String> add(@RequestBody T entity) {
+    ResultEntity<String> add(@Validated @RequestBody T entity) {
         return getBaseService().addForResultEntity(entity);
     }
 
     @RequestMapping("/delete")
-    public @ResponseBody ResultEntity<String> delete(@RequestBody Long id) {
+    public @ResponseBody ResultEntity<String> delete(@RequestBody String id) {
         return getBaseService().deleteForResultEntity(id);
+    }
+
+    @RequestMapping("/deleteByLock")
+    public @ResponseBody ResultEntity<String> delete(@Validated @RequestBody DeleteVO deleteVO) {
+        return getBaseService().deleteByLockForResultEntity(deleteVO);
     }
 
     @RequestMapping("/update")
     public @ResponseBody ResultEntity<String> update(@RequestBody T record) {
+        return getBaseService().updateForResultEntityByLock(record);
+    }
+
+    @RequestMapping("/updt")
+    public @ResponseBody ResultEntity<String> updt(@RequestBody T record) {
         return getBaseService().updateForResultEntity(record);
     }
 
     /**缓存分页支持*/
     @RequestMapping("/getPageList")
-    public ResultList<List<T>> getPageList(@Validated @RequestBody PageVO<T> pageVO) {
+    public ResultList<List<T>> getPageList(@RequestBody PageVO<T> pageVO) {
         ResultList<List<T>> resultList = getBaseService().getPageList(pageVO);
         CryptUtil.crypt(resultList.getData());
         return resultList;
@@ -56,8 +74,24 @@ public abstract class BaseController<T> {
 
     /**不缓存分页*/
     @RequestMapping("/queryPageList")
-    public ResultList<List<T>> queryPageList(@Validated @RequestBody PageVO<T> pageVO) {
+    public ResultList<List<T>> queryPageList(@RequestBody PageVO<T> pageVO) {
         ResultList<List<T>> resultList = getBaseService().queryPageList(pageVO);
+        CryptUtil.crypt(resultList.getData());
+        return resultList;
+    }
+
+    /**缓存分页支持*/
+    @RequestMapping("/getPageListByObj")
+    public ResultList<List<T>> getPageListByObj(@RequestBody PageVO<Object> pageVO) {
+        ResultList<List<T>> resultList = getBaseService().getPageListByObj(pageVO);
+        CryptUtil.crypt(resultList.getData());
+        return resultList;
+    }
+
+    /**不缓存分页*/
+    @RequestMapping("/queryPageListByObj")
+    public ResultList<List<T>> queryPageListByObj(@RequestBody PageVO<Object> pageVO) {
+        ResultList<List<T>> resultList = getBaseService().queryPageListByObj(pageVO);
         CryptUtil.crypt(resultList.getData());
         return resultList;
     }
@@ -66,19 +100,19 @@ public abstract class BaseController<T> {
         return new ResultEntity<A>(code,msg,data);
     }
 
-	/*@InitBinder
-	protected  void initBinder(WebDataBinder binder) {
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-	}*/
+//	@InitBinder
+//	protected  void initBinder(WebDataBinder binder) {
+//	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+//	}
 
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
-            @Override
-            public void setAsText(String value) {
-                setValue(new Timestamp(Long.valueOf(value)));
-            }
-        });
-    }
+//    @InitBinder
+//    protected void initBinder(WebDataBinder binder) {
+//        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
+//            @Override
+//            public void setAsText(String value) {
+//                setValue(new Timestamp(Long.valueOf(value)));
+//            }
+//        });
+//    }
 }

@@ -2,74 +2,53 @@ package com.eshop.serviceapp.controller;
 
 import com.eshop.serviceapp.common.Constants;
 import com.eshop.serviceapp.common.model.ResultEntity;
+import com.eshop.serviceapp.common.util.JwtTokenUtil;
+import com.eshop.serviceapp.model.Member;
 import com.eshop.serviceapp.service.IRedisService;
-import com.eshop.serviceapp.shiro.JwtTokenUtil;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.DisabledAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
+import com.eshop.serviceapp.service.IMemberService;
+import com.eshop.serviceapp.vo.LoginResultVO;
+import com.eshop.serviceapp.vo.LoginVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/auth")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class LoginController {
+
+    @Autowired
+    private IMemberService memberService;
 
     @Autowired
     private IRedisService redisService;
 
     @RequestMapping(value = "/login")
-    @CachePut
-    public ResultEntity<String> submitLogin(String username, String password, HttpServletRequest request) {
-        ResultEntity<String> re = new ResultEntity<>(ResultEntity.FAILD,"","");
-        String access_token = "";
-        try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            Subject subject = SecurityUtils.getSubject();
-            subject.login(token);
-//            User user = (User) subject.getPrincipal();
-//            access_token = JwtTokenUtil.createToken(user.getId(),Constants.REDIS_TOKEN_EXPIRE_TIME);
-//            redisService.addKey(access_token,user.getId().toString());
+    public ResultEntity<LoginResultVO> login(@Validated @RequestBody LoginVO loginVO) throws Exception{
+        ResultEntity<LoginResultVO> re = new ResultEntity<LoginResultVO>(ResultEntity.FAILD,ResultEntity.MSG_FAILED,null);
+        Member member = new Member();
+        member.setUserName(loginVO.getUserName());
+        member.setPassword(loginVO.getPassword());
+        List<Member> list = memberService.getList(member);
+        if(null == list || list.size()==0){
+            re.setCode(ResultEntity.ACCOUNT_OR_PASSWD_ERROR);
+            re.setMsg(ResultEntity.MSG_FAILED);
+        }else{
+            Member mem = list.get(0);
+            LoginResultVO loginResultVO = new LoginResultVO();
+            String token = JwtTokenUtil.createToken(mem.getMemberId()+"");
+            redisService.addKey(token,mem.getMemberId()+"",Constants.REDIS_TOKEN_EXPIRE_TIME);
+            loginResultVO.setToken(token);
+            loginResultVO.setMember(mem);
             re.setCode(ResultEntity.SUCCESS);
             re.setMsg(ResultEntity.MSG_SUCCESS);
-            re.setData(access_token);
-        } catch (DisabledAccountException e) {
-            e.printStackTrace();
-//            request.setAttribute("msg", "账户已被禁用");
-            re.setCode(ResultEntity.ACCOUNT_DISABLE);
-            re.setMsg("account disable");
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-//            request.setAttribute("msg", "用户名或密码错误");
-            re.setCode(ResultEntity.ACCOUNT_OR_PASSWD_ERROR);
-            re.setMsg("account or password error");
-        } catch (Exception e) {
-            e.printStackTrace();
+            re.setData(loginResultVO);
         }
-        // 执行到这里说明用户已登录成功
         return re;
-    }
-
-    @RequestMapping(value = "/logout")
-    @CachePut
-    public ResultEntity<String> logout(HttpServletRequest request) {
-        ResultEntity<String> re = new ResultEntity<>(ResultEntity.FAILD,"","");
-        String token  = request.getHeader(Constants.ACCESS_TOKEN);
-        redisService.deleteKey(token);
-        re.setCode(ResultEntity.SUCCESS);
-        re.setMsg("logout success!");
-        // 执行到这里说明用户已登录成功
-        return re;
-    }
-
-    //被踢出后跳转的页面
-    @RequestMapping(value = "/kickout", method = RequestMethod.GET)
-    public String kickOut() {
-        return "kickout";
     }
 }

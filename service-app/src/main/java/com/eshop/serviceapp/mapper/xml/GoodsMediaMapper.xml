@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.GoodsMediaMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.GoodsMedia">
+    <id column="media_id" jdbcType="INTEGER" property="mediaId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_model_id" jdbcType="INTEGER" property="goodsModelId" />
+    <result column="goods_comment_id" jdbcType="INTEGER" property="goodsCommentId" />
+    <result column="media_type" jdbcType="VARCHAR" property="mediaType" />
+    <result column="media_desc" jdbcType="VARCHAR" property="mediaDesc" />
+    <result column="media_url" jdbcType="VARCHAR" property="mediaUrl" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    media_id, goods_id, goods_model_id, goods_comment_id, media_type, media_desc, media_url, 
+    bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sh_goods_media
+    where media_id = #{mediaId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from sh_goods_media
+    where media_id = #{mediaId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from sh_goods_media
+    where media_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.GoodsMedia">
+    insert into sh_goods_media (media_id, goods_id, goods_model_id, 
+      goods_comment_id, media_type, media_desc, 
+      media_url, bu_code, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id)
+    values (#{mediaId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{goodsModelId,jdbcType=INTEGER}, 
+      #{goodsCommentId,jdbcType=INTEGER}, #{mediaType,jdbcType=VARCHAR}, #{mediaDesc,jdbcType=VARCHAR}, 
+      #{mediaUrl,jdbcType=VARCHAR}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
+      #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.GoodsMedia">
+    insert into sh_goods_media
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mediaId != null">
+        media_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="goodsModelId != null">
+        goods_model_id,
+      </if>
+      <if test="goodsCommentId != null">
+        goods_comment_id,
+      </if>
+      <if test="mediaType != null">
+        media_type,
+      </if>
+      <if test="mediaDesc != null">
+        media_desc,
+      </if>
+      <if test="mediaUrl != null">
+        media_url,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mediaId != null">
+        #{mediaId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsModelId != null">
+        #{goodsModelId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCommentId != null">
+        #{goodsCommentId,jdbcType=INTEGER},
+      </if>
+      <if test="mediaType != null">
+        #{mediaType,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaDesc != null">
+        #{mediaDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaUrl != null">
+        #{mediaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.GoodsMedia">
+    update sh_goods_media
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsModelId != null">
+        goods_model_id = #{goodsModelId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCommentId != null">
+        goods_comment_id = #{goodsCommentId,jdbcType=INTEGER},
+      </if>
+      <if test="mediaType != null">
+        media_type = #{mediaType,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaDesc != null">
+        media_desc = #{mediaDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaUrl != null">
+        media_url = #{mediaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where media_id = #{mediaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.GoodsMedia">
+    update sh_goods_media
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsModelId != null">
+        goods_model_id = #{goodsModelId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCommentId != null">
+        goods_comment_id = #{goodsCommentId,jdbcType=INTEGER},
+      </if>
+      <if test="mediaType != null">
+        media_type = #{mediaType,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaDesc != null">
+        media_desc = #{mediaDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="mediaUrl != null">
+        media_url = #{mediaUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where media_id = #{mediaId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.GoodsMedia">
+    update sh_goods_media
+    set goods_id = #{goodsId,jdbcType=INTEGER},
+      goods_model_id = #{goodsModelId,jdbcType=INTEGER},
+      goods_comment_id = #{goodsCommentId,jdbcType=INTEGER},
+      media_type = #{mediaType,jdbcType=VARCHAR},
+      media_desc = #{mediaDesc,jdbcType=VARCHAR},
+      media_url = #{mediaUrl,jdbcType=VARCHAR},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where media_id = #{mediaId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="mediaId != null">
+         and media_id = #{mediaId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsId != null">
+         and goods_id = #{goodsId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsModelId != null">
+         and goods_model_id = #{goodsModelId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsCommentId != null">
+         and goods_comment_id = #{goodsCommentId,jdbcType=INTEGER}
+      </if>
+      <if test="mediaType != null">
+         and media_type = #{mediaType,jdbcType=VARCHAR}
+      </if>
+      <if test="mediaDesc != null">
+         and media_desc = #{mediaDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="mediaUrl != null">
+         and media_url = #{mediaUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from sh_goods_media
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.GoodsMedia" resultMap="BaseResultMap">
+    select * from sh_goods_media
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.GoodsMedia" resultMap="BaseResultMap">
+    select * from sh_goods_media
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.GoodsMedia" resultMap="BaseResultMap" useCache="false">
+    select * from sh_goods_media
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.GoodsMedia" resultMap="BaseResultMap" useCache="false">
+    select * from sh_goods_media
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

@@ -2,6 +2,7 @@ package com.eshop.serviceapp.service;
 
 import com.eshop.serviceapp.common.model.ResultEntity;
 import com.eshop.serviceapp.common.model.ResultList;
+import com.eshop.serviceapp.vo.DeleteVO;
 import com.eshop.serviceapp.vo.PageVO;
 import com.github.pagehelper.Page;
 
@@ -14,13 +15,15 @@ import java.util.List;
 
 public interface IBaseService<T> {
 
-    int delete(Long id);
+    int delete(String id);
 
     int add(T entity);
 
-    T getOne(Long id);
+    T getOne(String id);
 
     int updateActive(T entity);
+
+    int updateActiveByLock(T entity);
 
     int update(T entity);
 
@@ -43,7 +46,14 @@ public interface IBaseService<T> {
      * @param id
      * @return
      */
-    public ResultEntity<String> deleteForResultEntity(Long id);
+    public ResultEntity<String> deleteForResultEntity(String id);
+
+    /**
+     * 删除返回格式化结果
+     * @param DeleteVO
+     * @return
+     */
+    public ResultEntity<String> deleteByLockForResultEntity(DeleteVO deleteVO);
 
 
     /**
@@ -51,7 +61,7 @@ public interface IBaseService<T> {
      * @param id
      * @return
      */
-    public ResultEntity<T> getOneResultEntity(Long id);
+    public ResultEntity<T> getOneResultEntity(String id);
 
     /**
      * 更新返回格式化结果
@@ -59,6 +69,13 @@ public interface IBaseService<T> {
      * @return
      */
     public ResultEntity<String> updateForResultEntity(T entity);
+
+    /**
+     * 更新返回格式化结果,支持乐观锁
+     * @param entity
+     * @return
+     */
+    public ResultEntity<String> updateForResultEntityByLock(T entity);
 
     /**
      * 传递常用结果消息
@@ -78,7 +95,7 @@ public interface IBaseService<T> {
      */
     ResultList<List<T>> getPageList(Page<T> p, T entity);
 
-    ResultList<List<T>> getPageList(Page<T> p, T entity,String orderBy);
+    ResultList<List<T>> getPageList(Page<T> p, T entity, String orderBy);
 
     ResultList<List<T>> getPageList(PageVO<T> pageVO);
 
@@ -96,7 +113,7 @@ public interface IBaseService<T> {
      * @param orderBy
      * @return
      */
-    ResultList<List<T>> queryPageList(Page<T> p, T entity,String orderBy);
+    ResultList<List<T>> queryPageList(Page<T> p, T entity, String orderBy);
     /**
      * 不启用缓存的分页查询
      * @param p
@@ -105,6 +122,13 @@ public interface IBaseService<T> {
      * @return
      */
     ResultList<List<T>> queryPageList(PageVO<T> pageVO);
+
+    /**
+     * 查询列表
+     * @param entity
+     * @return
+     */
+    List<T> getList(T entity);
     /**
      * 传递列表结果
      * @param total
@@ -113,6 +137,10 @@ public interface IBaseService<T> {
      * @return
      */
     public <A> ResultEntity<ResultList<A>> proccessResultList(long total, long timetamp, A info);
+
+    ResultList<List<T>> queryPageListByObj(PageVO<Object> pageVO);
+
+    ResultList<List<T>> getPageListByObj(PageVO<Object> pageVO);
 
 }
 

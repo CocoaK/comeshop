@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Order">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="member_address_id" jdbcType="INTEGER" property="memberAddressId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="mp_amt" jdbcType="INTEGER" property="mpAmt" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="shipping_time" jdbcType="TIMESTAMP" property="shippingTime" />
+    <result column="logistics_company" jdbcType="VARCHAR" property="logisticsCompany" />
+    <result column="shipment_no" jdbcType="VARCHAR" property="shipmentNo" />
+    <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
+    <result column="settle_status" jdbcType="VARCHAR" property="settleStatus" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, zone_code, member_id, member_address_id, order_no, amount, mp_amt, status, 
+    payment_time, shipping_time, logistics_company, shipment_no, receipt_time, settle_status, 
+    bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mc_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from mc_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from mc_order
+    where order_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.Order">
+    insert into mc_order (order_id, zone_code, member_id, 
+      member_address_id, order_no, amount, 
+      mp_amt, status, payment_time, 
+      shipping_time, logistics_company, shipment_no, 
+      receipt_time, settle_status, bu_code, 
+      created_by, created_date, last_updated_by, 
+      last_updated_date, row_id)
+    values (#{orderId,jdbcType=INTEGER}, #{zoneCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, 
+      #{memberAddressId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+      #{mpAmt,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{paymentTime,jdbcType=TIMESTAMP}, 
+      #{shippingTime,jdbcType=TIMESTAMP}, #{logisticsCompany,jdbcType=VARCHAR}, #{shipmentNo,jdbcType=VARCHAR}, 
+      #{receiptTime,jdbcType=TIMESTAMP}, #{settleStatus,jdbcType=VARCHAR}, #{buCode,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Order">
+    insert into mc_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="zoneCode != null">
+        zone_code,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="memberAddressId != null">
+        member_address_id,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="mpAmt != null">
+        mp_amt,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="paymentTime != null">
+        payment_time,
+      </if>
+      <if test="shippingTime != null">
+        shipping_time,
+      </if>
+      <if test="logisticsCompany != null">
+        logistics_company,
+      </if>
+      <if test="shipmentNo != null">
+        shipment_no,
+      </if>
+      <if test="receiptTime != null">
+        receipt_time,
+      </if>
+      <if test="settleStatus != null">
+        settle_status,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="zoneCode != null">
+        #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberAddressId != null">
+        #{memberAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="mpAmt != null">
+        #{mpAmt,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentTime != null">
+        #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shippingTime != null">
+        #{shippingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logisticsCompany != null">
+        #{logisticsCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="shipmentNo != null">
+        #{shipmentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptTime != null">
+        #{receiptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleStatus != null">
+        #{settleStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.Order">
+    update mc_order
+    <set>
+      <if test="zoneCode != null">
+        zone_code = #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberAddressId != null">
+        member_address_id = #{memberAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="mpAmt != null">
+        mp_amt = #{mpAmt,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentTime != null">
+        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shippingTime != null">
+        shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logisticsCompany != null">
+        logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="shipmentNo != null">
+        shipment_no = #{shipmentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptTime != null">
+        receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleStatus != null">
+        settle_status = #{settleStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Order">
+    update mc_order
+    <set>
+      <if test="zoneCode != null">
+        zone_code = #{zoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberAddressId != null">
+        member_address_id = #{memberAddressId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="mpAmt != null">
+        mp_amt = #{mpAmt,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentTime != null">
+        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shippingTime != null">
+        shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logisticsCompany != null">
+        logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="shipmentNo != null">
+        shipment_no = #{shipmentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="receiptTime != null">
+        receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleStatus != null">
+        settle_status = #{settleStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.Order">
+    update mc_order
+    set zone_code = #{zoneCode,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      member_address_id = #{memberAddressId,jdbcType=INTEGER},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      amount = #{amount,jdbcType=DECIMAL},
+      mp_amt = #{mpAmt,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+      shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
+      logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+      shipment_no = #{shipmentNo,jdbcType=VARCHAR},
+      receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+      settle_status = #{settleStatus,jdbcType=VARCHAR},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="orderId != null">
+         and order_id = #{orderId,jdbcType=INTEGER}
+      </if>
+      <if test="zoneCode != null">
+         and zone_code = #{zoneCode,jdbcType=VARCHAR}
+      </if>
+      <if test="memberId != null">
+         and member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="memberAddressId != null">
+         and member_address_id = #{memberAddressId,jdbcType=INTEGER}
+      </if>
+      <if test="orderNo != null">
+         and order_no = #{orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="amount != null">
+         and amount = #{amount,jdbcType=DECIMAL}
+      </if>
+      <if test="mpAmt != null">
+         and mp_amt = #{mpAmt,jdbcType=INTEGER}
+      </if>
+      <if test="status != null">
+         and status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="paymentTime != null">
+         and payment_time = #{paymentTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="shippingTime != null">
+         and shipping_time = #{shippingTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="logisticsCompany != null">
+         and logistics_company = #{logisticsCompany,jdbcType=VARCHAR}
+      </if>
+      <if test="shipmentNo != null">
+         and shipment_no = #{shipmentNo,jdbcType=VARCHAR}
+      </if>
+      <if test="receiptTime != null">
+         and receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="settleStatus != null">
+         and settle_status = #{settleStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="buCode != null">
+         and bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from mc_order
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
+    select * from mc_order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
+    select * from mc_order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
+    select * from mc_order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
+    select * from mc_order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Order">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, member_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sh_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from sh_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from sh_order
+    where order_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.Order">
+    insert into sh_order (order_id, member_id)
+    values (#{orderId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Order">
+    insert into sh_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.Order">
+    update sh_order
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Order">
+    update sh_order
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.Order">
+    update sh_order
+    set member_id = #{memberId,jdbcType=INTEGER}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="orderId != null">
+         and order_id = #{orderId,jdbcType=INTEGER}
+      </if>
+      <if test="memberId != null">
+         and member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select * from sh_order
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
+    select * from sh_order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
+    select * from sh_order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
+    select * from sh_order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
+    select * from sh_order
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

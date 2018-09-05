@@ -10,19 +10,23 @@ public class ZoneGoods extends BaseModel {
 
     private Integer goodsId;
 
+    private Integer goodsModelId;
+
     private String status;
 
-    private Date shelfTime;
-
-    private Integer shelfCount;
-
-    private Date releaseTime;
+    private Integer goodsQty;
 
     private BigDecimal discountAmt;
 
     private BigDecimal profitAmt;
 
     private BigDecimal rebateAmt;
+
+    private Boolean isDefault;
+
+    private Boolean isShowInHome;
+
+    private Integer dispSeq;
 
     private String buCode;
 
@@ -60,6 +64,14 @@ public class ZoneGoods extends BaseModel {
         this.goodsId = goodsId;
     }
 
+    public Integer getGoodsModelId() {
+        return goodsModelId;
+    }
+
+    public void setGoodsModelId(Integer goodsModelId) {
+        this.goodsModelId = goodsModelId;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -68,28 +80,12 @@ public class ZoneGoods extends BaseModel {
         this.status = status == null ? null : status.trim();
     }
 
-    public Date getShelfTime() {
-        return shelfTime;
+    public Integer getGoodsQty() {
+        return goodsQty;
     }
 
-    public void setShelfTime(Date shelfTime) {
-        this.shelfTime = shelfTime;
-    }
-
-    public Integer getShelfCount() {
-        return shelfCount;
-    }
-
-    public void setShelfCount(Integer shelfCount) {
-        this.shelfCount = shelfCount;
-    }
-
-    public Date getReleaseTime() {
-        return releaseTime;
-    }
-
-    public void setReleaseTime(Date releaseTime) {
-        this.releaseTime = releaseTime;
+    public void setGoodsQty(Integer goodsQty) {
+        this.goodsQty = goodsQty;
     }
 
     public BigDecimal getDiscountAmt() {
@@ -114,6 +110,30 @@ public class ZoneGoods extends BaseModel {
 
     public void setRebateAmt(BigDecimal rebateAmt) {
         this.rebateAmt = rebateAmt;
+    }
+
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    public Boolean getIsShowInHome() {
+        return isShowInHome;
+    }
+
+    public void setIsShowInHome(Boolean isShowInHome) {
+        this.isShowInHome = isShowInHome;
+    }
+
+    public Integer getDispSeq() {
+        return dispSeq;
+    }
+
+    public void setDispSeq(Integer dispSeq) {
+        this.dispSeq = dispSeq;
     }
 
     public String getBuCode() {

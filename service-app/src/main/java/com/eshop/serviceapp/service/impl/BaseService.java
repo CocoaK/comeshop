@@ -4,6 +4,7 @@ import com.eshop.serviceapp.common.model.ResultEntity;
 import com.eshop.serviceapp.common.model.ResultList;
 import com.eshop.serviceapp.mapper.BaseMapper;
 import com.eshop.serviceapp.service.IBaseService;
+import com.eshop.serviceapp.vo.DeleteVO;
 import com.eshop.serviceapp.vo.PageVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -14,6 +15,11 @@ import java.util.List;
 public abstract class BaseService<T> implements IBaseService<T> {
 
     public abstract BaseMapper<T> getBaseMapper();
+
+    @Override
+    public List<T> getList(T entity) {
+        return getBaseMapper().getList(entity);
+    }
 
     @Override
     public ResultList<List<T>> getPageList(Page<T> p, T entity) {
@@ -34,7 +40,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
     @Override
     public ResultList<List<T>> getPageList(PageVO<T> pageVO){
         Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
-        getBaseMapper().getPageList(pageVO.getEntity());
+        getBaseMapper().getPageList(pageVO.getParams());
         ResultList<List<T>> re = new ResultList<List<T>>(page.getTotal(), System.currentTimeMillis(), page);
         return re;
     }
@@ -58,20 +64,36 @@ public abstract class BaseService<T> implements IBaseService<T> {
     @Override
     public ResultList<List<T>> queryPageList(PageVO<T> pageVO){
         Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
-        getBaseMapper().queryPageList(pageVO.getEntity());
+        getBaseMapper().queryPageList(pageVO.getParams());
+        ResultList<List<T>> re = new ResultList<List<T>>(page.getTotal(), System.currentTimeMillis(), page);
+        return re;
+    }
+
+    @Override
+    public ResultList<List<T>> getPageListByObj(PageVO<Object> pageVO){
+        Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
+        getBaseMapper().getPageListByVO(pageVO.getParams());
+        ResultList<List<T>> re = new ResultList<List<T>>(page.getTotal(), System.currentTimeMillis(), page);
+        return re;
+    }
+
+    @Override
+    public ResultList<List<T>> queryPageListByObj(PageVO<Object> pageVO){
+        Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
+        getBaseMapper().queryPageListByVO(pageVO.getParams());
         ResultList<List<T>> re = new ResultList<List<T>>(page.getTotal(), System.currentTimeMillis(), page);
         return re;
     }
 
     @Transactional
     @Override
-    public int delete(Long id) {
-        return getBaseMapper().delete(id);
+    public int delete(String id) {
+        return getBaseMapper().delete(Integer.parseInt(id));
     }
 
     @Override
-    public T getOne(Long id) {
-        return getBaseMapper().getOne(id);
+    public T getOne(String id) {
+        return getBaseMapper().getOne(Integer.parseInt(id));
     }
 
     @Transactional
@@ -82,33 +104,28 @@ public abstract class BaseService<T> implements IBaseService<T> {
 
     @Transactional
     @Override
+    public int updateActiveByLock(T entity) {
+        return getBaseMapper().updateActiveByLock(entity);
+    }
+
+    @Transactional
+    @Override
     public int update(T entity) {
         return getBaseMapper().update(entity);
     }
 
     @Override
     public int add(T entity) {
-        return getBaseMapper().insert(entity);
+        return getBaseMapper().insertActive(entity);
     }
 
-    /**
-     * 增加返回格式化结果
-     *
-     * @param record
-     * @return
-     */
     @Override
     public ResultEntity<String> addForResultEntity(T record) {
-        return proccessResultEntity(add(record) > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, "", "");
+        int result = add(record);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
-    /**
-     * 增加列表返回格式化结果
-     *
-     * @param list
-     * @return
-     */
     @Override
     public ResultEntity<String> addListForResultEntity(List<T> list) {
         if(list!=null && list.size()>0){
@@ -116,51 +133,44 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 add(t);
             }
         }
-        return proccessResultEntity(ResultEntity.SUCCESS,"","");
+        return proccessResultEntity(ResultEntity.SUCCESS,ResultEntity.MSG_SUCCESS,"");
     }
 
-    /**
-     * 删除返回格式化结果
-     *
-     * @param id
-     * @return
-     */
     @Override
-    public ResultEntity<String> deleteForResultEntity(Long id) {
-        return proccessResultEntity(delete(id) > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, "", "");
+    public ResultEntity<String> deleteForResultEntity(String id) {
+        int result = delete(id);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
-
-    /**
-     * 获取单个实体数据
-     *
-     * @param id
-     * @return
-     */
     @Override
-    public ResultEntity<T> getOneResultEntity(Long id) {
+    public ResultEntity<String> deleteByLockForResultEntity(DeleteVO deleteVO){
+        int result = getBaseMapper().deleteByLock(deleteVO);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+    }
+
+    @Override
+    public ResultEntity<T> getOneResultEntity(String id) {
         return proccessResultEntity(ResultEntity.SUCCESS, "", getOne(id));
     }
 
-    /**
-     * 更新返回格式化结果
-     * @return
-     */
     @Transactional
     @Override
     public ResultEntity<String> updateForResultEntity(T entity) {
-        return proccessResultEntity(updateActive(entity) > 0 ? ResultEntity.SUCCESS: ResultEntity.FAILD, "", "");
+        int result = updateActive(entity);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
-    /**
-     * 传递常用结果消息
-     *
-     * @param code
-     * @param msg
-     * @param data
-     * @return
-     */
+    @Transactional
+    @Override
+    public ResultEntity<String> updateForResultEntityByLock(T entity) {
+        int result = updateActiveByLock(entity);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+    }
+
     @Override
     public <A> ResultEntity<A> proccessResultEntity(int code, String msg, A data) {
         return new ResultEntity<A>(code, msg, data);
@@ -170,4 +180,5 @@ public abstract class BaseService<T> implements IBaseService<T> {
     public <A> ResultEntity<ResultList<A>> proccessResultList(long total, long timetamp, A info) {
         return proccessResultEntity(ResultEntity.SUCCESS, "",new ResultList<A>(total, timetamp, info));
     }
+
 }
