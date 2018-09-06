@@ -1,6 +1,6 @@
 package com.eshop.serviceapp.mapper;
 
-import com.eshop.serviceweb.model.MemberTrans;
+import com.eshop.serviceapp.model.MemberTrans;
 
 public interface MemberTransMapper extends BaseMapper<MemberTrans> {
 }

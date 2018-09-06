@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.MemberRebateMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberRebate">
+<mapper namespace="com.eshop.serviceapp.mapper.MemberRebateMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.MemberRebate">
     <id column="rebate_id" jdbcType="INTEGER" property="rebateId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
     <result column="rebate" jdbcType="INTEGER" property="rebate" />
@@ -33,13 +33,13 @@
     delete from mc_member_rebate
     where rebate_id = #{rebateId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_member_rebate
     where rebate_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberRebate">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberRebate">
     insert into mc_member_rebate (rebate_id, member_id, rebate, 
       rebate_cycle, rebate_ratio, max_order_num, 
       rebate_ratio_each, discount, is_active, 
@@ -53,7 +53,7 @@
       #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberRebate">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberRebate">
     insert into mc_member_rebate
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="rebateId != null">
@@ -150,7 +150,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberRebate">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.MemberRebate">
     update mc_member_rebate
     <set>
       <if test="memberId != null">
@@ -198,7 +198,7 @@
     </set>
     where rebate_id = #{rebateId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberRebate">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.MemberRebate">
     update mc_member_rebate
     <set>
       <if test="memberId != null">
@@ -248,7 +248,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.MemberRebate">
+  <update id="update" parameterType="com.eshop.serviceapp.model.MemberRebate">
     update mc_member_rebate
     set member_id = #{memberId,jdbcType=INTEGER},
       rebate = #{rebate,jdbcType=INTEGER},
@@ -318,21 +318,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from mc_member_rebate
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberRebate" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.MemberRebate" resultMap="BaseResultMap">
     select * from mc_member_rebate
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberRebate" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberRebate" resultMap="BaseResultMap">
     select * from mc_member_rebate
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberRebate" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberRebate" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_rebate
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberRebate" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberRebate" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_rebate
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

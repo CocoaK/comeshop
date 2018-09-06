@@ -1,6 +1,6 @@
 package com.eshop.serviceapp.mapper;
 
-import com.eshop.serviceweb.model.Shop;
+import com.eshop.serviceapp.model.Shop;
 
 public interface ShopMapper extends BaseMapper<Shop> {
 }

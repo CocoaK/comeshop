@@ -1,6 +1,6 @@
 package com.eshop.serviceapp.mapper;
 
-import com.eshop.serviceweb.model.GoodsMedia;
+import com.eshop.serviceapp.model.GoodsMedia;
 
 public interface GoodsMediaMapper extends BaseMapper<GoodsMedia> {
 }

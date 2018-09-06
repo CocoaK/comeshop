@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.MemberGradeHistMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberGradeHist">
+<mapper namespace="com.eshop.serviceapp.mapper.MemberGradeHistMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.MemberGradeHist">
     <id column="member_grade_hist_id" jdbcType="INTEGER" property="memberGradeHistId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
     <result column="event_date" jdbcType="TIMESTAMP" property="eventDate" />
@@ -31,13 +31,13 @@
     delete from mc_member_grade_hist
     where member_grade_hist_id = #{memberGradeHistId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_member_grade_hist
     where member_grade_hist_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberGradeHist">
     insert into mc_member_grade_hist (member_grade_hist_id, member_id, event_date, 
       event_type, event_by, grade_before, 
       grade_after, bu_code, created_by, 
@@ -49,7 +49,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberGradeHist">
     insert into mc_member_grade_hist
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberGradeHistId != null">
@@ -134,7 +134,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.MemberGradeHist">
     update mc_member_grade_hist
     <set>
       <if test="memberId != null">
@@ -176,7 +176,7 @@
     </set>
     where member_grade_hist_id = #{memberGradeHistId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.MemberGradeHist">
     update mc_member_grade_hist
     <set>
       <if test="memberId != null">
@@ -220,7 +220,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
+  <update id="update" parameterType="com.eshop.serviceapp.model.MemberGradeHist">
     update mc_member_grade_hist
     set member_id = #{memberId,jdbcType=INTEGER},
       event_date = #{eventDate,jdbcType=TIMESTAMP},
@@ -282,21 +282,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from mc_member_grade_hist
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberGradeHist" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.MemberGradeHist" resultMap="BaseResultMap">
     select * from mc_member_grade_hist
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberGradeHist" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberGradeHist" resultMap="BaseResultMap">
     select * from mc_member_grade_hist
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberGradeHist" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberGradeHist" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_grade_hist
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberGradeHist" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberGradeHist" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_grade_hist
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

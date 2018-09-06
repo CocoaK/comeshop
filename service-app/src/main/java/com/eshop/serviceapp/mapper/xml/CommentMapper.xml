@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.CommentMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Comment">
+<mapper namespace="com.eshop.serviceapp.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.Comment">
     <id column="comment_id" jdbcType="INTEGER" property="commentId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
     <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
@@ -15,7 +15,7 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.eshop.serviceweb.model.Comment">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.eshop.serviceapp.model.Comment">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -37,13 +37,13 @@
     delete from mc_comment
     where comment_id = #{commentId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_comment
     where comment_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.Comment">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.Comment">
     insert into mc_comment (comment_id, member_id, goods_id, 
       type, comment_time, parent_id, 
       bu_code, created_by, created_date, 
@@ -55,7 +55,7 @@
       #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}, 
       #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Comment">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.Comment">
     insert into mc_comment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="commentId != null">
@@ -140,7 +140,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.Comment">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.Comment">
     update mc_comment
     <set>
       <if test="memberId != null">
@@ -182,7 +182,7 @@
     </set>
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Comment">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.Comment">
     update mc_comment
     <set>
       <if test="memberId != null">
@@ -226,7 +226,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.eshop.serviceweb.model.Comment">
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.eshop.serviceapp.model.Comment">
     update mc_comment
     set member_id = #{memberId,jdbcType=INTEGER},
       goods_id = #{goodsId,jdbcType=INTEGER},
@@ -242,7 +242,7 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.Comment">
+  <update id="update" parameterType="com.eshop.serviceapp.model.Comment">
     update mc_comment
     set member_id = #{memberId,jdbcType=INTEGER},
       goods_id = #{goodsId,jdbcType=INTEGER},
@@ -303,21 +303,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from mc_comment
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.Comment" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.Comment" resultMap="BaseResultMap">
     select * from mc_comment
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Comment" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.Comment" resultMap="BaseResultMap">
     select * from mc_comment
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Comment" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.Comment" resultMap="BaseResultMap" useCache="false">
     select * from mc_comment
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.Comment" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.Comment" resultMap="BaseResultMap" useCache="false">
     select * from mc_comment
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

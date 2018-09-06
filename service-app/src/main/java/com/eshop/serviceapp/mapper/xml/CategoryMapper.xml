@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.CategoryMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Category">
+<mapper namespace="com.eshop.serviceapp.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.Category">
     <id column="category_id" jdbcType="INTEGER" property="categoryId" />
     <result column="category_code" jdbcType="VARCHAR" property="categoryCode" />
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
@@ -33,13 +33,13 @@
     delete from sh_category
     where category_id = #{categoryId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from sh_category
     where category_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.Category">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.Category">
     insert into sh_category (category_id, category_code, category_name, 
       category_image, level, disp_seq, 
       parent_id, is_active, inactive_date, 
@@ -53,7 +53,7 @@
       #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Category">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.Category">
     insert into sh_category
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="categoryId != null">
@@ -150,7 +150,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.Category">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.Category">
     update sh_category
     <set>
       <if test="categoryCode != null">
@@ -198,7 +198,7 @@
     </set>
     where category_id = #{categoryId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Category">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.Category">
     update sh_category
     <set>
       <if test="categoryCode != null">
@@ -248,7 +248,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.Category">
+  <update id="update" parameterType="com.eshop.serviceapp.model.Category">
     update sh_category
     set category_code = #{categoryCode,jdbcType=VARCHAR},
       category_name = #{categoryName,jdbcType=VARCHAR},
@@ -318,21 +318,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from sh_category
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.Category" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.Category" resultMap="BaseResultMap">
     select * from sh_category
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Category" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.Category" resultMap="BaseResultMap">
     select * from sh_category
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Category" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.Category" resultMap="BaseResultMap" useCache="false">
     select * from sh_category
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.Category" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.Category" resultMap="BaseResultMap" useCache="false">
     select * from sh_category
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

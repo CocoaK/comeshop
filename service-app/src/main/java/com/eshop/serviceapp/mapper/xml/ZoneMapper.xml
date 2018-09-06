@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.ZoneMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Zone">
+<mapper namespace="com.eshop.serviceapp.mapper.ZoneMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.Zone">
     <id column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
     <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
     <result column="zone_type" jdbcType="VARCHAR" property="zoneType" />
@@ -29,13 +29,13 @@
     delete from sh_zone
     where zone_code = #{zoneCode,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from sh_zone
     where zone_code = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.Zone">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.Zone">
     insert into sh_zone (zone_code, zone_name, zone_type, 
       disp_seq, is_active, inactive_date, 
       bu_code, created_by, created_date, 
@@ -47,7 +47,7 @@
       #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Zone">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.Zone">
     insert into sh_zone
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="zoneCode != null">
@@ -126,7 +126,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.Zone">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.Zone">
     update sh_zone
     <set>
       <if test="zoneName != null">
@@ -165,7 +165,7 @@
     </set>
     where zone_code = #{zoneCode,jdbcType=VARCHAR}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Zone">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.Zone">
     update sh_zone
     <set>
       <if test="zoneName != null">
@@ -206,7 +206,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.Zone">
+  <update id="update" parameterType="com.eshop.serviceapp.model.Zone">
     update sh_zone
     set zone_name = #{zoneName,jdbcType=VARCHAR},
       zone_type = #{zoneType,jdbcType=VARCHAR},
@@ -264,21 +264,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from sh_zone
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.Zone" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.Zone" resultMap="BaseResultMap">
     select * from sh_zone
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Zone" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.Zone" resultMap="BaseResultMap">
     select * from sh_zone
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Zone" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.Zone" resultMap="BaseResultMap" useCache="false">
     select * from sh_zone
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.Zone" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.Zone" resultMap="BaseResultMap" useCache="false">
     select * from sh_zone
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

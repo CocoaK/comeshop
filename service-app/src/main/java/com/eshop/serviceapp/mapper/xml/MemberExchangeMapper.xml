@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.MemberExchangeMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberExchange">
+<mapper namespace="com.eshop.serviceapp.mapper.MemberExchangeMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.MemberExchange">
     <id column="member_exchange_id" jdbcType="INTEGER" property="memberExchangeId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
     <result column="application_date" jdbcType="DATE" property="applicationDate" />
@@ -35,13 +35,13 @@
     delete from mc_member_exchange
     where member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_member_exchange
     where member_exchange_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberExchange">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberExchange">
     insert into mc_member_exchange (member_exchange_id, member_id, application_date, 
       exchange_amt, exchange_mp, account_type, 
       account_no, status, approved_by, 
@@ -55,7 +55,7 @@
       #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
       #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberExchange">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberExchange">
     insert into mc_member_exchange
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberExchangeId != null">
@@ -164,7 +164,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberExchange">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.MemberExchange">
     update mc_member_exchange
     <set>
       <if test="memberId != null">
@@ -218,7 +218,7 @@
     </set>
     where member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberExchange">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.MemberExchange">
     update mc_member_exchange
     <set>
       <if test="memberId != null">
@@ -274,7 +274,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.MemberExchange">
+  <update id="update" parameterType="com.eshop.serviceapp.model.MemberExchange">
     update mc_member_exchange
     set member_id = #{memberId,jdbcType=INTEGER},
       application_date = #{applicationDate,jdbcType=DATE},
@@ -352,21 +352,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from mc_member_exchange
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberExchange" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.MemberExchange" resultMap="BaseResultMap">
     select * from mc_member_exchange
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberExchange" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberExchange" resultMap="BaseResultMap">
     select * from mc_member_exchange
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberExchange" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberExchange" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_exchange
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberExchange" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberExchange" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_exchange
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.MemberGradeMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberGrade">
+<mapper namespace="com.eshop.serviceapp.mapper.MemberGradeMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.MemberGrade">
     <id column="grade_code" jdbcType="VARCHAR" property="gradeCode" />
     <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
@@ -43,13 +43,13 @@
     delete from mc_member_grade
     where grade_code = #{gradeCode,jdbcType=VARCHAR}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_member_grade
     where grade_code = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberGrade">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberGrade">
     insert into mc_member_grade (grade_code, grade_name, remarks, 
       is_active, inactive_date, annual_fee, 
       one_time_recharge, umbrella_member_num, umbrella_area_num, 
@@ -69,7 +69,7 @@
       #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberGrade">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberGrade">
     insert into mc_member_grade
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="gradeCode != null">
@@ -214,7 +214,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberGrade">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.MemberGrade">
     update mc_member_grade
     <set>
       <if test="gradeName != null">
@@ -286,7 +286,7 @@
     </set>
     where grade_code = #{gradeCode,jdbcType=VARCHAR}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberGrade">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.MemberGrade">
     update mc_member_grade
     <set>
       <if test="gradeName != null">
@@ -360,7 +360,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.MemberGrade">
+  <update id="update" parameterType="com.eshop.serviceapp.model.MemberGrade">
     update mc_member_grade
     set grade_name = #{gradeName,jdbcType=VARCHAR},
       remarks = #{remarks,jdbcType=VARCHAR},
@@ -462,21 +462,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from mc_member_grade
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberGrade" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.MemberGrade" resultMap="BaseResultMap">
     select * from mc_member_grade
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberGrade" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberGrade" resultMap="BaseResultMap">
     select * from mc_member_grade
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberGrade" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberGrade" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_grade
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberGrade" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberGrade" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_grade
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.ShopMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.Shop">
+<mapper namespace="com.eshop.serviceapp.mapper.ShopMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.Shop">
     <id column="shop_id" jdbcType="INTEGER" property="shopId" />
     <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
     <result column="ref_member_id" jdbcType="INTEGER" property="refMemberId" />
@@ -26,13 +26,13 @@
     delete from sh_shop
     where shop_id = #{shopId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from sh_shop
     where shop_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.Shop">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.Shop">
     insert into sh_shop (shop_id, shop_name, ref_member_id, 
       bu_code, created_by, created_date, 
       last_updated_by, last_updated_date, row_id
@@ -42,7 +42,7 @@
       #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Shop">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.Shop">
     insert into sh_shop
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="shopId != null">
@@ -103,7 +103,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.Shop">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.Shop">
     update sh_shop
     <set>
       <if test="shopName != null">
@@ -133,7 +133,7 @@
     </set>
     where shop_id = #{shopId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.Shop">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.Shop">
     update sh_shop
     <set>
       <if test="shopName != null">
@@ -165,7 +165,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.Shop">
+  <update id="update" parameterType="com.eshop.serviceapp.model.Shop">
     update sh_shop
     set shop_name = #{shopName,jdbcType=VARCHAR},
       ref_member_id = #{refMemberId,jdbcType=INTEGER},
@@ -211,21 +211,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from sh_shop
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.Shop" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.Shop" resultMap="BaseResultMap">
     select * from sh_shop
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Shop" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.Shop" resultMap="BaseResultMap">
     select * from sh_shop
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Shop" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.Shop" resultMap="BaseResultMap" useCache="false">
     select * from sh_shop
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.Shop" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.Shop" resultMap="BaseResultMap" useCache="false">
     select * from sh_shop
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

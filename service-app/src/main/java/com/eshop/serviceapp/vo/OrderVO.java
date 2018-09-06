@@ -1,6 +1,6 @@
 package com.eshop.serviceapp.vo;
 
-import com.eshop.serviceweb.model.Order;
+import com.eshop.serviceapp.model.Order;
 
 import java.math.BigDecimal;
 import java.util.Date;

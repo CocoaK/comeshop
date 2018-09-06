@@ -1,6 +1,6 @@
 package com.eshop.serviceapp.mapper;
 
-import com.eshop.serviceweb.model.MemberRebate;
+import com.eshop.serviceapp.model.MemberRebate;
 
 public interface MemberRebateMapper extends BaseMapper<MemberRebate> {
 }

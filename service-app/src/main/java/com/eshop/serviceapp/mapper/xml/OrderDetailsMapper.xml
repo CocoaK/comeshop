@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.OrderDetailsMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.OrderDetails">
+<mapper namespace="com.eshop.serviceapp.mapper.OrderDetailsMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.OrderDetails">
     <id column="order_details_id" jdbcType="INTEGER" property="orderDetailsId" />
     <result column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="zone_goods_id" jdbcType="INTEGER" property="zoneGoodsId" />
@@ -32,13 +32,13 @@
     delete from mc_order_details
     where order_details_id = #{orderDetailsId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_order_details
     where order_details_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.OrderDetails">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.OrderDetails">
     insert into mc_order_details (order_details_id, order_id, zone_goods_id, 
       order_qty, amount, net_amt, 
       profit_amt, rebate_amt, bu_code, 
@@ -50,7 +50,7 @@
       #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
       #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.OrderDetails">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.OrderDetails">
     insert into mc_order_details
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderDetailsId != null">
@@ -141,7 +141,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.OrderDetails">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.OrderDetails">
     update mc_order_details
     <set>
       <if test="orderId != null">
@@ -186,7 +186,7 @@
     </set>
     where order_details_id = #{orderDetailsId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.OrderDetails">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.OrderDetails">
     update mc_order_details
     <set>
       <if test="orderId != null">
@@ -233,7 +233,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.OrderDetails">
+  <update id="update" parameterType="com.eshop.serviceapp.model.OrderDetails">
     update mc_order_details
     set order_id = #{orderId,jdbcType=INTEGER},
       zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER},
@@ -299,21 +299,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from mc_order_details
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.OrderDetails" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.OrderDetails" resultMap="BaseResultMap">
     select * from mc_order_details
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.OrderDetails" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.OrderDetails" resultMap="BaseResultMap">
     select * from mc_order_details
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.OrderDetails" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.OrderDetails" resultMap="BaseResultMap" useCache="false">
     select * from mc_order_details
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.OrderDetails" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.OrderDetails" resultMap="BaseResultMap" useCache="false">
     select * from mc_order_details
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

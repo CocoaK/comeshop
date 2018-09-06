@@ -15,19 +15,19 @@ public class RedisConfig {
     private String host;
     @Value("${spring.redis.port}")
     private int port;
-//    @Value("${spring.redis.password}")
+    //    @Value("${spring.redis.password}")
 //    private String password;
 //    @Value("${spring.redis.timeout}")
 //    private int timeout;
 //    @Value("${spring.redis.database}")
 //    private int database;
-    @Value("${spring.redis.maxIdle}")
+    @Value("${spring.redis.jedis.pool.max-idle}")
     private int maxIdle;
-//    @Value("${spring.redis.maxTotal}")
+    //    @Value("${spring.redis.maxTotal}")
 //    private int maxTotal;
 //    @Value("${spring.redis.maxWaitMillis}")
 //    private int maxWaitMillis;
-    @Value("${spring.redis.minIdle}")
+    @Value("${spring.redis.jedis.pool.min-idle}")
     private int minIdle;
 
     @Bean

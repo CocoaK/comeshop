@@ -1,6 +1,6 @@
 package com.eshop.serviceapp.mapper;
 
-import com.eshop.serviceweb.model.ZoneGoods;
+import com.eshop.serviceapp.model.ZoneGoods;
 
 public interface ZoneGoodsMapper extends BaseMapper<ZoneGoods> {
 }

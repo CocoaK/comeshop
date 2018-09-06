@@ -1,6 +1,6 @@
 package com.eshop.serviceapp.mapper;
 
-import com.eshop.serviceweb.model.MemberBpHistory;
+import com.eshop.serviceapp.model.MemberBpHistory;
 
 public interface MemberBpHistoryMapper extends BaseMapper<MemberBpHistory> {
 }

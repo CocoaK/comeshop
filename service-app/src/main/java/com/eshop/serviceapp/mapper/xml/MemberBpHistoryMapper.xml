@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.MemberBpHistoryMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberBpHistory">
+<mapper namespace="com.eshop.serviceapp.mapper.MemberBpHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.MemberBpHistory">
     <id column="integration_id" jdbcType="INTEGER" property="integrationId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
     <result column="integration" jdbcType="INTEGER" property="integration" />
@@ -31,13 +31,13 @@
     delete from mc_member_bp_history
     where integration_id = #{integrationId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_member_bp_history
     where integration_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberBpHistory">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberBpHistory">
     insert into mc_member_bp_history (integration_id, member_id, integration, 
       pre_integration, after_integration, event_time, 
       event_type, event_by, created_by, 
@@ -49,7 +49,7 @@
       #{createdDate,jdbcType=DATE}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, 
       #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberBpHistory">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberBpHistory">
     insert into mc_member_bp_history
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="integrationId != null">
@@ -134,7 +134,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberBpHistory">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.MemberBpHistory">
     update mc_member_bp_history
     <set>
       <if test="memberId != null">
@@ -176,7 +176,7 @@
     </set>
     where integration_id = #{integrationId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberBpHistory">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.MemberBpHistory">
     update mc_member_bp_history
     <set>
       <if test="memberId != null">
@@ -220,7 +220,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.MemberBpHistory">
+  <update id="update" parameterType="com.eshop.serviceapp.model.MemberBpHistory">
     update mc_member_bp_history
     set member_id = #{memberId,jdbcType=INTEGER},
       integration = #{integration,jdbcType=INTEGER},
@@ -282,21 +282,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from mc_member_bp_history
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberBpHistory" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.MemberBpHistory" resultMap="BaseResultMap">
     select * from mc_member_bp_history
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberBpHistory" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberBpHistory" resultMap="BaseResultMap">
     select * from mc_member_bp_history
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberBpHistory" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberBpHistory" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_bp_history
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberBpHistory" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberBpHistory" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_bp_history
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

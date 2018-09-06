@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.MemberAccountMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberAccount">
+<mapper namespace="com.eshop.serviceapp.mapper.MemberAccountMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.MemberAccount">
     <id column="member_account_id" jdbcType="INTEGER" property="memberAccountId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
     <result column="account_type" jdbcType="VARCHAR" property="accountType" />
@@ -27,13 +27,13 @@
     delete from mc_member_account
     where member_account_id = #{memberAccountId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_member_account
     where member_account_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberAccount">
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberAccount">
     insert into mc_member_account (member_account_id, member_id, account_type, 
       account_no, bu_code, created_by, 
       created_date, last_updated_by, last_updated_date, 
@@ -43,7 +43,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberAccount">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberAccount">
     insert into mc_member_account
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberAccountId != null">
@@ -110,7 +110,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberAccount">
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.MemberAccount">
     update mc_member_account
     <set>
       <if test="memberId != null">
@@ -143,7 +143,7 @@
     </set>
     where member_account_id = #{memberAccountId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberAccount">
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.MemberAccount">
     update mc_member_account
     <set>
       <if test="memberId != null">
@@ -178,7 +178,7 @@
     and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.MemberAccount">
+  <update id="update" parameterType="com.eshop.serviceapp.model.MemberAccount">
     update mc_member_account
     set member_id = #{memberId,jdbcType=INTEGER},
       account_type = #{accountType,jdbcType=VARCHAR},
@@ -228,21 +228,21 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from mc_member_account
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberAccount" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.MemberAccount" resultMap="BaseResultMap">
     select * from mc_member_account
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberAccount" resultMap="BaseResultMap">
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberAccount" resultMap="BaseResultMap">
     select * from mc_member_account
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberAccount" resultMap="BaseResultMap" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberAccount" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_account
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberAccount" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberAccount" resultMap="BaseResultMap" useCache="false">
     select * from mc_member_account
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

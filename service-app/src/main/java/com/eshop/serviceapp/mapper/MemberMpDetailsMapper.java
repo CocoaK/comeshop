@@ -1,6 +1,6 @@
 package com.eshop.serviceapp.mapper;
 
-import com.eshop.serviceweb.model.MemberMpDetails;
+import com.eshop.serviceapp.model.MemberMpDetails;
 
 public interface MemberMpDetailsMapper extends BaseMapper<MemberMpDetails> {
 }
