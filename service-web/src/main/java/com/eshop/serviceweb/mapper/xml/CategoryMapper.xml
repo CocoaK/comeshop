@@ -281,7 +281,7 @@
          and category_image = #{categoryImage,jdbcType=VARCHAR}
       </if>
       <if test="level != null">
-         and level = #{level,jdbcType=INTEGER}
+         and `level` = #{level,jdbcType=INTEGER}
       </if>
       <if test="dispSeq != null">
          and disp_seq = #{dispSeq,jdbcType=INTEGER}

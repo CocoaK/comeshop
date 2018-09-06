@@ -96,6 +96,13 @@ public abstract class BaseController<T> {
         return resultList;
     }
 
+    @RequestMapping("/getList")
+    public List<T> getList(@RequestBody T record) {
+        List<T> resultList = getBaseService().getList(record);
+        //CryptUtil.crypt(resultList.getData());
+        return resultList;
+    }
+
     public <A> ResultEntity<A> proccessResultEntity(int code,String msg,A data){
         return new ResultEntity<A>(code,msg,data);
     }

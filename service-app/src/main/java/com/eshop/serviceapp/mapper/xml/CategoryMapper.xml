@@ -321,6 +321,7 @@
   <select id="getList" parameterType="com.eshop.serviceapp.model.Category" resultMap="BaseResultMap">
     select * from sh_category
     <include refid="Base_Query_Cause" />
+    order by disp_seq
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceapp.model.Category" resultMap="BaseResultMap">
     select * from sh_category
