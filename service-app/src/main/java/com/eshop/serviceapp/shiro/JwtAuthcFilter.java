@@ -23,6 +23,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import com.eshop.serviceapp.common.Constants;
 import com.eshop.serviceapp.common.model.ResultEntity;
+import com.eshop.serviceapp.common.util.JwtTokenUtil;
 import com.eshop.serviceapp.service.IRedisService;
 import com.eshop.serviceapp.service.impl.RedisService;
 import org.apache.shiro.web.filter.AccessControlFilter;

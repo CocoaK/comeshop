@@ -38,7 +38,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
     delete from user
     where user_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.User">
@@ -271,7 +271,7 @@
       </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.User">

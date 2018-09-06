@@ -11,9 +11,9 @@
     <result column="event_type" jdbcType="VARCHAR" property="eventType" />
     <result column="event_by" jdbcType="VARCHAR" property="eventBy" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
-    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -34,7 +34,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
     delete from mc_member_bp_history
     where integration_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberBpHistory">
@@ -46,7 +46,7 @@
     values (#{integrationId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{integration,jdbcType=INTEGER}, 
       #{preIntegration,jdbcType=INTEGER}, #{afterIntegration,jdbcType=INTEGER}, #{eventTime,jdbcType=DATE}, 
       #{eventType,jdbcType=VARCHAR}, #{eventBy,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
-      #{createdDate,jdbcType=DATE}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP},
       #{rowId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberBpHistory">
@@ -162,13 +162,13 @@
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="lastUpdatedBy != null">
         last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate != null">
-        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -204,7 +204,7 @@
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         last_updated_by = #{currentUser,jdbcType=VARCHAR},
@@ -217,7 +217,7 @@
       </if>
     </set>
     where integration_id = #{integrationId,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.MemberBpHistory">
@@ -230,9 +230,9 @@
       event_type = #{eventType,jdbcType=VARCHAR},
       event_by = #{eventBy,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
     where integration_id = #{integrationId,jdbcType=INTEGER}
   </update>
@@ -266,13 +266,13 @@
          and created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=DATE}
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
          and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}

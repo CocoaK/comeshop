@@ -46,7 +46,7 @@ public class GoodsService extends BaseService<Goods> implements IGoodsService {
         if(null == goods){
             return re;
         }
-        goods.setGoodsCode("g"+System.currentTimeMillis());
+        goods.setGoodsCode("G"+System.currentTimeMillis());
         int result = add(goods);
         String urls = goods.getGoodsMediaUrl();
         if(urls != null){

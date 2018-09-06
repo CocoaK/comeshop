@@ -23,8 +23,4 @@ public class GoodsController extends BaseController<Goods>{
         return goodsService;
     }
 
-    @RequestMapping(value = "/create")
-    public ResultEntity<String> login(@Validated @RequestBody GoodsVO goodsVO) throws Exception{
-        return goodsService.addForResultEntity(goodsVO);
-    }
 }

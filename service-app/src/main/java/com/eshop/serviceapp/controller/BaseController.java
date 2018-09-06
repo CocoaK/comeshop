@@ -100,19 +100,4 @@ public abstract class BaseController<T> {
         return new ResultEntity<A>(code,msg,data);
     }
 
-//	@InitBinder
-//	protected  void initBinder(WebDataBinder binder) {
-//	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-//	}
-
-//    @InitBinder
-//    protected void initBinder(WebDataBinder binder) {
-//        binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
-//            @Override
-//            public void setAsText(String value) {
-//                setValue(new Timestamp(Long.valueOf(value)));
-//            }
-//        });
-//    }
 }

@@ -1,20 +1,21 @@
 package com.eshop.serviceapp.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Goods extends BaseModel {
     private Integer goodsId;
-
+    @NotNull
     private Integer shopId;
-
+    @NotNull
     private Integer categoryId;
 
     private String goodsCode;
-
+    @NotNull
     private String goodsName;
-
+    @NotNull
     private String goodsBrief;
-
+    @NotNull
     private String buCode;
 
     private String createdBy;
@@ -28,6 +29,8 @@ public class Goods extends BaseModel {
     private String rowId;
 
     private String goodsDesc;
+
+    private String goodsMediaUrl;
 
     public Integer getGoodsId() {
         return goodsId;
@@ -131,5 +134,13 @@ public class Goods extends BaseModel {
 
     public void setGoodsDesc(String goodsDesc) {
         this.goodsDesc = goodsDesc == null ? null : goodsDesc.trim();
+    }
+
+    public String getGoodsMediaUrl() {
+        return goodsMediaUrl;
+    }
+
+    public void setGoodsMediaUrl(String goodsMediaUrl) {
+        this.goodsMediaUrl = goodsMediaUrl;
     }
 }

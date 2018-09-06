@@ -13,6 +13,15 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+
+  <resultMap id="voResultMap" type="com.eshop.serviceapp.vo.MemberCartVO" extends="BaseResultMap">
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+    <result column="goods_brief" jdbcType="VARCHAR" property="goodsBrief" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="media_url" jdbcType="VARCHAR" property="mediaUrl" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     member_cart_id, member_id, zone_goods_id, qty, bu_code, created_by, created_date, 
     last_updated_by, last_updated_date, row_id
@@ -30,7 +39,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_member_cart
     where member_cart_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberCart">
@@ -175,7 +184,7 @@
       </if>
     </set>
     where member_cart_id = #{memberCartId,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceapp.model.MemberCart">
@@ -194,55 +203,66 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="memberCartId != null">
-         and member_cart_id = #{memberCartId,jdbcType=INTEGER}
+         and t.member_cart_id = #{memberCartId,jdbcType=INTEGER}
       </if>
       <if test="memberId != null">
-         and member_id = #{memberId,jdbcType=INTEGER}
+         and t.member_id = #{memberId,jdbcType=INTEGER}
       </if>
       <if test="zoneGoodsId != null">
-         and zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+         and t.zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
       </if>
       <if test="qty != null">
-         and qty = #{qty,jdbcType=INTEGER}
+         and t.qty = #{qty,jdbcType=INTEGER}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
-         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
-         and row_id = #{rowId,jdbcType=VARCHAR}
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_member_cart
+    select t.* from mc_member_cart t
   </select>
   <select id="getList" parameterType="com.eshop.serviceapp.model.MemberCart" resultMap="BaseResultMap">
-    select * from mc_member_cart
+    select t.* from mc_member_cart t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberCart" resultMap="BaseResultMap">
-    select * from mc_member_cart
+    select t.* from mc_member_cart t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberCart" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_cart
+    select t.* from mc_member_cart t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberCart" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_cart
+    select t.* from mc_member_cart t
     <include refid="Base_Query_Cause" />
   </select>
+
+  <select id="queryCartList" parameterType="com.eshop.serviceapp.model.MemberCart" resultMap="voResultMap" useCache="false">
+    select t.*,b.goods_name,b.goods_code,b.goods_brief,c.price, d.media_url from mc_member_cart t
+    JOIN sh_zone_goods a ON a.zone_goods_id = t.zone_goods_id
+    JOIN sh_goods b ON b.goods_id = a.goods_id
+    JOIN sh_goods_model c ON c.goods_model_id = a.goods_model_id
+    JOIN sh_goods_media d ON d.goods_model_id = c.goods_model_id
+    where t.member_id = #{memberId,jdbcType=INTEGER}
+    GROUP BY member_cart_id
+  </select>
+
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

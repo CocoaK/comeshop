@@ -30,7 +30,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
     delete from member_cart
     where member_cart_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberCart">
@@ -175,7 +175,7 @@
       </if>
     </set>
     where member_cart_id = #{memberCartId,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.MemberCart">

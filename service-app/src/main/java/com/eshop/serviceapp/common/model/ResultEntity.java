@@ -10,7 +10,7 @@ public class ResultEntity<T> implements Serializable{
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 2598279955673063081L;
+	private static final long serialVersionUID = 2598279955673063082L;
 	public static final int SUCCESS = 1;
 	public static final int FAILD = 0;
 	public static final String MSG_SUCCESS = "success";

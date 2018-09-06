@@ -32,7 +32,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from mc_member_mp_details
     where member_mp_details_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberMpDetails">
@@ -203,7 +203,7 @@
       </if>
     </set>
     where member_mp_details_id = #{memberMpDetailsId,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceapp.model.MemberMpDetails">

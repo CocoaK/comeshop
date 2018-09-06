@@ -41,7 +41,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
     delete from ac_settle_details
     where settle_details_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.SettleDetails">
@@ -198,7 +198,7 @@
       </if>
     </set>
     where settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.SettleDetails">

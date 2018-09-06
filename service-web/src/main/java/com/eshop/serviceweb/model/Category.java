@@ -11,9 +11,11 @@ public class Category extends BaseModel {
 
     private String categoryImage;
 
-    private Integer parentId;
+    private Integer level;
 
     private Integer dispSeq;
+
+    private Integer parentId;
 
     private Boolean isActive;
 
@@ -63,12 +65,12 @@ public class Category extends BaseModel {
         this.categoryImage = categoryImage == null ? null : categoryImage.trim();
     }
 
-    public Integer getParentId() {
-        return parentId;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public Integer getDispSeq() {
@@ -77,6 +79,14 @@ public class Category extends BaseModel {
 
     public void setDispSeq(Integer dispSeq) {
         this.dispSeq = dispSeq;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 
     public Boolean getIsActive() {

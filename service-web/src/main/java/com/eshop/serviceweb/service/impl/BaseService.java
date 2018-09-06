@@ -8,6 +8,7 @@ import com.eshop.serviceweb.vo.DeleteVO;
 import com.eshop.serviceweb.vo.PageVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -85,7 +86,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
         return re;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public int delete(String id) {
         return getBaseMapper().delete(Integer.parseInt(id));
@@ -96,29 +97,31 @@ public abstract class BaseService<T> implements IBaseService<T> {
         return getBaseMapper().getOne(Integer.parseInt(id));
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public int updateActive(T entity) {
         return getBaseMapper().updateActive(entity);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public int updateActiveByLock(T entity) {
         return getBaseMapper().updateActiveByLock(entity);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public int update(T entity) {
         return getBaseMapper().update(entity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public int add(T entity) {
         return getBaseMapper().insertActive(entity);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> addForResultEntity(T record) {
         int result = add(record);
@@ -126,6 +129,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> addListForResultEntity(List<T> list) {
         if(list!=null && list.size()>0){
@@ -136,6 +140,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
         return proccessResultEntity(ResultEntity.SUCCESS,ResultEntity.MSG_SUCCESS,"");
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> deleteForResultEntity(String id) {
         int result = delete(id);
@@ -143,6 +148,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> deleteByLockForResultEntity(DeleteVO deleteVO){
         int result = getBaseMapper().deleteByLock(deleteVO);
@@ -150,12 +156,13 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<T> getOneResultEntity(String id) {
         return proccessResultEntity(ResultEntity.SUCCESS, "", getOne(id));
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> updateForResultEntity(T entity) {
         int result = updateActive(entity);
@@ -163,7 +170,7 @@ public abstract class BaseService<T> implements IBaseService<T> {
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> updateForResultEntityByLock(T entity) {
         int result = updateActiveByLock(entity);

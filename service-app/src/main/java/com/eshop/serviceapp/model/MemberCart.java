@@ -1,16 +1,17 @@
 package com.eshop.serviceapp.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class MemberCart extends BaseModel {
     private Integer memberCartId;
-
+    @NotNull
     private Integer memberId;
-
+    @NotNull
     private Integer zoneGoodsId;
-
+    @NotNull
     private Integer qty;
-
+    @NotNull
     private String buCode;
 
     private String createdBy;
@@ -20,7 +21,7 @@ public class MemberCart extends BaseModel {
     private String lastUpdatedBy;
 
     private Date lastUpdatedDate;
-
+    @NotNull
     private String rowId;
 
     public Integer getMemberCartId() {

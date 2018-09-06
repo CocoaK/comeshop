@@ -13,9 +13,9 @@
     <result column="is_active" jdbcType="BIT" property="isActive" />
     <result column="inactive_date" jdbcType="DATE" property="inactiveDate" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_date" jdbcType="DATE" property="createdDate" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
-    <result column="last_updated_date" jdbcType="DATE" property="lastUpdatedDate" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -36,7 +36,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
     delete from mc_member_rebate
     where rebate_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberRebate">
@@ -49,8 +49,8 @@
     values (#{rebateId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{rebate,jdbcType=INTEGER}, 
       #{rebateCycle,jdbcType=INTEGER}, #{rebateRatio,jdbcType=INTEGER}, #{maxOrderNum,jdbcType=INTEGER}, 
       #{rebateRatioEach,jdbcType=INTEGER}, #{discount,jdbcType=INTEGER}, #{isActive,jdbcType=BIT}, 
-      #{inactiveDate,jdbcType=DATE}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=DATE}, 
-      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=DATE}, #{rowId,jdbcType=VARCHAR}
+      #{inactiveDate,jdbcType=DATE}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP},
+      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberRebate">
@@ -184,13 +184,13 @@
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="lastUpdatedBy != null">
         last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate != null">
-        last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId != null">
         row_id = #{rowId,jdbcType=VARCHAR},
@@ -232,7 +232,7 @@
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
       <if test="createdDate != null">
-        created_date = #{createdDate,jdbcType=DATE},
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
       </if>
       <if test="currentUser != null">
         last_updated_by = #{currentUser,jdbcType=VARCHAR},
@@ -245,7 +245,7 @@
       </if>
     </set>
     where rebate_id = #{rebateId,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
   <update id="update" parameterType="com.eshop.serviceweb.model.MemberRebate">
@@ -260,9 +260,9 @@
       is_active = #{isActive,jdbcType=BIT},
       inactive_date = #{inactiveDate,jdbcType=DATE},
       created_by = #{createdBy,jdbcType=VARCHAR},
-      created_date = #{createdDate,jdbcType=DATE},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
-      last_updated_date = #{lastUpdatedDate,jdbcType=DATE},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
     where rebate_id = #{rebateId,jdbcType=INTEGER}
   </update>
@@ -302,13 +302,13 @@
          and created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=DATE}
+         and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
          and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
+         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
          and row_id = #{rowId,jdbcType=VARCHAR}
