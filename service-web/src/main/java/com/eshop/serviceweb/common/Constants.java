@@ -32,6 +32,8 @@ public class Constants {
 
     /** 分区：充值优惠区*/
     public static final String ZONE_RECHARGE = "A00002";
-
-
+    /** 商品媒体类型：图片*/
+    public static final String GOODS_MEDIA_TYPE_IMAGE= "IMAGE";
+    /** 商品媒体类型：图片*/
+    public static final String GOODS_MEDIA_TYPE_VIDEO = "VIDEO";
 }

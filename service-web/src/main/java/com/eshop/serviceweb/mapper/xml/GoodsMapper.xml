@@ -8,7 +8,6 @@
     <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="goods_brief" jdbcType="VARCHAR" property="goodsBrief" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -20,7 +19,7 @@
     <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
   </resultMap>
   <sql id="Base_Column_List">
-    goods_id, shop_id, category_id, goods_code, goods_name, goods_brief, price, bu_code, 
+    goods_id, shop_id, category_id, goods_code, goods_name, goods_brief, bu_code,
     created_by, created_date, last_updated_by, last_updated_date, row_id
   </sql>
   <sql id="Blob_Column_List">
@@ -47,12 +46,12 @@
   <insert id="insert" parameterType="com.eshop.serviceweb.model.Goods">
     insert into sh_goods (goods_id, shop_id, category_id, 
       goods_code, goods_name, goods_brief, 
-      price, bu_code, created_by, 
+      bu_code, created_by,
       created_date, last_updated_by, last_updated_date, 
       row_id, goods_desc)
     values (#{goodsId,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, 
       #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsBrief,jdbcType=VARCHAR}, 
-      #{price,jdbcType=DECIMAL}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR},
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR}, #{goodsDesc,jdbcType=LONGVARCHAR})
   </insert>
@@ -76,9 +75,6 @@
       </if>
       <if test="goodsBrief != null">
         goods_brief,
-      </if>
-      <if test="price != null">
-        price,
       </if>
       <if test="buCode != null">
         bu_code,
@@ -121,9 +117,6 @@
       <if test="goodsBrief != null">
         #{goodsBrief,jdbcType=VARCHAR},
       </if>
-      <if test="price != null">
-        #{price,jdbcType=DECIMAL},
-      </if>
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
       </if>
@@ -164,9 +157,6 @@
       </if>
       <if test="goodsBrief != null">
         goods_brief = #{goodsBrief,jdbcType=VARCHAR},
-      </if>
-      <if test="price != null">
-        price = #{price,jdbcType=DECIMAL},
       </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
@@ -210,9 +200,6 @@
       <if test="goodsBrief != null">
         goods_brief = #{goodsBrief,jdbcType=VARCHAR},
       </if>
-      <if test="price != null">
-        price = #{price,jdbcType=DECIMAL},
-      </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
@@ -246,7 +233,6 @@
       goods_code = #{goodsCode,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_brief = #{goodsBrief,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -263,7 +249,6 @@
       goods_code = #{goodsCode,jdbcType=VARCHAR},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       goods_brief = #{goodsBrief,jdbcType=VARCHAR},
-      price = #{price,jdbcType=DECIMAL},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -291,9 +276,6 @@
       </if>
       <if test="goodsBrief != null">
          and goods_brief = #{goodsBrief,jdbcType=VARCHAR}
-      </if>
-      <if test="price != null">
-         and price = #{price,jdbcType=DECIMAL}
       </if>
       <if test="buCode != null">
          and bu_code = #{buCode,jdbcType=VARCHAR}

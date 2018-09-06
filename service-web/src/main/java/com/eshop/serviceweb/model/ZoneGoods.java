@@ -1,15 +1,16 @@
 package com.eshop.serviceweb.model;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class ZoneGoods extends BaseModel {
     private Integer zoneGoodsId;
-
+    @NotNull
     private String zoneCode;
-
+    @NotNull
     private Integer goodsId;
-
+    @NotNull
     private Integer goodsModelId;
 
     private String status;

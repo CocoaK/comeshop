@@ -32,14 +32,14 @@ public class FileService implements IFileService {
         String realPath = null;
 		if (!file.isEmpty()) {
 			String fileName = file.getOriginalFilename();
-			String fileNameExtension = fileName.substring(fileName.indexOf("."), fileName.length());
+			String fileNameExtension = fileName.substring(fileName.indexOf(".")+1, fileName.length());
             realPath = checkFileExtName(fileNameExtension);
             if(null == realPath){
                 re.setMsg("format not support");
                 return re;
             }
 			// 生成实际存储的真实文件名
-			realName = UUID.randomUUID().toString() + fileNameExtension;
+			realName = UUID.randomUUID().toString() + "." + fileNameExtension;
 			try {
 				byte[] bytes = file.getBytes();
 				BufferedOutputStream buffStream = new BufferedOutputStream(new FileOutputStream(new File(uploadPath+realName)));
@@ -68,14 +68,14 @@ public class FileService implements IFileService {
 			for(MultipartFile file : files) {
 				String fileName = file.getOriginalFilename();
 				//文件扩展名
-				String fileNameExtension = fileName.substring(fileName.indexOf("."), fileName.length());
+				String fileNameExtension = fileName.substring(fileName.indexOf(".")+1, fileName.length());
                 realPath = checkFileExtName(fileName);
                 if(null == realPath){
                     re.setMsg("format not support");
                     return re;
                 }
 				// 生成实际存储的真实文件名
-				realName = UUID.randomUUID().toString() + fileNameExtension;
+				realName = UUID.randomUUID().toString() + "." + fileNameExtension;
 				try {
 					byte[] bytes = file.getBytes();
 					BufferedOutputStream buffStream = new BufferedOutputStream(new FileOutputStream(new File(realPath + realName)));
@@ -109,9 +109,8 @@ public class FileService implements IFileService {
 		try {
 			if (fileName != null) {
                 //文件扩展名
-                String fileNameExtension = fileName.substring(fileName.indexOf("."), fileName.length());
+                String fileNameExtension = fileName.substring(fileName.indexOf(".")+1, fileName.length());
 				String realPath  = checkFileExtName(fileNameExtension);
-				String uploadFileRootPath = uploadPath;
 				if (realPath != null) {
 					//全路径
 					fileFullPath = realPath + "/" + fileName;

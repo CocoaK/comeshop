@@ -6,11 +6,15 @@ import java.math.BigDecimal;
 
 public class GoodsVO extends Goods {
 
+    private String goodsMediaUrl;
+
     private BigDecimal discontAmt;
     @NotNull
     private Integer goodsQty;
     @NotNull
     private BigDecimal price;
+    @NotNull
+    private String zoneCode;
 
     private Boolean isCommend;
 
@@ -36,12 +40,9 @@ public class GoodsVO extends Goods {
         this.goodsQty = goodsQty;
     }
 
-    @Override
     public BigDecimal getPrice() {
         return price;
     }
-
-    @Override
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
@@ -76,5 +77,13 @@ public class GoodsVO extends Goods {
 
     public void setHighQuality(Boolean highQuality) {
         isHighQuality = highQuality;
+    }
+
+    public String getZoneCode() {
+        return zoneCode;
+    }
+
+    public void setZoneCode(String zoneCode) {
+        this.zoneCode = zoneCode;
     }
 }

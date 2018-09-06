@@ -17,8 +17,6 @@ public class Goods extends BaseModel {
     @NotNull
     private String goodsBrief;
     @NotNull
-    private BigDecimal price;
-    @NotNull
     private String buCode;
 
     private String createdBy;
@@ -32,6 +30,8 @@ public class Goods extends BaseModel {
     private String rowId;
 
     private String goodsDesc;
+
+    private String goodsMediaUrl;
 
     public Integer getGoodsId() {
         return goodsId;
@@ -79,14 +79,6 @@ public class Goods extends BaseModel {
 
     public void setGoodsBrief(String goodsBrief) {
         this.goodsBrief = goodsBrief == null ? null : goodsBrief.trim();
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
     }
 
     public String getBuCode() {
@@ -143,5 +135,13 @@ public class Goods extends BaseModel {
 
     public void setGoodsDesc(String goodsDesc) {
         this.goodsDesc = goodsDesc == null ? null : goodsDesc.trim();
+    }
+
+    public String getGoodsMediaUrl() {
+        return goodsMediaUrl;
+    }
+
+    public void setGoodsMediaUrl(String goodsMediaUrl) {
+        this.goodsMediaUrl = goodsMediaUrl;
     }
 }
