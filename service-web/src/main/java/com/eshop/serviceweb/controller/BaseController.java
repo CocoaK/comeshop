@@ -57,6 +57,11 @@ public abstract class BaseController<T> {
         return getBaseService().deleteByLockForResultEntity(deleteVO);
     }
 
+    @RequestMapping("/deleteByLocks")
+    public @ResponseBody ResultEntity<String> deletes(@Validated @RequestBody List<DeleteVO> list) {
+        return getBaseService().deleteByLockForResultEntity(list);
+    }
+
     @RequestMapping("/update")
     public @ResponseBody ResultEntity<String> update(@RequestBody T record) {
         return getBaseService().updateForResultEntityByLock(record);

@@ -55,6 +55,12 @@ public interface IBaseService<T> {
      */
     public ResultEntity<String> deleteByLockForResultEntity(DeleteVO deleteVO);
 
+    /**
+     * 删除返回格式化结果
+     * @param list
+     * @return
+     */
+    ResultEntity<String> deleteByLockForResultEntity(List<DeleteVO> list);
 
     /**
      * 获取单个实体数据

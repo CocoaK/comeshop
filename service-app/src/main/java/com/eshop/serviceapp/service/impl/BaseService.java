@@ -8,6 +8,7 @@ import com.eshop.serviceapp.vo.DeleteVO;
 import com.eshop.serviceapp.vo.PageVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -146,6 +147,17 @@ public abstract class BaseService<T> implements IBaseService<T> {
     @Override
     public ResultEntity<String> deleteByLockForResultEntity(DeleteVO deleteVO){
         int result = getBaseMapper().deleteByLock(deleteVO);
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public ResultEntity<String> deleteByLockForResultEntity(List<DeleteVO> list){
+        int result = 0;
+        for(DeleteVO deleteVO : list){
+            result = getBaseMapper().deleteByLock(deleteVO);
+        }
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
     }

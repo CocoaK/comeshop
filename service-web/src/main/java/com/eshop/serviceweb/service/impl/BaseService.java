@@ -158,6 +158,17 @@ public abstract class BaseService<T> implements IBaseService<T> {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
+    public ResultEntity<String> deleteByLockForResultEntity(List<DeleteVO> list){
+        int result = 0;
+        for(DeleteVO deleteVO : list){
+            result = getBaseMapper().deleteByLock(deleteVO);
+        }
+        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
     public ResultEntity<T> getOneResultEntity(String id) {
         return proccessResultEntity(ResultEntity.SUCCESS, "", getOne(id));
     }

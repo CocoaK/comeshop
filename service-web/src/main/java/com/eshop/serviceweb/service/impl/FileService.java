@@ -69,7 +69,7 @@ public class FileService implements IFileService {
 				String fileName = file.getOriginalFilename();
 				//文件扩展名
 				String fileNameExtension = fileName.substring(fileName.indexOf(".")+1, fileName.length());
-                realPath = checkFileExtName(fileName);
+                realPath = checkFileExtName(fileNameExtension);
                 if(null == realPath){
                     re.setMsg("format not support");
                     return re;
@@ -188,11 +188,13 @@ public class FileService implements IFileService {
 	private String checkFileExtName(String fileExtName){
 	    String realPath = null;
         if(imageFormat!=null && !"".equals(imageFormat)){
-            String[] exts = imageFormat.split(",");
-            List<String> list = Arrays.asList(exts);
-            if(list.contains(fileExtName.toLowerCase())){
+            String[] imageExts = imageFormat.split(",");
+			String[] videoExts = videoFormat.split(",");
+            List<String> listImage = Arrays.asList(imageExts);
+			List<String> listVideo = Arrays.asList(videoExts);
+            if(listImage.contains(fileExtName.toLowerCase())){
                 realPath = uploadPath + "/image/";
-            }else if(list.contains(fileExtName.toLowerCase())){
+            }else if(listVideo.contains(fileExtName.toLowerCase())){
                 realPath = uploadPath + "/video/";
             }
         }
