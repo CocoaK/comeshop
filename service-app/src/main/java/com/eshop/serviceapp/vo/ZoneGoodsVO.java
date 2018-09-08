@@ -3,12 +3,8 @@ package com.eshop.serviceapp.vo;
 public class ZoneGoodsVO {
 
     private String zoneCode;
-
-    private String goodsName;
-
-    private String goodsDesc;
-
-    private String goodsBrief;
+    private Integer categoryId;
+    private String searchValue;
 
     public String getZoneCode() {
         return zoneCode;
@@ -18,27 +14,19 @@ public class ZoneGoodsVO {
         this.zoneCode = zoneCode;
     }
 
-    public String getGoodsName() {
-        return goodsName;
+    public Integer getCategoryId() {
+        return categoryId;
     }
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getGoodsDesc() {
-        return goodsDesc;
+    public String getSearchValue() {
+        return searchValue;
     }
 
-    public void setGoodsDesc(String goodsDesc) {
-        this.goodsDesc = goodsDesc;
-    }
-
-    public String getGoodsBrief() {
-        return goodsBrief;
-    }
-
-    public void setGoodsBrief(String goodsBrief) {
-        this.goodsBrief = goodsBrief;
+    public void setSearchValue(String searchValue) {
+        this.searchValue = searchValue;
     }
 }
