@@ -30,7 +30,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from sh_goods_model
     where goods_model_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceapp.model.GoodsModel">
@@ -194,54 +194,54 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="goodsModelId != null">
-         and goods_model_id = #{goodsModelId,jdbcType=INTEGER}
+         and t.goods_model_id = #{goodsModelId,jdbcType=INTEGER}
       </if>
       <if test="goodsId != null">
-         and goods_id = #{goodsId,jdbcType=INTEGER}
+         and t.goods_id = #{goodsId,jdbcType=INTEGER}
       </if>
       <if test="goodsModelName != null">
-         and goods_model_name = #{goodsModelName,jdbcType=VARCHAR}
+         and t.goods_model_name = #{goodsModelName,jdbcType=VARCHAR}
       </if>
       <if test="price != null">
-         and price = #{price,jdbcType=DECIMAL}
+         and t.price = #{price,jdbcType=DECIMAL}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
-         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
-         and row_id = #{rowId,jdbcType=VARCHAR}
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from sh_goods_model
+    select t.* from sh_goods_model t
   </select>
   <select id="getList" parameterType="com.eshop.serviceapp.model.GoodsModel" resultMap="BaseResultMap">
-    select * from sh_goods_model
+    select t.* from sh_goods_model t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceapp.model.GoodsModel" resultMap="BaseResultMap">
-    select * from sh_goods_model
+    select t.* from sh_goods_model t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceapp.model.GoodsModel" resultMap="BaseResultMap" useCache="false">
-    select * from sh_goods_model
+    select t.* from sh_goods_model t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceapp.model.GoodsModel" resultMap="BaseResultMap" useCache="false">
-    select * from sh_goods_model
+    select t.* from sh_goods_model t
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />

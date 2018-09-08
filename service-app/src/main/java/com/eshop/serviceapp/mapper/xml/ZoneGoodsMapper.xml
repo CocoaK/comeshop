@@ -21,6 +21,15 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+
+  <resultMap id="voResultMap" type="map">
+    <result column="zone_goods_id" jdbcType="VARCHAR" property="zoneGoodsId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+    <result column="media_url" jdbcType="VARCHAR" property="goodsImage" />
+    <result column="comment_count" jdbcType="VARCHAR" property="commentCount" />
+  </resultMap>
   <sql id="Base_Column_List">
     zone_goods_id, zone_code, goods_id, goods_model_id, status, goods_qty, discount_amt, 
     profit_amt, rebate_amt, is_default, is_show_in_home, disp_seq, bu_code, created_by, 
@@ -39,7 +48,7 @@
   <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
     delete from sh_zone_goods
     where zone_goods_id = #{id,jdbcType=INTEGER}
-    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=DATE}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceapp.model.ZoneGoods">
@@ -311,81 +320,105 @@
     where zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
   </update>
   <sql id="Base_Query_Cause">
-    <trim prefix="WHERE" prefixOverrides="AND | OR">
+    WHERE 1=1
       <if test="zoneGoodsId != null">
-         and zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+         and t.zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
       </if>
       <if test="zoneCode != null">
-         and zone_code = #{zoneCode,jdbcType=VARCHAR}
+         and t.zone_code = #{zoneCode,jdbcType=VARCHAR}
       </if>
       <if test="goodsId != null">
-         and goods_id = #{goodsId,jdbcType=INTEGER}
+         and t.goods_id = #{goodsId,jdbcType=INTEGER}
       </if>
       <if test="goodsModelId != null">
-         and goods_model_id = #{goodsModelId,jdbcType=INTEGER}
+         and t.goods_model_id = #{goodsModelId,jdbcType=INTEGER}
       </if>
       <if test="status != null">
-         and status = #{status,jdbcType=VARCHAR}
+         and t.status = #{status,jdbcType=VARCHAR}
       </if>
       <if test="goodsQty != null">
-         and goods_qty = #{goodsQty,jdbcType=INTEGER}
+         and t.goods_qty = #{goodsQty,jdbcType=INTEGER}
       </if>
       <if test="discountAmt != null">
-         and discount_amt = #{discountAmt,jdbcType=DECIMAL}
+         and t.discount_amt = #{discountAmt,jdbcType=DECIMAL}
       </if>
       <if test="profitAmt != null">
-         and profit_amt = #{profitAmt,jdbcType=DECIMAL}
+         and t.profit_amt = #{profitAmt,jdbcType=DECIMAL}
       </if>
       <if test="rebateAmt != null">
-         and rebate_amt = #{rebateAmt,jdbcType=DECIMAL}
+         and t.rebate_amt = #{rebateAmt,jdbcType=DECIMAL}
       </if>
       <if test="isDefault != null">
-         and is_default = #{isDefault,jdbcType=BIT}
+         and t.is_default = #{isDefault,jdbcType=BIT}
       </if>
       <if test="isShowInHome != null">
-         and is_show_in_home = #{isShowInHome,jdbcType=BIT}
+         and t.is_show_in_home = #{isShowInHome,jdbcType=BIT}
       </if>
       <if test="dispSeq != null">
-         and disp_seq = #{dispSeq,jdbcType=INTEGER}
+         and t.disp_seq = #{dispSeq,jdbcType=INTEGER}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
       <if test="lastUpdatedBy != null">
-         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
       </if>
       <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
       </if>
       <if test="rowId != null">
-         and row_id = #{rowId,jdbcType=VARCHAR}
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
-    </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from sh_zone_goods
+    select t.* from sh_zone_goods t
   </select>
   <select id="getList" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="BaseResultMap">
-    select * from sh_zone_goods
+    select t.* from sh_zone_goods t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="BaseResultMap">
-    select * from sh_zone_goods
+    select t.* from sh_zone_goods t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="BaseResultMap" useCache="false">
-    select * from sh_zone_goods
+    select t.* from sh_zone_goods t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="BaseResultMap" useCache="false">
-    select * from sh_zone_goods
+    select t.* from sh_zone_goods t
     <include refid="Base_Query_Cause" />
   </select>
+  <select id="queryVoList" parameterType="com.eshop.serviceapp.vo.ZoneGoodsVO" resultMap="voResultMap" useCache="false">
+    SELECT
+    t.zone_goods_id,b.goods_name,b.goods_code,a.price,count(d.comment_id) comment_count,
+    (SELECT media_url FROM sh_goods_media where media_type = 'IMAGE' and goods_id = b.goods_id limit 1) media_url
+    FROM
+    sh_zone_goods t
+    LEFT JOIN sh_goods_model a ON a.goods_model_id = t.goods_model_id
+    LEFT JOIN sh_goods b on b.goods_id = t.goods_id
+    LEFT JOIN mc_comment d ON d.goods_id = b.goods_id
+    WHERE 1=1
+    <if test="zoneCode != null">
+      and t.t.zone_code like concat('%',#{zoneCode,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="goodsName != null">
+      and b.goods_name like concat('%',#{goodsName,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="goodsBrief != null">
+      and b.goods_brief like concat('%',#{goodsBrief,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="goodsDesc != null">
+      and b.goods_desc like concat('%',#{goodsDesc,jdbcType=VARCHAR},'%')
+    </if>
+    group by t.zone_goods_id
+  </select>
+
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

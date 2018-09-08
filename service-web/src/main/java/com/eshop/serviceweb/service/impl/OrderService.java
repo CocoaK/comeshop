@@ -22,7 +22,7 @@ public class OrderService extends BaseService<Order> implements IOrderService {
 
     @Override
     public ResultEntity<String> addForResultEntity(Order order) {
-        order.setOrderNo(StringUtil.randomNum(7)+System.currentTimeMillis());
+        order.setOrderNo(System.currentTimeMillis()+StringUtil.randomNum(7));
         int result = add(order);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
