@@ -54,10 +54,10 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/auth/login", "anon");
         filterChainDefinitionMap.put("/file/**", "anon");
         filterChainDefinitionMap.put("/auth/logout", "logout");
-//        filterChainDefinitionMap.put("/auth/kickout", "anon");
+        filterChainDefinitionMap.put("/order/**", "authc");
 //        filterChainDefinitionMap.put("/**", "authc,kickout");
-        filterChainDefinitionMap.put("/**", "authc");
-//        filterChainDefinitionMap.put("/**", "anon");
+//        filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

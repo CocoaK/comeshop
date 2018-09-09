@@ -39,16 +39,19 @@ public class ZoneService extends BaseService<Zone> implements IZoneService {
         List<ZoneVO> list = new ArrayList<ZoneVO>();
         for(Zone zone : zones){
             ZoneGoodsVO zoneGoods = new ZoneGoodsVO();
-            if(pageVO!=null && pageVO.getParams()!=null){
-                zoneGoods.setZoneCode(pageVO.getParams().getZoneCode());
-            }
+//            if(pageVO!=null && pageVO.getParams()!=null){
+//                zoneGoods.setZoneCode(zone.getZoneCode());
+//            }
+            zoneGoods.setZoneCode(zone.getZoneCode());
             Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),"disp_seq");
-            zoneGoodsMapper.queryVoList(zoneGoods);
-            ZoneVO zoneVO = new ZoneVO();
-            zoneVO.setZoneCode(zone.getZoneCode());
-            zoneVO.setZoneName(zone.getZoneName());
-            zoneVO.setChildren(page);
-            list.add(zoneVO);
+            List li = zoneGoodsMapper.queryVoList(zoneGoods);
+            if(li!=null && !li.isEmpty()){
+                ZoneVO zoneVO = new ZoneVO();
+                zoneVO.setZoneCode(zone.getZoneCode());
+                zoneVO.setZoneName(zone.getZoneName());
+                zoneVO.setChildren(page);
+                list.add(zoneVO);
+            }
         }
         return list;
     }

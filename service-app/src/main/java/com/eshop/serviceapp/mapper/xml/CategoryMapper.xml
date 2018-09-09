@@ -18,6 +18,13 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+
+  <resultMap id="mapResultMap" type="com.eshop.serviceapp.vo.CategoryVO">
+    <id column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="category_code" jdbcType="VARCHAR" property="categoryCode" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="category_image" jdbcType="VARCHAR" property="categoryImage" />
+  </resultMap>
   <sql id="Base_Column_List">
     category_id, category_code, category_name, category_image, level, disp_seq, parent_id, 
     is_active, inactive_date, bu_code, created_by, created_date, last_updated_by, last_updated_date, 
@@ -318,9 +325,16 @@
   <select id="getAll" resultMap="BaseResultMap">
     select * from sh_category
   </select>
-  <select id="getList" parameterType="com.eshop.serviceapp.model.Category" resultMap="BaseResultMap">
-    select * from sh_category
+  <select id="getList" parameterType="com.eshop.serviceapp.model.Category" resultMap="mapResultMap">
+    SELECT
+    category_id,category_code,category_name,category_image from sh_category
     <include refid="Base_Query_Cause" />
+    order by disp_seq
+  </select>
+  <select id="getSubListByParentId" parameterType="java.lang.Integer" resultMap="mapResultMap">
+    SELECT
+    category_id,category_code,category_name,category_image,null as children from sh_category
+    WHERE parent_id = #{categoryId,jdbcType=INTEGER}
     order by disp_seq
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceapp.model.Category" resultMap="BaseResultMap">

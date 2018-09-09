@@ -1,8 +1,9 @@
 package com.eshop.serviceapp.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CategoryVO {
+public class CategoryVO implements Serializable {
 
     private Integer categoryId;
 
