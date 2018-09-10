@@ -1,5 +1,6 @@
 package com.eshop.serviceapp.shiro;
 
+import com.eshop.serviceapp.common.filter.CustomCrosFilter;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -45,6 +46,8 @@ public class ShiroConfig {
         //限制同一帐号同时在线的个数。
 //        filtersMap.put("kickout", kickoutSessionControlFilter());
         filtersMap.put("authc", new JwtAuthcFilter());
+        //跨域
+        filtersMap.put("anon", new CustomCrosFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
         // 权限控制map.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();

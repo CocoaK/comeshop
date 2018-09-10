@@ -52,7 +52,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberCart">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberCart" useGeneratedKeys="true" keyProperty="memberCartId">
     insert into mc_member_cart
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberCartId != null">

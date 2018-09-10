@@ -1,26 +1,28 @@
 package com.eshop.serviceapp.model;
 
+import reactor.util.annotation.NonNull;
+
 import java.util.Date;
 
 public class MemberAddress extends BaseModel {
     private Integer memberAddressId;
-
+    @NonNull
     private Integer memberId;
-
+    @NonNull
     private String receiverName;
-
+    @NonNull
     private String telephone;
-
+    @NonNull
     private String receivingProvince;
-
+    @NonNull
     private String receivingCity;
-
+    @NonNull
     private String receivingArea;
-
+    @NonNull
     private String receivingAddress;
 
     private String postalCode;
-
+    @NonNull
     private Boolean isDefault;
 
     private String buCode;
