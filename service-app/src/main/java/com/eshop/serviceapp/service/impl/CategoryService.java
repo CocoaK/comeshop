@@ -27,14 +27,7 @@ public class CategoryService extends BaseService<Category> implements ICategoryS
     }
 
     private List bulidSubCategory(List<CategoryVO> categoryVOList){
-        //List<CategoryVO> categoryVOList = new ArrayList<CategoryVO>();
         for(CategoryVO categoryVO : categoryVOList){
-//            CategoryVO categoryVO = new CategoryVO();
-//            categoryVO.setCategoryCode(ca.getCategoryCode());
-//            categoryVO.setCategoryId(ca.getCategoryId());
-//            categoryVO.setCategoryName(ca.getCategoryName());
-//            categoryVO.setCategoryImage(ca.getCategoryImage());
-
             //查询当前分类的子分类
             List<CategoryVO> li = categoryMapper.getSubListByParentId(categoryVO.getCategoryId());
             if(li!=null && !li.isEmpty()){

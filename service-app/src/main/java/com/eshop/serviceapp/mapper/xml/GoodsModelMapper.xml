@@ -13,6 +13,13 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+
+  <resultMap id="detailMap" type="com.eshop.serviceapp.vo.GoodsModelVO">
+    <result column="zone_goods_id" jdbcType="INTEGER" property="zoneGoodsId" />
+    <result column="goods_model_id" jdbcType="INTEGER" property="goodsModelId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="goods_model_name" jdbcType="VARCHAR" property="goodsModelName" />
+  </resultMap>
   <sql id="Base_Column_List">
     goods_model_id, goods_id, goods_model_name, price, bu_code, created_by, created_date, 
     last_updated_by, last_updated_date, row_id
@@ -243,6 +250,14 @@
   <select id="queryList" parameterType="com.eshop.serviceapp.model.GoodsModel" resultMap="BaseResultMap" useCache="false">
     select t.* from sh_goods_model t
     <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getDetail" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="detailMap" useCache="false">
+    SELECT
+    t.zone_goods_id,a.goods_model_id,a.goods_model_name,a.price
+    FROM
+    sh_zone_goods t
+    LEFT JOIN sh_goods_model a ON a.goods_model_id = t.goods_model_id
+    WHERE  t.zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
   </select>
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

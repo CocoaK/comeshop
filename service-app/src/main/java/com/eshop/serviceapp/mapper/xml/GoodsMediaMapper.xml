@@ -16,6 +16,11 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+
+  <resultMap id="simpleResult" type="map">
+    <result column="media_desc" jdbcType="VARCHAR" property="desc" />
+    <result column="media_url" jdbcType="VARCHAR" property="url" />
+  </resultMap>
   <sql id="Base_Column_List">
     media_id, goods_id, goods_model_id, goods_comment_id, media_type, media_desc, media_url, 
     bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
@@ -297,5 +302,11 @@
     select * from sh_goods_media
     <include refid="Base_Query_Cause" />
   </select>
+
+  <select id="getSimpleList" parameterType="com.eshop.serviceapp.model.GoodsMedia" resultMap="simpleResult">
+    select media_url,media_desc from sh_goods_media
+    <include refid="Base_Query_Cause" />
+  </select>
+
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

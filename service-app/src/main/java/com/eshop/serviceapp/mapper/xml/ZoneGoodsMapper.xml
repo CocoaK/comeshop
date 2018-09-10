@@ -30,6 +30,14 @@
     <result column="media_url" jdbcType="VARCHAR" property="goodsImage" />
     <result column="comment_count" jdbcType="VARCHAR" property="commentCount" />
   </resultMap>
+
+  <resultMap id="detailMap" type="com.eshop.serviceapp.vo.ZoneGoodsDetailVO">
+    <result column="zone_goods_id" jdbcType="VARCHAR" property="zoneGoodsId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+    <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+  </resultMap>
   <sql id="Base_Column_List">
     zone_goods_id, zone_code, goods_id, goods_model_id, status, goods_qty, discount_amt, 
     profit_amt, rebate_amt, is_default, is_show_in_home, disp_seq, bu_code, created_by, 
@@ -410,7 +418,7 @@
       and t.zone_code = #{zoneCode,jdbcType=VARCHAR}
     </if>
     <if test="categoryId != null">
-      and t.category_id = #{categoryId,jdbcType=VARCHAR}
+      and b.category_id = #{categoryId,jdbcType=VARCHAR}
     </if>
     <if test="searchValue != null">
       and (b.goods_name like concat('%',#{searchValue,jdbcType=VARCHAR},'%')
@@ -420,5 +428,14 @@
     group by t.zone_goods_id
   </select>
 
+  <select id="getDetail" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="detailMap" useCache="false">
+    SELECT
+    t.zone_goods_id,b.goods_name,b.goods_code,a.price,b.goods_brief,b.goods_desc
+    FROM
+    sh_zone_goods t
+    LEFT JOIN sh_goods_model a ON a.goods_model_id = t.goods_model_id
+    LEFT JOIN sh_goods b on b.goods_id = t.goods_id
+    WHERE  t.zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+  </select>
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>

@@ -10,4 +10,6 @@ public interface IZoneGoodsService extends IBaseService<ZoneGoods> {
 
     ResultList queryList(PageVO<ZoneGoodsVO> pageVO);
 
+    ResultEntity getDetail(Integer zoneGoodsId);
+
 }

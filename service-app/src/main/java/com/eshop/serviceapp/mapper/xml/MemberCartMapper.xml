@@ -256,10 +256,10 @@
 
   <select id="queryCartList" parameterType="com.eshop.serviceapp.model.MemberCart" resultMap="voResultMap" useCache="false">
     select t.*,b.goods_name,b.goods_code,b.goods_brief,c.price, d.media_url from mc_member_cart t
-    JOIN sh_zone_goods a ON a.zone_goods_id = t.zone_goods_id
-    JOIN sh_goods b ON b.goods_id = a.goods_id
-    JOIN sh_goods_model c ON c.goods_model_id = a.goods_model_id
-    JOIN sh_goods_media d ON d.goods_model_id = c.goods_model_id
+    LEFT JOIN sh_zone_goods a ON a.zone_goods_id = t.zone_goods_id
+    LEFT JOIN sh_goods b ON b.goods_id = a.goods_id
+    LEFT JOIN sh_goods_model c ON c.goods_model_id = a.goods_model_id
+    LEFT JOIN sh_goods_media d ON d.goods_model_id = c.goods_model_id
     where t.member_id = #{memberId,jdbcType=INTEGER}
     GROUP BY member_cart_id
   </select>

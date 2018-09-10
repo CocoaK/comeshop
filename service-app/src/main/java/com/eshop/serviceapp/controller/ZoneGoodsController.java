@@ -1,5 +1,6 @@
 package com.eshop.serviceapp.controller;
 
+import com.eshop.serviceapp.common.model.ResultEntity;
 import com.eshop.serviceapp.common.model.ResultList;
 import com.eshop.serviceapp.model.Zone;
 import com.eshop.serviceapp.model.ZoneGoods;
@@ -33,5 +34,11 @@ public class ZoneGoodsController extends BaseController<ZoneGoods>{
     public @ResponseBody
     ResultList queryList(@RequestBody PageVO<ZoneGoodsVO> pageVO){
         return zoneGoodsService.queryList(pageVO);
+    }
+
+    @RequestMapping(value = "/getDetail")
+    public @ResponseBody
+    ResultEntity getDetail(@RequestBody ZoneGoods zoneGoods){
+        return zoneGoodsService.getDetail(zoneGoods.getZoneGoodsId());
     }
 }
