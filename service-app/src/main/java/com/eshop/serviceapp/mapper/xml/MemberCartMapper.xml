@@ -221,15 +221,6 @@
       <if test="createdDate != null">
          and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
-      <if test="lastUpdatedBy != null">
-         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
-      </if>
-      <if test="lastUpdatedDate != null">
-         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
-      </if>
-      <if test="rowId != null">
-         and t.row_id = #{rowId,jdbcType=VARCHAR}
-      </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">

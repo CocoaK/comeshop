@@ -21,6 +21,8 @@ public class MemberAddress extends BaseModel {
     @NonNull
     private String receivingAddress;
 
+    private String receivingAreaCode;
+
     private String postalCode;
     @NonNull
     private Boolean isDefault;
@@ -163,5 +165,13 @@ public class MemberAddress extends BaseModel {
 
     public void setRowId(String rowId) {
         this.rowId = rowId == null ? null : rowId.trim();
+    }
+
+    public String getReceivingAreaCode() {
+        return receivingAreaCode;
+    }
+
+    public void setReceivingAreaCode(String receivingAreaCode) {
+        this.receivingAreaCode = receivingAreaCode;
     }
 }

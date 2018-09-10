@@ -287,15 +287,6 @@
       <if test="createdDate != null">
          and created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
-      <if test="lastUpdatedBy != null">
-         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
-      </if>
-      <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
-      </if>
-      <if test="rowId != null">
-         and row_id = #{rowId,jdbcType=VARCHAR}
-      </if>
       <if test="content != null">
          and content = #{content,jdbcType=LONGVARCHAR}
       </if>

@@ -81,7 +81,7 @@ public interface IBaseService<T> {
      * @param entity
      * @return
      */
-    public ResultEntity<String> updateForResultEntityByLock(T entity);
+    public ResultEntity<T> updateForResultEntityByLock(T entity);
 
     /**
      * 传递常用结果消息

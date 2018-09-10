@@ -363,15 +363,6 @@
       <if test="createdDate != null">
          and a.created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
-      <if test="lastUpdatedBy != null">
-         and a.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
-      </if>
-      <if test="lastUpdatedDate != null">
-         and a.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
-      </if>
-      <if test="rowId != null">
-         and a.row_id = #{rowId,jdbcType=VARCHAR}
-      </if>
     </trim>
   </sql>
 

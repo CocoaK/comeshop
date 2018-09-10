@@ -60,7 +60,7 @@ public abstract class BaseController<T> {
     }
 
     @RequestMapping("/update")
-    public @ResponseBody ResultEntity<String> update(@RequestBody T record) {
+    public @ResponseBody ResultEntity<T> update(@RequestBody T record) {
         return getBaseService().updateForResultEntityByLock(record);
     }
 

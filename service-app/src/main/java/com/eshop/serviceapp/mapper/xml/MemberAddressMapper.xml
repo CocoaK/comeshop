@@ -10,6 +10,7 @@
     <result column="receiving_city" jdbcType="VARCHAR" property="receivingCity" />
     <result column="receiving_area" jdbcType="VARCHAR" property="receivingArea" />
     <result column="receiving_address" jdbcType="VARCHAR" property="receivingAddress" />
+    <result column="receiving_areaCode" jdbcType="VARCHAR" property="receivingAreaCode" />
     <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
     <result column="is_default" jdbcType="BIT" property="isDefault" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
@@ -21,7 +22,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     member_address_id, member_id, receiver_name, telephone, receiving_province, receiving_city, 
-    receiving_area, receiving_address, postal_code, is_default, bu_code, created_by, 
+    receiving_area, receiving_address,receiving_areaCode, postal_code, is_default, bu_code, created_by,
     created_date, last_updated_by, last_updated_date, row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -43,13 +44,13 @@
   <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberAddress">
     insert into mc_member_address (member_address_id, member_id, receiver_name, 
       telephone, receiving_province, receiving_city, 
-      receiving_area, receiving_address, postal_code, 
+      receiving_area, receiving_address, receiving_areaCode, postal_code,
       is_default, bu_code, created_by, 
       created_date, last_updated_by, last_updated_date, 
       row_id)
     values (#{memberAddressId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
       #{telephone,jdbcType=VARCHAR}, #{receivingProvince,jdbcType=VARCHAR}, #{receivingCity,jdbcType=VARCHAR}, 
-      #{receivingArea,jdbcType=VARCHAR}, #{receivingAddress,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+      #{receivingArea,jdbcType=VARCHAR}, #{receivingAddress,jdbcType=VARCHAR},#{receivingAreaCode,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR},
       #{isDefault,jdbcType=BIT}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR})
@@ -80,6 +81,9 @@
       </if>
       <if test="receivingAddress != null">
         receiving_address,
+      </if>
+      <if test="receivingAreaCode != null">
+        receiving_areaCode,
       </if>
       <if test="postalCode != null">
         postal_code,
@@ -128,6 +132,9 @@
       </if>
       <if test="receivingAddress != null">
         #{receivingAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="receivingAreaCode != null">
+        #{receivingAreaCode,jdbcType=VARCHAR},
       </if>
       <if test="postalCode != null">
         #{postalCode,jdbcType=VARCHAR},
@@ -182,6 +189,9 @@
       <if test="receivingAddress != null">
         receiving_address = #{receivingAddress,jdbcType=VARCHAR},
       </if>
+      <if test="receivingAreaCode != null">
+        receiving_areaCode = #{receivingAreaCode,jdbcType=VARCHAR},
+      </if>
       <if test="postalCode != null">
         postal_code = #{postalCode,jdbcType=VARCHAR},
       </if>
@@ -233,6 +243,9 @@
       <if test="receivingAddress != null">
         receiving_address = #{receivingAddress,jdbcType=VARCHAR},
       </if>
+      <if test="receivingAreaCode != null">
+        receiving_areaCode = #{receivingAreaCode,jdbcType=VARCHAR},
+      </if>
       <if test="postalCode != null">
         postal_code = #{postalCode,jdbcType=VARCHAR},
       </if>
@@ -271,6 +284,7 @@
       receiving_city = #{receivingCity,jdbcType=VARCHAR},
       receiving_area = #{receivingArea,jdbcType=VARCHAR},
       receiving_address = #{receivingAddress,jdbcType=VARCHAR},
+      receiving_areaCode = #{receivingAreaCode,jdbcType=VARCHAR},
       postal_code = #{postalCode,jdbcType=VARCHAR},
       is_default = #{isDefault,jdbcType=BIT},
       bu_code = #{buCode,jdbcType=VARCHAR},
@@ -307,6 +321,9 @@
       <if test="receivingAddress != null">
          and receiving_address = #{receivingAddress,jdbcType=VARCHAR}
       </if>
+      <if test="receivingAreaCode != null">
+        and receiving_areaCode = #{receivingAreaCode,jdbcType=VARCHAR}
+      </if>
       <if test="postalCode != null">
          and postal_code = #{postalCode,jdbcType=VARCHAR}
       </if>
@@ -321,15 +338,6 @@
       </if>
       <if test="createdDate != null">
          and created_date = #{createdDate,jdbcType=TIMESTAMP}
-      </if>
-      <if test="lastUpdatedBy != null">
-         and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
-      </if>
-      <if test="lastUpdatedDate != null">
-         and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
-      </if>
-      <if test="rowId != null">
-         and row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
@@ -352,5 +360,5 @@
     select * from mc_member_address
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />-->
 </mapper>

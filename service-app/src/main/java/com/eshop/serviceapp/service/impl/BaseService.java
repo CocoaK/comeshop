@@ -177,10 +177,15 @@ public abstract class BaseService<T> implements IBaseService<T> {
 
     @Transactional
     @Override
-    public ResultEntity<String> updateForResultEntityByLock(T entity) {
+    public ResultEntity<T> updateForResultEntityByLock(T entity) {
         int result = updateActiveByLock(entity);
+        List<T> list = getBaseMapper().getList(entity);
+        T t = null;
+        if(list!=null){
+            t = getBaseMapper().getList(entity).get(0);
+        }
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", t);
     }
 
     @Override

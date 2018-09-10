@@ -37,6 +37,7 @@
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
     <result column="goods_desc" jdbcType="VARCHAR" property="goodsDesc" />
+    <result column="goods_brief" jdbcType="VARCHAR" property="goodsBrief" />
   </resultMap>
   <sql id="Base_Column_List">
     zone_goods_id, zone_code, goods_id, goods_model_id, status, goods_qty, discount_amt, 
@@ -374,15 +375,6 @@
       </if>
       <if test="createdDate != null">
          and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
-      </if>
-      <if test="lastUpdatedBy != null">
-         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
-      </if>
-      <if test="lastUpdatedDate != null">
-         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
-      </if>
-      <if test="rowId != null">
-         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
