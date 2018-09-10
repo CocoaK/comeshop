@@ -21,6 +21,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.eshop.serviceapp.common.Constants;
 import com.eshop.serviceapp.common.model.ResultEntity;
 import com.eshop.serviceapp.common.util.JwtTokenUtil;
@@ -32,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -48,7 +51,18 @@ public class JwtAuthcFilter extends AccessControlFilter{
 
 	@Override
 	protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
-		if (null != getSubject(request, response) 
+		HttpServletRequest httpRequest = (HttpServletRequest)request;
+		HttpServletResponse httpResponse = (HttpServletResponse)response;
+		if (httpRequest.getHeader(HttpHeaders.ORIGIN) != null) {
+			if(!httpResponse.containsHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN)){
+				httpResponse.setHeader("Access-Control-Allow-Origin", httpRequest.getHeader(HttpHeaders.ORIGIN));
+				httpResponse.addHeader("Access-Control-Allow-Credentials", "true");
+				httpResponse.addHeader("Access-Control-Allow-Methods", "POST, GET");
+				httpResponse.addHeader("Access-Control-Allow-Headers", "Content-Type,token");
+				httpResponse.addHeader("Access-Control-Max-Age", "3600");
+			}
+		}
+		if (null != getSubject(request, response)
 				&& getSubject(request, response).isAuthenticated()) {
 			return true;
 		}
