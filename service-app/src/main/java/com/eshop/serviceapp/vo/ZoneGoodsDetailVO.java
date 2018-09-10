@@ -21,7 +21,7 @@ public class ZoneGoodsDetailVO implements Serializable {
 
     private List<Object> goodsImage;
 
-    private List<Object> goodsModelImage;
+    //private List<Object> goodsModelImage;
 
     public BigDecimal getPrice() {
         return price;
@@ -79,11 +79,4 @@ public class ZoneGoodsDetailVO implements Serializable {
         this.goodsImage = goodsImage;
     }
 
-    public List<Object> getGoodsModelImage() {
-        return goodsModelImage;
-    }
-
-    public void setGoodsModelImage(List<Object> goodsModelImage) {
-        this.goodsModelImage = goodsModelImage;
-    }
 }

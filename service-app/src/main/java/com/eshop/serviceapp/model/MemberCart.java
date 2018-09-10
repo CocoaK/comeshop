@@ -21,7 +21,7 @@ public class MemberCart extends BaseModel {
     private String lastUpdatedBy;
 
     private Date lastUpdatedDate;
-    @NotNull
+
     private String rowId;
 
     public Integer getMemberCartId() {

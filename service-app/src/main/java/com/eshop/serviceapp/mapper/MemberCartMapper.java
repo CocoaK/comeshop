@@ -8,4 +8,6 @@ import java.util.List;
 public interface MemberCartMapper extends BaseMapper<MemberCart> {
 
     List<MemberCartVO> queryCartList(MemberCart memberCart);
+
+    Integer getCount(Integer memberId);
 }

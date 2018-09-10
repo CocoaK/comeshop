@@ -5,5 +5,5 @@ import com.eshop.serviceapp.model.Order;
 
 public interface IOrderService extends IBaseService<Order> {
 
-    ResultEntity<String> addForResultEntity(Order order);
+    ResultEntity<Order> addForResultEntity(Order order);
 }

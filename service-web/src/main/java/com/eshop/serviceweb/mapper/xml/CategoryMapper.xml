@@ -98,9 +98,7 @@
       <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
-      <if test="rowId != null">
-        row_id,
-      </if>
+      row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="categoryId != null">
@@ -144,6 +142,9 @@
       </if>
       <if test="lastUpdatedDate == null">
         now(),
+      </if>
+      <if test="rowId == null">
+        uuid(),
       </if>
       <if test="rowId != null">
         #{rowId,jdbcType=VARCHAR},

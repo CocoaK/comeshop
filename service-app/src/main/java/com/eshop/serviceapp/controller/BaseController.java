@@ -40,7 +40,7 @@ public abstract class BaseController<T> {
 
     @RequestMapping("/add")
     public @ResponseBody
-    ResultEntity<String> add(@Validated @RequestBody T entity) {
+    ResultEntity<T> add(@Validated @RequestBody T entity) {
         return getBaseService().addForResultEntity(entity);
     }
 

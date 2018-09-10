@@ -91,9 +91,7 @@
       <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
-      <if test="rowId != null">
-        row_id,
-      </if>
+      row_id,
       <if test="content != null">
         content,
       </if>
@@ -132,9 +130,7 @@
       <if test="lastUpdatedDate == null">
         now(),
       </if>
-      <if test="rowId != null">
-        #{rowId,jdbcType=VARCHAR},
-      </if>
+      <if test="rowId == null">         uuid(),       </if>
       <if test="content != null">
         #{content,jdbcType=LONGVARCHAR},
       </if>

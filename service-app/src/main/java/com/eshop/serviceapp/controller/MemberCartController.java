@@ -31,4 +31,12 @@ public class MemberCartController extends BaseController<MemberCart>{
     public List<MemberCartVO> queryCartList(@RequestBody MemberCart memberCart) throws Exception{
         return memberCartService.queryCartList(memberCart);
     }
+
+    @RequestMapping(value = "/getCount")
+    public ResultEntity<Integer> getCount(@RequestBody MemberCart memberCart) throws Exception{
+        if(memberCart==null || memberCart.getMemberId()==null){
+            return new ResultEntity<Integer>();
+        }
+        return memberCartService.getCount(memberCart.getMemberId());
+    }
 }

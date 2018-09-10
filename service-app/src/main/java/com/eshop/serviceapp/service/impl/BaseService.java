@@ -121,10 +121,10 @@ public abstract class BaseService<T> implements IBaseService<T> {
     }
 
     @Override
-    public ResultEntity<String> addForResultEntity(T record) {
+    public ResultEntity<T> addForResultEntity(T record) {
         int result = add(record);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", record);
     }
 
     @Override

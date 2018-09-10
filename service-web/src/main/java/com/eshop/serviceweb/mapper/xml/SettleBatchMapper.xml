@@ -111,9 +111,7 @@
       <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
-      <if test="rowId != null">
-        row_id,
-      </if>
+      row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="settleBatchId != null">
@@ -152,9 +150,7 @@
       <if test="lastUpdatedDate == null">
         now(),
       </if>
-      <if test="rowId != null">
-        #{rowId,jdbcType=VARCHAR},
-      </if>
+      <if test="rowId == null">         uuid(),       </if>
     </trim>
   </insert>
   <update id="updateActive" parameterType="com.eshop.serviceweb.model.SettleBatch">

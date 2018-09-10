@@ -22,15 +22,15 @@ public class MemberService extends BaseService<Member> implements IMemberService
     }
 
     @Override
-    public ResultEntity<String> addForResultEntity(Member member) {
+    public ResultEntity<Member> addForResultEntity(Member member) {
         Member mem = new Member();
         mem.setUserName(member.getUserName());
         List<Member> list = memberMapper.getList(mem);
         if(list!=null && !list.isEmpty()){
-            return new ResultEntity(ResultEntity.ALREADY_EXIST,"username exist","");
+            return new ResultEntity(ResultEntity.ALREADY_EXIST,"username exist",null);
         }
         int result = memberMapper.insertActive(member);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", member);
     }
 }

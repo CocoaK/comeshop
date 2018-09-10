@@ -32,7 +32,7 @@ public interface IBaseService<T> {
      * @param record
      * @return
      */
-    public ResultEntity<String> addForResultEntity(T record);
+    public ResultEntity<T> addForResultEntity(T record);
 
     /**
      * 增加List返回格式化结果

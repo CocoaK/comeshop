@@ -26,13 +26,13 @@ public class OrderService extends BaseService<Order> implements IOrderService {
     }
 
     @Override
-    public ResultEntity<String> addForResultEntity(Order order) {
+    public ResultEntity<Order> addForResultEntity(Order order) {
         order.setOrderNo(System.currentTimeMillis()+StringUtil.randomNum(7));
 //        Member member = memberMapper.getOne(order.getMemberId());
 //        order.setCurrentUser(member.getCurrentUser());
 //        order.setCreatedBy(member.getUserName());
         int result = orderMapper.insertActive(order);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
-                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", "");
+                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", order);
     }
 }

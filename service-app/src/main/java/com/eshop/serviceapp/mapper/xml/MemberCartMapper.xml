@@ -82,9 +82,7 @@
       <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
-      <if test="rowId != null">
-        row_id,
-      </if>
+      row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="memberCartId != null">
@@ -115,7 +113,7 @@
         now(),
       </if>
       <if test="rowId != null">
-        #{rowId,jdbcType=VARCHAR},
+        uuid(),
       </if>
     </trim>
   </insert>
@@ -262,6 +260,10 @@
     LEFT JOIN sh_goods_media d ON d.goods_model_id = c.goods_model_id
     where t.member_id = #{memberId,jdbcType=INTEGER}
     GROUP BY member_cart_id
+  </select>
+
+  <select id="getCount" parameterType="java.lang.Integer" resultType="java.lang.Integer" useCache="false">
+    select count(1) from mc_member_cart where member_id = #{memberId,jdbcType=INTEGER}
   </select>
 
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
