@@ -38,6 +38,8 @@ public class Order extends BaseModel {
 
     private String rowId;
 
+    private String settleStatus;
+
     public Integer getOrderId() {
         return orderId;
     }
@@ -172,5 +174,13 @@ public class Order extends BaseModel {
 
     public void setRowId(String rowId) {
         this.rowId = rowId == null ? null : rowId.trim();
+    }
+
+    public String getSettleStatus() {
+        return settleStatus;
+    }
+
+    public void setSettleStatus(String settleStatus) {
+        this.settleStatus = settleStatus;
     }
 }

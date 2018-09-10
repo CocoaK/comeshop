@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class SettleBatch extends BaseModel {
     private Integer settleBatchId;
-    @NotNull
+
     private Date settleTime;
 
     private String settleType;
@@ -18,7 +18,7 @@ public class SettleBatch extends BaseModel {
     private BigDecimal profitAmt;
 
     private BigDecimal profitBal;
-    @NotNull
+
     private String buCode;
 
     private String createdBy;

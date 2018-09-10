@@ -49,6 +49,7 @@ public class SettleService implements ISettleService {
         OrderVO orderVO = new OrderVO();
         orderVO.setEndTime(settleBatch.getSettleTime());
         orderVO.setStatus(Constants.ORDER_STATUS_RECEIPTED);
+        orderVO.setSettleStatus(Constants.ORDER_SETTLE_STATUS_UNSETTLED);
         List<Order> orders = new ArrayList<Order>();
         if(null != settleBatch.getSettleZone() && Constants.ZONE_RECHARGE.equals(settleBatch.getSettleZone())){
             orders = orderMapper.getRechargeOrderList(orderVO);
@@ -63,9 +64,12 @@ public class SettleService implements ISettleService {
             settleDetails.setRebateAmt(orderDetailsMapper.getRebateAmtSum(od.getOrderId()));
             settleDetails.setBuCode(od.getBuCode());
             settleDetails.setCurrentUser(settle.getLastUpdatedBy());
-            settleDetails.setRowId("1");
+            //settleDetails.setRowId("1");
             settleDetailsMapper.insertActive(settleDetails);
-            od.setStatus(Constants.ORDER_SETTLE_STATUS_SETTLED);
+            //此处插入返利明细表
+            //此处插入返利队列表
+            //od.setStatus(Constants.ORDER_SETTLE_STATUS_SETTLED);
+            od.setSettleStatus(Constants.ORDER_SETTLE_STATUS_SETTLED);
             orderMapper.updateActive(od);
         }
         settle.setProfitAmt(settleDetailsMapper.getProfitAmtSum(settle.getSettleBatchId()));

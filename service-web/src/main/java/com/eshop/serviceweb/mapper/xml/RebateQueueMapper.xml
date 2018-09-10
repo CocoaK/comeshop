@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.RebateQueueMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.RebateQueue">
+    <id column="settle_details_id" jdbcType="INTEGER" property="settleDetailsId" />
+    <result column="rebate_seq" jdbcType="INTEGER" property="rebateSeq" />
+    <result column="rebate_bal" jdbcType="DECIMAL" property="rebateBal" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    settle_details_id, rebate_seq, rebate_bal, bu_code, created_by, created_date, last_updated_by, 
+    last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ac_rebate_queue
+    where settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from ac_rebate_queue
+    where settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from ac_rebate_queue
+    where settle_details_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.RebateQueue">
+    insert into ac_rebate_queue (settle_details_id, rebate_seq, rebate_bal, 
+      bu_code, created_by, created_date, 
+      last_updated_by, last_updated_date, row_id
+      )
+    values (#{settleDetailsId,jdbcType=INTEGER}, #{rebateSeq,jdbcType=INTEGER}, #{rebateBal,jdbcType=DECIMAL}, 
+      #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.RebateQueue">
+    insert into ac_rebate_queue
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="settleDetailsId != null">
+        settle_details_id,
+      </if>
+      <if test="rebateSeq != null">
+        rebate_seq,
+      </if>
+      <if test="rebateBal != null">
+        rebate_bal,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="settleDetailsId != null">
+        #{settleDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="rebateSeq != null">
+        #{rebateSeq,jdbcType=INTEGER},
+      </if>
+      <if test="rebateBal != null">
+        #{rebateBal,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId == null">
+        uuid(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.RebateQueue">
+    update ac_rebate_queue
+    <set>
+      <if test="rebateSeq != null">
+        rebate_seq = #{rebateSeq,jdbcType=INTEGER},
+      </if>
+      <if test="rebateBal != null">
+        rebate_bal = #{rebateBal,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.RebateQueue">
+    update ac_rebate_queue
+    <set>
+      <if test="rebateSeq != null">
+        rebate_seq = #{rebateSeq,jdbcType=INTEGER},
+      </if>
+      <if test="rebateBal != null">
+        rebate_bal = #{rebateBal,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.RebateQueue">
+    update ac_rebate_queue
+    set rebate_seq = #{rebateSeq,jdbcType=INTEGER},
+      rebate_bal = #{rebateBal,jdbcType=DECIMAL},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="settleDetailsId != null">
+         and t.settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+      </if>
+      <if test="rebateSeq != null">
+         and t.rebate_seq = #{rebateSeq,jdbcType=INTEGER}
+      </if>
+      <if test="rebateBal != null">
+         and t.rebate_bal = #{rebateBal,jdbcType=DECIMAL}
+      </if>
+      <if test="buCode != null">
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select t.* from ac_rebate_queue t
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.RebateQueue" resultMap="BaseResultMap">
+    select t.* from ac_rebate_queue t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.RebateQueue" resultMap="BaseResultMap">
+    select t.* from ac_rebate_queue t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.RebateQueue" resultMap="BaseResultMap">
+    select t.* from ac_rebate_queue t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.RebateQueue" resultMap="BaseResultMap">
+    select t.* from ac_rebate_queue t
+    <include refid="Base_Query_Cause" />
+  </select>
+</mapper>

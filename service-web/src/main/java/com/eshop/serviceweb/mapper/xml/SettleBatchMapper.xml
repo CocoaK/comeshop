@@ -375,12 +375,11 @@
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult">
     <include refid="Settle_Query_Value" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult" useCache="false">
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult" >
     <include refid="Settle_Query_Value" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap" useCache="false">
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap" >
     select * from ac_settle_batch
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
 </mapper>

@@ -19,6 +19,7 @@
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+    <result column="settle_status" jdbcType="VARCHAR" property="settleStatus" />
   </resultMap>
 
   <resultMap id="voResultMap" extends="BaseResultMap" type="com.eshop.serviceweb.vo.OrderVO">
@@ -31,7 +32,7 @@
   <sql id="Base_Column_List">
     order_id, zone_code, member_id, member_address_id, order_no, amount, mp_amt, status, 
     payment_time, shipping_time, receipt_time, bu_code, created_by, created_date, last_updated_by, 
-    last_updated_date, row_id
+    last_updated_date, row_id,settle_status
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -55,13 +56,13 @@
       mp_amt, status, payment_time, 
       shipping_time, receipt_time, bu_code, 
       created_by, created_date, last_updated_by, 
-      last_updated_date, row_id)
+      last_updated_date, row_id,settle_status)
     values (#{orderId,jdbcType=INTEGER}, #{zoneCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, 
       #{memberAddressId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
       #{mpAmt,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{paymentTime,jdbcType=TIMESTAMP}, 
       #{shippingTime,jdbcType=TIMESTAMP}, #{receiptTime,jdbcType=TIMESTAMP}, #{buCode,jdbcType=VARCHAR}, 
       #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
-      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR},#{settleStatus,jdbcType=VARCHAR})
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Order">
     insert into mc_order
@@ -89,6 +90,9 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="settleStatus != null">
+        settle_status,
       </if>
       <if test="paymentTime != null">
         payment_time,
@@ -140,6 +144,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="settleStatus != null">
+        #{settleStatus,jdbcType=VARCHAR},
       </if>
       <if test="paymentTime != null">
         #{paymentTime,jdbcType=TIMESTAMP},
@@ -197,6 +204,9 @@
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="settleStatus != null">
+        settle_status = #{settleStatus,jdbcType=VARCHAR},
+      </if>
       <if test="paymentTime != null">
         payment_time = #{paymentTime,jdbcType=TIMESTAMP},
       </if>
@@ -250,6 +260,9 @@
       </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="settleStatus != null">
+        settle_status = #{settleStatus,jdbcType=VARCHAR},
       </if>
       <if test="paymentTime != null">
         payment_time = #{paymentTime,jdbcType=TIMESTAMP},
@@ -328,6 +341,9 @@
       </if>
       <if test="status != null">
          and a.status = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="settleStatus != null">
+        and a.settle_status = #{settleStatus,jdbcType=VARCHAR}
       </if>
       <if test="paymentTime != null">
          and a.payment_time = #{paymentTime,jdbcType=TIMESTAMP}
