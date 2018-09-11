@@ -70,7 +70,7 @@
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.Member">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.Member" useGeneratedKeys="true" keyProperty="memberId">
     insert into mc_member
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberId != null">
@@ -484,10 +484,10 @@
       </if>
     </trim>
   </sql>
-  <select id="getAll" resultMap="BaseResultMap">
+  <select id="getAll" resultMap="BaseResultMap" useCache="false">
     select * from mc_member
   </select>
-  <select id="getList" parameterType="com.eshop.serviceapp.model.Member" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.Member" resultMap="BaseResultMap" useCache="false">
     select * from mc_member
     <include refid="Base_Query_Cause" />
   </select>

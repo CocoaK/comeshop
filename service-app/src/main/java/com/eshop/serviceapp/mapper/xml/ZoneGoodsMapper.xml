@@ -377,10 +377,10 @@
          and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
   </sql>
-  <select id="getAll" resultMap="BaseResultMap">
+  <select id="getAll" resultMap="BaseResultMap" useCache="false">
     select t.* from sh_zone_goods t
   </select>
-  <select id="getList" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="BaseResultMap">
+  <select id="getList" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="BaseResultMap" useCache="false">
     select t.* from sh_zone_goods t
     <include refid="Base_Query_Cause" />
   </select>

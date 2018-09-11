@@ -2,13 +2,8 @@ package com.eshop.serviceweb.service.impl;
 
 import com.eshop.serviceweb.common.Constants;
 import com.eshop.serviceweb.common.model.ResultEntity;
-import com.eshop.serviceweb.mapper.OrderDetailsMapper;
-import com.eshop.serviceweb.mapper.OrderMapper;
-import com.eshop.serviceweb.mapper.SettleBatchMapper;
-import com.eshop.serviceweb.mapper.SettleDetailsMapper;
-import com.eshop.serviceweb.model.Order;
-import com.eshop.serviceweb.model.SettleBatch;
-import com.eshop.serviceweb.model.SettleDetails;
+import com.eshop.serviceweb.mapper.*;
+import com.eshop.serviceweb.model.*;
 import com.eshop.serviceweb.service.ISettleService;
 import com.eshop.serviceweb.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +28,10 @@ public class SettleService implements ISettleService {
     private OrderMapper orderMapper;
     @Autowired
     private OrderDetailsMapper orderDetailsMapper;
+    @Autowired
+    private RebateDetailsMapper rebateDetailsMapper;
+    @Autowired
+    private RebateQueueMapper rebateQueueMapper;
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -67,7 +66,22 @@ public class SettleService implements ISettleService {
             //settleDetails.setRowId("1");
             settleDetailsMapper.insertActive(settleDetails);
             //此处插入返利明细表
+            RebateDetails rebateDetails = new RebateDetails();
+            rebateDetails.setSettleBatchId(settleBatch.getSettleBatchId());
+            rebateDetails.setSettleDetailsId(settleDetails.getSettleDetailsId());
+            rebateDetails.setRebateMp(1);
+            rebateDetails.setRebateAmt(settleDetails.getRebateAmt());
+//            rebateDetails.setQueueingTime();
+//            rebateDetails.setQueueingType();
+            rebateDetails.setCurrentUser(settleBatch.getCurrentUser());
+            rebateDetailsMapper.insertActive(rebateDetails);
             //此处插入返利队列表
+            RebateQueue rebateQueue = new RebateQueue();
+//            rebateQueue.setRebateBal();
+//            rebateQueue.setRebateSeq();
+            rebateQueue.setSettleDetailsId(settleDetails.getSettleDetailsId());
+            rebateQueue.setCurrentUser(settleBatch.getCurrentUser());
+            rebateQueueMapper.insertActive(rebateQueue);
             //od.setStatus(Constants.ORDER_SETTLE_STATUS_SETTLED);
             od.setSettleStatus(Constants.ORDER_SETTLE_STATUS_SETTLED);
             orderMapper.updateActive(od);

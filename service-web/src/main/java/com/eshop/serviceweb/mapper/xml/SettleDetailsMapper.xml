@@ -54,7 +54,7 @@
       #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
       #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.SettleDetails">
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.SettleDetails" useGeneratedKeys="true" keyProperty="settleDetailsId">
     insert into ac_settle_details
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="settleDetailsId != null">
