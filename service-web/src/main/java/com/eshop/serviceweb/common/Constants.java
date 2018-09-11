@@ -36,4 +36,8 @@ public class Constants {
     public static final String GOODS_MEDIA_TYPE_IMAGE= "IMAGE";
     /** 商品媒体类型：图片*/
     public static final String GOODS_MEDIA_TYPE_VIDEO = "VIDEO";
+    /** 返利队列时间类型：支付时间*/
+    public static final String REBATE_QUEUE_TIME_TYPE_PAYMENT = "1";
+    /** 返利队列时间类型：收货时间*/
+    public static final String REBATE_QUEUE_TIME_TYPE_RECEIPTED= "2";
 }

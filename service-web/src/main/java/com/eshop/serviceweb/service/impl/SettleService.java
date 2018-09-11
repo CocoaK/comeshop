@@ -73,11 +73,13 @@ public class SettleService implements ISettleService {
             rebateDetails.setRebateAmt(settleDetails.getRebateAmt());
             if(Constants.ZONE_RECHARGE.equals(settleBatch.getSettleZone())){
                 rebateDetails.setQueueingTime(od.getPaymentTime());
+                rebateDetails.setQueueingType(Constants.REBATE_QUEUE_TIME_TYPE_PAYMENT);
             }else{
                 rebateDetails.setQueueingTime(od.getReceiptTime());
+                rebateDetails.setQueueingType(Constants.REBATE_QUEUE_TIME_TYPE_RECEIPTED);
             }
             //            rebateDetails.setQueueingTime();
-//            rebateDetails.setQueueingType();
+            //            rebateDetails.setQueueingType();
             rebateDetails.setCurrentUser(settleBatch.getCurrentUser());
             rebateDetailsMapper.insertActive(rebateDetails);
             //此处插入返利队列表

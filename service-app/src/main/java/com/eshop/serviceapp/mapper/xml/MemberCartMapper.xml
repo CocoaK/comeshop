@@ -112,8 +112,11 @@
       <if test="lastUpdatedDate == null">
         now(),
       </if>
-      <if test="rowId != null">
+      <if test="rowId == null">
         uuid(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

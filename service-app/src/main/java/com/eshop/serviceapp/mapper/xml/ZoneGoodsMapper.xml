@@ -408,6 +408,8 @@
     LEFT JOIN mc_comment d ON d.goods_id = b.goods_id
     LEFT JOIN sh_category e on e.category_id = b.category_id
     WHERE 1=1
+    AND t.is_default = 1
+    AND t.is_show_in_home = 1
     <if test="zoneCode != null">
       and t.zone_code = #{zoneCode,jdbcType=VARCHAR}
     </if>
@@ -420,6 +422,7 @@
       or b.goods_desc like concat('%',#{searchValue,jdbcType=VARCHAR},'%'))
     </if>
     group by t.zone_goods_id
+    ORDER BY t.disp_seq ASC
   </select>
 
   <select id="getDetail" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="detailMap" useCache="false">
