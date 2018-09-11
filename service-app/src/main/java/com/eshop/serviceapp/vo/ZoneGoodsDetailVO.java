@@ -9,6 +9,8 @@ public class ZoneGoodsDetailVO implements Serializable {
 
     private Integer zoneGoodsId;
 
+    private Integer goodsId;
+
     private String goodsName;
 
     private String goodsCode;
@@ -79,4 +81,11 @@ public class ZoneGoodsDetailVO implements Serializable {
         this.goodsImage = goodsImage;
     }
 
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
+    }
 }

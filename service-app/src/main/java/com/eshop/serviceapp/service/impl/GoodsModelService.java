@@ -1,6 +1,7 @@
 package com.eshop.serviceapp.service.impl;
 
 import com.eshop.serviceapp.common.model.ResultEntity;
+import com.eshop.serviceapp.common.model.ResultList;
 import com.eshop.serviceapp.mapper.BaseMapper;
 import com.eshop.serviceapp.mapper.GoodsMediaMapper;
 import com.eshop.serviceapp.mapper.GoodsModelMapper;
@@ -10,6 +11,8 @@ import com.eshop.serviceapp.service.IGoodsModelService;
 import com.eshop.serviceapp.vo.GoodsModelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class GoodsModelService extends BaseService<GoodsModel> implements IGoodsModelService {
@@ -25,14 +28,16 @@ public class GoodsModelService extends BaseService<GoodsModel> implements IGoods
     }
 
     @Override
-    public ResultEntity getDetail(Integer zoneGoodsId) {
-        GoodsModelVO goodsModelVO = goodsModelMapper.getDetail(zoneGoodsId);
+    public List<GoodsModelVO> getDetail(Integer goodsId) {
+        List<GoodsModelVO> list = goodsModelMapper.getDetail(goodsId);
         GoodsMedia media = new GoodsMedia();
-        if(goodsModelVO==null){
-            return new ResultEntity();
+        if(list==null){
+            return list;
         }
-        media.setGoodsModelId(goodsModelVO.getGoodsModelId());
-        goodsModelVO.setGoodsModelImages(goodsMediaMapper.getSimpleList(media));
-        return super.proccessResultEntity(goodsModelVO!=null ? ResultEntity.SUCCESS : ResultEntity.FAILD,goodsModelVO!=null ? ResultEntity.MSG_SUCCESS : ResultEntity.MSG_FAILED,goodsModelVO);
+        for(GoodsModelVO vo : list){
+            media.setGoodsModelId(vo.getGoodsModelId());
+            vo.setGoodsModelImages(goodsMediaMapper.getSimpleList(media));
+        }
+        return list;
     }
 }

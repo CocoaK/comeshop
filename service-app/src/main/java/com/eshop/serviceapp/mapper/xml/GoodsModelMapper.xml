@@ -245,11 +245,11 @@
   </select>
   <select id="getDetail" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="detailMap" useCache="false">
     SELECT
-    t.zone_goods_id,a.goods_model_id,a.goods_model_name,a.price
+    t.goods_model_id,t.goods_model_name,t.price,a.zone_goods_id
     FROM
-    sh_zone_goods t
-    LEFT JOIN sh_goods_model a ON a.goods_model_id = t.goods_model_id
-    WHERE  t.zone_goods_id = #{zoneGoodsId,jdbcType=INTEGER}
+    sh_goods_model t
+    LEFT JOIN sh_zone_goods a ON a.goods_id = t.goods_id
+    WHERE  t.goods_id = #{goodsId,jdbcType=INTEGER}
   </select>
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
 </mapper>
