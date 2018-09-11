@@ -71,14 +71,19 @@ public class SettleService implements ISettleService {
             rebateDetails.setSettleDetailsId(settleDetails.getSettleDetailsId());
             rebateDetails.setRebateMp(1);
             rebateDetails.setRebateAmt(settleDetails.getRebateAmt());
-//            rebateDetails.setQueueingTime();
+            if(Constants.ZONE_RECHARGE.equals(settleBatch.getSettleZone())){
+                rebateDetails.setQueueingTime(od.getPaymentTime());
+            }else{
+                rebateDetails.setQueueingTime(od.getReceiptTime());
+            }
+            //            rebateDetails.setQueueingTime();
 //            rebateDetails.setQueueingType();
             rebateDetails.setCurrentUser(settleBatch.getCurrentUser());
             rebateDetailsMapper.insertActive(rebateDetails);
             //此处插入返利队列表
             RebateQueue rebateQueue = new RebateQueue();
 //            rebateQueue.setRebateBal();
-//            rebateQueue.setRebateSeq();
+//            rebateQueue.setRebateSeq();//数据库中最大的+1
             rebateQueue.setSettleDetailsId(settleDetails.getSettleDetailsId());
             rebateQueue.setCurrentUser(settleBatch.getCurrentUser());
             rebateQueueMapper.insertActive(rebateQueue);
