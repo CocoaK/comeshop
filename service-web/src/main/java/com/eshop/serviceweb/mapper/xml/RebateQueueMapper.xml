@@ -12,6 +12,23 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+  <resultMap id="mapQueuResult" extends="BaseResultMap" type="map">
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+    <result column="queueing_type" jdbcType="VARCHAR" property="queueingType" />
+    <result column="queueing_time" jdbcType="VARCHAR" property="queueingTime" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="hasRebateAmt" jdbcType="DECIMAL" property="hasRebateAmt" />
+  </resultMap>
+  <resultMap id="mapQueuGroupResult" extends="BaseResultMap" type="map">
+    <result column="rebate_bals" jdbcType="DECIMAL" property="rebateBals" />
+    <result column="order_count" jdbcType="INTEGER" property="orderCount" />
+    <result column="profit_bal" jdbcType="DECIMAL" property="profitBal" />
+  </resultMap>
   <sql id="Base_Column_List">
     settle_details_id, rebate_seq, rebate_bal, bu_code, created_by, created_date, last_updated_by, 
     last_updated_date, row_id
@@ -69,9 +86,7 @@
       <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
-      <if test="rowId != null">
         row_id,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="settleDetailsId != null">
@@ -205,6 +220,40 @@
   <select id="getAll" resultMap="BaseResultMap">
     select t.* from ac_rebate_queue t
   </select>
+  <select id="getAllQueue" resultMap="mapQueuResult">
+    select 
+		mc_order.order_no,mc_order.zone_code,sh_zone.zone_name,mc_member.member_id,mc_member.nick_name,mc_member.telephone,mc_member.member_grade,mc_member_grade.grade_name,
+		case  
+				when ac_settle_batch.settle_zone='COM' then '支付时间'
+		else '确认收货时间'
+		end queueing_type,
+		case  
+				when ac_settle_batch.settle_zone='COM' then mc_order.payment_time
+		else mc_order.receipt_time
+		end queueing_time,
+		mc_order.amount,
+		ac_rebate_queue.rebate_bal,
+		(select sum(rebate_amt) hasRebateAmt from ac_rebate_details where ac_rebate_queue.settle_details_id=ac_settle_details.settle_details_id) hasRebateAmt
+	from 
+		ac_rebate_queue
+		inner join ac_settle_details on ac_rebate_queue.settle_details_id =ac_settle_details.settle_details_id
+		inner join ac_settle_batch on ac_settle_details.settle_batch_id=ac_settle_batch.settle_batch_id
+		inner join mc_order on ac_settle_details.order_id=mc_order.order_id
+		inner join mc_member on mc_order.member_id=mc_member.member_id
+		left join mc_member_grade on mc_member.member_grade=mc_member_grade.grade_code
+		inner join sh_zone on mc_order.zone_code=sh_zone.zone_code
+	 order by ac_rebate_queue.rebate_seq
+  </select>
+  <select id="getQueueGroup" resultMap="mapQueuGroupResult">
+    select 
+		sum(ac_rebate_queue.rebate_bal) rebate_bals,count(*) order_count,sum(ac_settle_batch.profit_bal) profit_bal
+	from 
+		ac_rebate_queue
+		inner join ac_settle_details on ac_rebate_queue.settle_details_id =ac_settle_details.settle_details_id
+		inner join ac_settle_batch on ac_settle_details.settle_batch_id=ac_settle_batch.settle_batch_id
+		inner join mc_order on ac_settle_details.order_id=mc_order.order_id	
+	 order by ac_rebate_queue.rebate_seq
+  </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.RebateQueue" resultMap="BaseResultMap">
     select t.* from ac_rebate_queue t
     <include refid="Base_Query_Cause" />
@@ -218,7 +267,11 @@
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.RebateQueue" resultMap="BaseResultMap">
-    select t.* from ac_rebate_queue t
+  select t.* from ac_rebate_queue t
+  <include refid="Base_Query_Cause" />
+</select>
+  <select id="getMaxRebateSeq" resultType="java.lang.Integer">
+    select max(rebate_seq) rebate_seq from ac_rebate_queue t
     <include refid="Base_Query_Cause" />
   </select>
 </mapper>

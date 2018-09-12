@@ -397,6 +397,7 @@
     <include refid="Base_Query_Cause" />
     <include refid="Settle_Query_Time_Cause" />
     and b.zone_type = 'COM'
+    order by a.payment_time desc
   </select>
 
   <select id="getRechargeOrderList" parameterType="com.eshop.serviceweb.vo.OrderVO" resultMap="BaseResultMap">
@@ -404,6 +405,7 @@
     <include refid="Base_Query_Cause" />
     <include refid="Recharge_Query_Time_Cause" />
     and b.zone_type = 'EXP'
+    order by a.payment_time desc
   </select>
 
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">

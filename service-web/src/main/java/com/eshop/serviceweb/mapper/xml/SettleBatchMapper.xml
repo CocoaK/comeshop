@@ -27,7 +27,11 @@
     settle_batch_id, settle_time, settle_type, settle_zone, settle_by, profit_amt, profit_bal, 
     bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
   </sql>
-
+  <select id="get" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT sb.* FROM ac_settle_batch sb
+    WHERE
+      sb.settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
+  </select>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="mapResult">
     SELECT
       sb.*, count(o.order_id) order_count,sum(o.amount) order_amount,sum(sd.rebate_amt) rebateAmt
