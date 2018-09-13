@@ -2,6 +2,7 @@ package com.eshop.serviceweb.service.impl;
 
 import com.eshop.serviceweb.common.Constants;
 import com.eshop.serviceweb.common.model.ResultEntity;
+//import com.eshop.serviceweb.common.util.UUIDUtil;
 import com.eshop.serviceweb.mapper.*;
 import com.eshop.serviceweb.model.*;
 import com.eshop.serviceweb.service.ISettleService;
@@ -38,6 +39,8 @@ public class SettleService implements ISettleService {
     private RebateQueueMapper rebateQueueMapper;
     @Autowired
     private RebateSettingMapper rebateSettingMapper;
+    @Autowired
+    private MemberMpDetailsMapper memberMpDetailsMapper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -68,7 +71,7 @@ public class SettleService implements ISettleService {
             settle(sb2);
         }catch (Exception e){
             e.printStackTrace();
-            return re;
+            throw new RuntimeException();
         }
         re.setCode(ResultEntity.SUCCESS);
         re.setMsg(ResultEntity.MSG_SUCCESS);
@@ -78,9 +81,15 @@ public class SettleService implements ISettleService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public ResultEntity<String> executeRebate(List<RebateDetailsVO> rebateDetailsVOList){
-        
+    	Date dateNow = new Date();
+    	BigDecimal AllrebateAmt=new BigDecimal("0.00");
+    	String currentUser="";
+    	
         ResultEntity<String> re = new ResultEntity<String>();
         for(RebateDetailsVO vo : rebateDetailsVOList){
+        	currentUser=vo.getCurrentUser();
+            AllrebateAmt=AllrebateAmt.add(vo.getRebateAmt());
+        	
         	RebateDetails rebateDetails = new RebateDetails();
         	rebateDetails.setSettleBatchId(vo.getSettleBatchId());
         	rebateDetails.setSettleDetailsId(vo.getSettleDetailsId());
@@ -91,21 +100,33 @@ public class SettleService implements ISettleService {
         	Integer rebateAmt=Integer.parseInt(vo.getRebateAmt().toString())*1;//注意
         	rebateDetails.setRebateMp(rebateAmt);
         	rebateDetails.setBuCode("ESHOP");
-        	rebateDetails.setCreatedBy(vo.getCreatedBy());
-        	rebateDetails.setCreatedDate(new Date());
-        	rebateDetails.setLastUpdatedBy(vo.getLastUpdatedBy());
-        	rebateDetails.setLastUpdatedDate(new Date());
-        	
-        	//写会员积分记录
-        	
+        	//rebateDetails.setRowId(UUIDUtil.getUUID());
+            rebateDetails.setCurrentUser(vo.getCurrentUser());
+        	rebateDetailsMapper.insertActive(rebateDetails);
         	
         	//更新会员积分
         	Member memberCheck=memberMapper.getOne(vo.getMemberId());
         	
+        	//写会员积分记录
+        	MemberMpDetails mm=new MemberMpDetails();
+        	mm.setMemberId(vo.getMemberId());
+        	mm.setRefNo(vo.getOrderNo());
+        	mm.setMpAmt(rebateAmt);
+        	mm.setMpBal(memberCheck.getMpAmt()+rebateAmt);
+        	mm.setEventTime(dateNow);
+        	mm.setEventType("2");
+        	mm.setEventBy(vo.getCurrentUser());
+        	//mm.setEffectiveDate()
+        	mm.setBuCode("ESHOP");
+//        	mm.setRowId(UUIDUtil.getUUID());
+            mm.setCurrentUser(vo.getCurrentUser());
+        	memberMpDetailsMapper.insertActive(mm);
+        	
         	Member memberModel=new Member();
         	memberModel.setMemberId(vo.getMemberId());
         	memberModel.setMpAmt(memberCheck.getMpAmt()+rebateAmt);
-        	memberMapper.insertActive(memberModel);
+            memberModel.setCurrentUser(vo.getCurrentUser());
+        	memberMapper.updateActive(memberModel);
         	
         	//所有返利金额是否全部返完
         	RebateQueue rq = rebateQueueMapper.getOne(vo.getSettleDetailsId());
@@ -116,9 +137,9 @@ public class SettleService implements ISettleService {
         		//更新
         		rqModel.setSettleDetailsId(vo.getSettleDetailsId());
         		rqModel.setRebateBal(rq.getRebateBal().subtract(vo.getRebateAmt()));
-        		
-        		rebateDetails.setLastUpdatedBy(vo.getLastUpdatedBy());
-            	rebateDetails.setLastUpdatedDate(new Date());
+                rqModel.setCurrentUser(vo.getCurrentUser());
+//        		rqModel.setLastUpdatedBy(vo.getCurrentUser());
+//        		rqModel.setLastUpdatedDate(new Date());
             	
         		rebateQueueMapper.updateActive(rqModel);
         	}
@@ -129,13 +150,22 @@ public class SettleService implements ISettleService {
         	else
         	{
         		//报错了
+                re.setCode(ResultEntity.FAILD);
+                re.setMsg("返利数据有误");
+                return re;
         	}
         	
         	
         }
         //更新余额池
-        
-        
+        RebateSetting rs=rebateSettingMapper.getOne(1);
+        RebateSetting rsModel=new RebateSetting();
+        rsModel.setRebateSettingId(rs.getRebateSettingId());
+        rsModel.setProfitBal(rs.getProfitBal().subtract(AllrebateAmt));
+//        rsModel.setLastUpdatedDate(dateNow);
+//        rsModel.setLastUpdatedBy(currentUser);
+        rsModel.setCurrentUser(currentUser);
+        rebateSettingMapper.updateActive(rsModel);
         
         re.setCode(ResultEntity.SUCCESS);
         re.setMsg(ResultEntity.MSG_SUCCESS);

@@ -1,49 +1,57 @@
 package com.eshop.serviceapp.vo;
 
-import com.eshop.serviceapp.model.Order;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
-import java.math.BigDecimal;
-import java.util.Date;
+public class OrderVO {
 
-public class OrderVO extends Order {
+    @NotNull
+    private Integer memberId;
+    @NotNull
+    private Integer memberAddressId;
+    private String zoneCode;
+    @NotNull
+    private List<OrderDetailVO> orderDetails;
 
-    private Date beginTime;
+    private String buCode;
 
-    private Date endTime;
-
-    private BigDecimal profitAmt;
-
-    private BigDecimal rebateAmt;
-
-    public Date getBeginTime() {
-        return beginTime;
+    public Integer getMemberId() {
+        return memberId;
     }
 
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
+    public void setMemberId(Integer memberId) {
+        this.memberId = memberId;
     }
 
-    public Date getEndTime() {
-        return endTime;
+    public Integer getMemberAddressId() {
+        return memberAddressId;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setMemberAddressId(Integer memberAddressId) {
+        this.memberAddressId = memberAddressId;
     }
 
-    public BigDecimal getProfitAmt() {
-        return profitAmt;
+    public List<OrderDetailVO> getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setProfitAmt(BigDecimal profitAmt) {
-        this.profitAmt = profitAmt;
+    public void setOrderDetails(List<OrderDetailVO> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
-    public BigDecimal getRebateAmt() {
-        return rebateAmt;
+    public String getBuCode() {
+        return buCode;
     }
 
-    public void setRebateAmt(BigDecimal rebateAmt) {
-        this.rebateAmt = rebateAmt;
+    public void setBuCode(String buCode) {
+        this.buCode = buCode;
+    }
+
+    public String getZoneCode() {
+        return zoneCode;
+    }
+
+    public void setZoneCode(String zoneCode) {
+        this.zoneCode = zoneCode;
     }
 }

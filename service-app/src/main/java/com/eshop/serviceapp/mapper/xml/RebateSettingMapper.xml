@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceapp.mapper.RebateSettingMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.RebateSetting">
+    <id column="rebate_setting_id" jdbcType="INTEGER" property="rebateSettingId" />
+    <result column="daily_rebate_orders" jdbcType="INTEGER" property="dailyRebateOrders" />
+    <result column="exchange_rate" jdbcType="INTEGER" property="exchangeRate" />
+    <result column="profit_bal" jdbcType="DECIMAL" property="profitBal" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rebate_setting_id, daily_rebate_orders, exchange_rate, profit_bal, bu_code, created_by, 
+    created_date, last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rebate_setting
+    where rebate_setting_id = #{rebateSettingId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from rebate_setting
+    where rebate_setting_id = #{rebateSettingId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceapp.vo.DeleteVO">
+    delete from rebate_setting
+    where rebate_setting_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceapp.model.RebateSetting">
+    insert into rebate_setting (rebate_setting_id, daily_rebate_orders, 
+      exchange_rate, profit_bal, bu_code, 
+      created_by, created_date, last_updated_by, 
+      last_updated_date, row_id)
+    values (#{rebateSettingId,jdbcType=INTEGER}, #{dailyRebateOrders,jdbcType=INTEGER}, 
+      #{exchangeRate,jdbcType=INTEGER}, #{profitBal,jdbcType=DECIMAL}, #{buCode,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.RebateSetting">
+    insert into rebate_setting
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rebateSettingId != null">
+        rebate_setting_id,
+      </if>
+      <if test="dailyRebateOrders != null">
+        daily_rebate_orders,
+      </if>
+      <if test="exchangeRate != null">
+        exchange_rate,
+      </if>
+      <if test="profitBal != null">
+        profit_bal,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      <if test="currentUser != null">
+        created_by,
+      </if>
+      <if test="createdDate == null">
+        created_date,
+      </if>
+      <if test="lastUpdatedBy == null">
+        last_updated_by,
+      </if>
+      <if test="lastUpdatedDate == null">
+        last_updated_date,
+      </if>
+      <if test="rowId != null">
+        row_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rebateSettingId != null">
+        #{rebateSettingId,jdbcType=INTEGER},
+      </if>
+      <if test="dailyRebateOrders != null">
+        #{dailyRebateOrders,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeRate != null">
+        #{exchangeRate,jdbcType=INTEGER},
+      </if>
+      <if test="profitBal != null">
+        #{profitBal,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedBy == null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceapp.model.RebateSetting">
+    update rebate_setting
+    <set>
+      <if test="dailyRebateOrders != null">
+        daily_rebate_orders = #{dailyRebateOrders,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeRate != null">
+        exchange_rate = #{exchangeRate,jdbcType=INTEGER},
+      </if>
+      <if test="profitBal != null">
+        profit_bal = #{profitBal,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rebate_setting_id = #{rebateSettingId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceapp.model.RebateSetting">
+    update rebate_setting
+    <set>
+      <if test="dailyRebateOrders != null">
+        daily_rebate_orders = #{dailyRebateOrders,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeRate != null">
+        exchange_rate = #{exchangeRate,jdbcType=INTEGER},
+      </if>
+      <if test="profitBal != null">
+        profit_bal = #{profitBal,jdbcType=DECIMAL},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where rebate_setting_id = #{rebateSettingId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceapp.model.RebateSetting">
+    update rebate_setting
+    set daily_rebate_orders = #{dailyRebateOrders,jdbcType=INTEGER},
+      exchange_rate = #{exchangeRate,jdbcType=INTEGER},
+      profit_bal = #{profitBal,jdbcType=DECIMAL},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where rebate_setting_id = #{rebateSettingId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="rebateSettingId != null">
+         and t.rebate_setting_id = #{rebateSettingId,jdbcType=INTEGER}
+      </if>
+      <if test="dailyRebateOrders != null">
+         and t.daily_rebate_orders = #{dailyRebateOrders,jdbcType=INTEGER}
+      </if>
+      <if test="exchangeRate != null">
+         and t.exchange_rate = #{exchangeRate,jdbcType=INTEGER}
+      </if>
+      <if test="profitBal != null">
+         and t.profit_bal = #{profitBal,jdbcType=DECIMAL}
+      </if>
+      <if test="buCode != null">
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select t.* from rebate_setting t
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceapp.model.RebateSetting" resultMap="BaseResultMap">
+    select t.* from rebate_setting t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceapp.model.RebateSetting" resultMap="BaseResultMap">
+    select t.* from rebate_setting t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.RebateSetting" resultMap="BaseResultMap" useCache="false">
+    select t.* from rebate_setting t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceapp.model.RebateSetting" resultMap="BaseResultMap" useCache="false">
+    select t.* from rebate_setting t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
+</mapper>

@@ -7,11 +7,17 @@ public class MemberMpDetails extends BaseModel {
 
     private Integer memberId;
 
-    private Integer transId;
+    private String refNo;
 
     private Integer mpAmt;
 
     private Integer mpBal;
+
+    private Date eventTime;
+
+    private String eventType;
+
+    private String eventBy;
 
     private Date effectiveDate;
 
@@ -43,12 +49,12 @@ public class MemberMpDetails extends BaseModel {
         this.memberId = memberId;
     }
 
-    public Integer getTransId() {
-        return transId;
+    public String getRefNo() {
+        return refNo;
     }
 
-    public void setTransId(Integer transId) {
-        this.transId = transId;
+    public void setRefNo(String refNo) {
+        this.refNo = refNo == null ? null : refNo.trim();
     }
 
     public Integer getMpAmt() {
@@ -65,6 +71,30 @@ public class MemberMpDetails extends BaseModel {
 
     public void setMpBal(Integer mpBal) {
         this.mpBal = mpBal;
+    }
+
+    public Date getEventTime() {
+        return eventTime;
+    }
+
+    public void setEventTime(Date eventTime) {
+        this.eventTime = eventTime;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType == null ? null : eventType.trim();
+    }
+
+    public String getEventBy() {
+        return eventBy;
+    }
+
+    public void setEventBy(String eventBy) {
+        this.eventBy = eventBy == null ? null : eventBy.trim();
     }
 
     public Date getEffectiveDate() {

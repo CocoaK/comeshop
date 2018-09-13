@@ -4,9 +4,12 @@
   <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberMpDetails">
     <id column="member_mp_details_id" jdbcType="INTEGER" property="memberMpDetailsId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
-    <result column="trans_id" jdbcType="INTEGER" property="transId" />
+    <result column="ref_no" jdbcType="VARCHAR" property="refNo" />
     <result column="mp_amt" jdbcType="INTEGER" property="mpAmt" />
     <result column="mp_bal" jdbcType="INTEGER" property="mpBal" />
+    <result column="event_time" jdbcType="DATE" property="eventTime" />
+    <result column="event_type" jdbcType="VARCHAR" property="eventType" />
+    <result column="event_by" jdbcType="VARCHAR" property="eventBy" />
     <result column="effective_date" jdbcType="DATE" property="effectiveDate" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
@@ -16,8 +19,9 @@
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    member_mp_details_id, member_id, trans_id, mp_amt, mp_bal, effective_date, bu_code, 
-    created_by, created_date, last_updated_by, last_updated_date, row_id
+    member_mp_details_id, member_id, ref_no, mp_amt, mp_bal, event_time, event_type, 
+    event_by, effective_date, bu_code, created_by, created_date, last_updated_by, last_updated_date, 
+    row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -36,13 +40,15 @@
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberMpDetails">
-    insert into mc_member_mp_details (member_mp_details_id, member_id, trans_id, 
-      mp_amt, mp_bal, effective_date, 
+    insert into mc_member_mp_details (member_mp_details_id, member_id, ref_no, 
+      mp_amt, mp_bal, event_time, 
+      event_type, event_by, effective_date, 
       bu_code, created_by, created_date, 
       last_updated_by, last_updated_date, row_id
       )
-    values (#{memberMpDetailsId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{transId,jdbcType=INTEGER}, 
-      #{mpAmt,jdbcType=INTEGER}, #{mpBal,jdbcType=INTEGER}, #{effectiveDate,jdbcType=DATE}, 
+    values (#{memberMpDetailsId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{refNo,jdbcType=VARCHAR}, 
+      #{mpAmt,jdbcType=INTEGER}, #{mpBal,jdbcType=INTEGER}, #{eventTime,jdbcType=DATE}, 
+      #{eventType,jdbcType=VARCHAR}, #{eventBy,jdbcType=VARCHAR}, #{effectiveDate,jdbcType=DATE}, 
       #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
       #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
       )
@@ -56,14 +62,23 @@
       <if test="memberId != null">
         member_id,
       </if>
-      <if test="transId != null">
-        trans_id,
+      <if test="refNo != null">
+        ref_no,
       </if>
       <if test="mpAmt != null">
         mp_amt,
       </if>
       <if test="mpBal != null">
         mp_bal,
+      </if>
+      <if test="eventTime != null">
+        event_time,
+      </if>
+      <if test="eventType != null">
+        event_type,
+      </if>
+      <if test="eventBy != null">
+        event_by,
       </if>
       <if test="effectiveDate != null">
         effective_date,
@@ -83,7 +98,7 @@
       <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
-      row_id,
+        row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="memberMpDetailsId != null">
@@ -92,14 +107,23 @@
       <if test="memberId != null">
         #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="transId != null">
-        #{transId,jdbcType=INTEGER},
+      <if test="refNo != null">
+        #{refNo,jdbcType=VARCHAR},
       </if>
       <if test="mpAmt != null">
         #{mpAmt,jdbcType=INTEGER},
       </if>
       <if test="mpBal != null">
         #{mpBal,jdbcType=INTEGER},
+      </if>
+      <if test="eventTime != null">
+        #{eventTime,jdbcType=DATE},
+      </if>
+      <if test="eventType != null">
+        #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="eventBy != null">
+        #{eventBy,jdbcType=VARCHAR},
       </if>
       <if test="effectiveDate != null">
         #{effectiveDate,jdbcType=DATE},
@@ -133,14 +157,23 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="transId != null">
-        trans_id = #{transId,jdbcType=INTEGER},
+      <if test="refNo != null">
+        ref_no = #{refNo,jdbcType=VARCHAR},
       </if>
       <if test="mpAmt != null">
         mp_amt = #{mpAmt,jdbcType=INTEGER},
       </if>
       <if test="mpBal != null">
         mp_bal = #{mpBal,jdbcType=INTEGER},
+      </if>
+      <if test="eventTime != null">
+        event_time = #{eventTime,jdbcType=DATE},
+      </if>
+      <if test="eventType != null">
+        event_type = #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="eventBy != null">
+        event_by = #{eventBy,jdbcType=VARCHAR},
       </if>
       <if test="effectiveDate != null">
         effective_date = #{effectiveDate,jdbcType=DATE},
@@ -172,14 +205,23 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="transId != null">
-        trans_id = #{transId,jdbcType=INTEGER},
+      <if test="refNo != null">
+        ref_no = #{refNo,jdbcType=VARCHAR},
       </if>
       <if test="mpAmt != null">
         mp_amt = #{mpAmt,jdbcType=INTEGER},
       </if>
       <if test="mpBal != null">
         mp_bal = #{mpBal,jdbcType=INTEGER},
+      </if>
+      <if test="eventTime != null">
+        event_time = #{eventTime,jdbcType=DATE},
+      </if>
+      <if test="eventType != null">
+        event_type = #{eventType,jdbcType=VARCHAR},
+      </if>
+      <if test="eventBy != null">
+        event_by = #{eventBy,jdbcType=VARCHAR},
       </if>
       <if test="effectiveDate != null">
         effective_date = #{effectiveDate,jdbcType=DATE},
@@ -210,9 +252,12 @@
   <update id="update" parameterType="com.eshop.serviceweb.model.MemberMpDetails">
     update mc_member_mp_details
     set member_id = #{memberId,jdbcType=INTEGER},
-      trans_id = #{transId,jdbcType=INTEGER},
+      ref_no = #{refNo,jdbcType=VARCHAR},
       mp_amt = #{mpAmt,jdbcType=INTEGER},
       mp_bal = #{mpBal,jdbcType=INTEGER},
+      event_time = #{eventTime,jdbcType=DATE},
+      event_type = #{eventType,jdbcType=VARCHAR},
+      event_by = #{eventBy,jdbcType=VARCHAR},
       effective_date = #{effectiveDate,jdbcType=DATE},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
@@ -225,51 +270,69 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="memberMpDetailsId != null">
-         and member_mp_details_id = #{memberMpDetailsId,jdbcType=INTEGER}
+         and t.member_mp_details_id = #{memberMpDetailsId,jdbcType=INTEGER}
       </if>
       <if test="memberId != null">
-         and member_id = #{memberId,jdbcType=INTEGER}
+         and t.member_id = #{memberId,jdbcType=INTEGER}
       </if>
-      <if test="transId != null">
-         and trans_id = #{transId,jdbcType=INTEGER}
+      <if test="refNo != null">
+         and t.ref_no = #{refNo,jdbcType=VARCHAR}
       </if>
       <if test="mpAmt != null">
-         and mp_amt = #{mpAmt,jdbcType=INTEGER}
+         and t.mp_amt = #{mpAmt,jdbcType=INTEGER}
       </if>
       <if test="mpBal != null">
-         and mp_bal = #{mpBal,jdbcType=INTEGER}
+         and t.mp_bal = #{mpBal,jdbcType=INTEGER}
+      </if>
+      <if test="eventTime != null">
+         and t.event_time = #{eventTime,jdbcType=DATE}
+      </if>
+      <if test="eventType != null">
+         and t.event_type = #{eventType,jdbcType=VARCHAR}
+      </if>
+      <if test="eventBy != null">
+         and t.event_by = #{eventBy,jdbcType=VARCHAR}
       </if>
       <if test="effectiveDate != null">
-         and effective_date = #{effectiveDate,jdbcType=DATE}
+         and t.effective_date = #{effectiveDate,jdbcType=DATE}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_member_mp_details
+    select t.* from mc_member_mp_details t
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.MemberMpDetails" resultMap="BaseResultMap">
-    select * from mc_member_mp_details
+    select t.* from mc_member_mp_details t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberMpDetails" resultMap="BaseResultMap">
-    select * from mc_member_mp_details
+    select t.* from mc_member_mp_details t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberMpDetails" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_mp_details
+    select t.* from mc_member_mp_details t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberMpDetails" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_mp_details
+    select t.* from mc_member_mp_details t
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />

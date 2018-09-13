@@ -24,7 +24,7 @@
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    order_id, zone_code, member_id, member_address_id, order_no, amount, mp_amt, status, 
+    order_id, zone_code, member_id, member_address_id, order_no, amount, mp_amt, status,
     payment_time, shipping_time, logistics_company, shipment_no, receipt_time, settle_status, 
     bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
   </sql>
@@ -47,20 +47,20 @@
   <insert id="insert" parameterType="com.eshop.serviceapp.model.Order">
     insert into mc_order (order_id, zone_code, member_id, 
       member_address_id, order_no, amount, 
-      mp_amt, status, payment_time, 
+      mp_amt, status, payment_time,
       shipping_time, logistics_company, shipment_no, 
       receipt_time, settle_status, bu_code, 
       created_by, created_date, last_updated_by, 
       last_updated_date, row_id)
     values (#{orderId,jdbcType=INTEGER}, #{zoneCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, 
       #{memberAddressId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
-      #{mpAmt,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{paymentTime,jdbcType=TIMESTAMP}, 
+      #{mpAmt,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{paymentTime,jdbcType=TIMESTAMP},
       #{shippingTime,jdbcType=TIMESTAMP}, #{logisticsCompany,jdbcType=VARCHAR}, #{shipmentNo,jdbcType=VARCHAR}, 
       #{receiptTime,jdbcType=TIMESTAMP}, #{settleStatus,jdbcType=VARCHAR}, #{buCode,jdbcType=VARCHAR}, 
       #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
       #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.Order">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.Order" useGeneratedKeys="true" keyProperty="orderId">
     insert into mc_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="orderId != null">

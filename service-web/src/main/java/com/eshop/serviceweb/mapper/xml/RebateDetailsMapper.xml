@@ -88,7 +88,9 @@
       <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
-      row_id,
+      <if test="rowId != null">
+        row_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="rebateDetailsId != null">
@@ -126,9 +128,6 @@
       </if>
       <if test="lastUpdatedDate == null">
         now(),
-      </if>
-      <if test="rowId == null">
-        uuid(),
       </if>
       <if test="rowId != null">
         #{rowId,jdbcType=VARCHAR},
@@ -240,54 +239,63 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="rebateDetailsId != null">
-         and rebate_details_id = #{rebateDetailsId,jdbcType=INTEGER}
+         and t.rebate_details_id = #{rebateDetailsId,jdbcType=INTEGER}
       </if>
       <if test="settleBatchId != null">
-         and settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
+         and t.settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
       </if>
       <if test="settleDetailsId != null">
-         and settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
+         and t.settle_details_id = #{settleDetailsId,jdbcType=INTEGER}
       </if>
       <if test="queueingType != null">
-         and queueing_type = #{queueingType,jdbcType=VARCHAR}
+         and t.queueing_type = #{queueingType,jdbcType=VARCHAR}
       </if>
       <if test="queueingTime != null">
-         and queueing_time = #{queueingTime,jdbcType=TIMESTAMP}
+         and t.queueing_time = #{queueingTime,jdbcType=TIMESTAMP}
       </if>
       <if test="rebateAmt != null">
-         and rebate_amt = #{rebateAmt,jdbcType=DECIMAL}
+         and t.rebate_amt = #{rebateAmt,jdbcType=DECIMAL}
       </if>
       <if test="rebateMp != null">
-         and rebate_mp = #{rebateMp,jdbcType=INTEGER}
+         and t.rebate_mp = #{rebateMp,jdbcType=INTEGER}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from ac_rebate_details
+    select t.* from ac_rebate_details t
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.RebateDetails" resultMap="BaseResultMap">
-    select * from ac_rebate_details
+    select t.* from ac_rebate_details t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.RebateDetails" resultMap="BaseResultMap">
-    select * from ac_rebate_details
+    select t.* from ac_rebate_details t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.RebateDetails" resultMap="BaseResultMap" useCache="false">
-    select * from ac_rebate_details
+    select t.* from ac_rebate_details t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.RebateDetails" resultMap="BaseResultMap" useCache="false">
-    select * from ac_rebate_details
+    select t.* from ac_rebate_details t
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
