@@ -22,7 +22,10 @@
     <result column="queueing_type" jdbcType="VARCHAR" property="queueingType" />
     <result column="queueing_time" jdbcType="VARCHAR" property="queueingTime" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="rebateMp" jdbcType="DECIMAL" property="rebateMp" />
     <result column="hasRebateAmt" jdbcType="DECIMAL" property="hasRebateAmt" />
+    <result column="settle_batch_id" jdbcType="INTEGER" property="settleBatchId" />
+    <result column="settle_details_id" jdbcType="INTEGER" property="settleDetailsId" />
   </resultMap>
   <resultMap id="mapQueuGroupResult" extends="BaseResultMap" type="map">
     <result column="rebate_bals" jdbcType="DECIMAL" property="rebateBals" />
@@ -233,7 +236,10 @@
 		end queueing_time,
 		mc_order.amount,
 		ac_rebate_queue.rebate_bal,
-		(select sum(rebate_amt) hasRebateAmt from ac_rebate_details where ac_rebate_queue.settle_details_id=ac_settle_details.settle_details_id) hasRebateAmt
+		(select exchange_rate from rebate_setting)*ac_rebate_queue.rebate_bal rebateMp,
+		ifnull((select sum(rebate_amt) hasRebateAmt from ac_rebate_details where ac_rebate_queue.settle_details_id=ac_settle_details.settle_details_id),0) hasRebateAmt,
+		ac_settle_batch.settle_batch_id,
+		ac_settle_details.settle_details_id
 	from 
 		ac_rebate_queue
 		inner join ac_settle_details on ac_rebate_queue.settle_details_id =ac_settle_details.settle_details_id
@@ -246,12 +252,12 @@
   </select>
   <select id="getQueueGroup" resultMap="mapQueuGroupResult">
     select 
-		sum(ac_rebate_queue.rebate_bal) rebate_bals,count(*) order_count,sum(ac_settle_batch.profit_bal) profit_bal
+		sum(ac_rebate_queue.rebate_bal) rebate_bals,count(*) order_count,rebate_setting.profit_bal
 	from 
 		ac_rebate_queue
 		inner join ac_settle_details on ac_rebate_queue.settle_details_id =ac_settle_details.settle_details_id
-		inner join ac_settle_batch on ac_settle_details.settle_batch_id=ac_settle_batch.settle_batch_id
 		inner join mc_order on ac_settle_details.order_id=mc_order.order_id	
+		join rebate_setting
 	 order by ac_rebate_queue.rebate_seq
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.RebateQueue" resultMap="BaseResultMap">
