@@ -23,6 +23,13 @@
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+
+  <resultMap id="voResultMap" type="map">
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="receiver_telephone" jdbcType="VARCHAR" property="receiverTelephone" />
+    <result column="receiving_address" jdbcType="VARCHAR" property="receivingAddress" />
+  </resultMap>
   <sql id="Base_Column_List">
     order_id, zone_code, member_id, member_address_id, order_no, amount, mp_amt, status,
     payment_time, shipping_time, logistics_company, shipment_no, receipt_time, settle_status, 
@@ -342,75 +349,90 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="orderId != null">
-         and order_id = #{orderId,jdbcType=INTEGER}
+         and t.order_id = #{orderId,jdbcType=INTEGER}
       </if>
       <if test="zoneCode != null">
-         and zone_code = #{zoneCode,jdbcType=VARCHAR}
+         and t.zone_code = #{zoneCode,jdbcType=VARCHAR}
       </if>
       <if test="memberId != null">
-         and member_id = #{memberId,jdbcType=INTEGER}
+         and t.member_id = #{memberId,jdbcType=INTEGER}
       </if>
       <if test="memberAddressId != null">
-         and member_address_id = #{memberAddressId,jdbcType=INTEGER}
+         and t.member_address_id = #{memberAddressId,jdbcType=INTEGER}
       </if>
       <if test="orderNo != null">
-         and order_no = #{orderNo,jdbcType=VARCHAR}
+         and t.order_no = #{orderNo,jdbcType=VARCHAR}
       </if>
       <if test="amount != null">
-         and amount = #{amount,jdbcType=DECIMAL}
+         and t.amount = #{amount,jdbcType=DECIMAL}
       </if>
       <if test="mpAmt != null">
-         and mp_amt = #{mpAmt,jdbcType=INTEGER}
+         and t.mp_amt = #{mpAmt,jdbcType=INTEGER}
       </if>
       <if test="status != null">
-         and status = #{status,jdbcType=VARCHAR}
+         and t.status = #{status,jdbcType=VARCHAR}
       </if>
       <if test="paymentTime != null">
-         and payment_time = #{paymentTime,jdbcType=TIMESTAMP}
+         and t.payment_time = #{paymentTime,jdbcType=TIMESTAMP}
       </if>
       <if test="shippingTime != null">
-         and shipping_time = #{shippingTime,jdbcType=TIMESTAMP}
+         and t.shipping_time = #{shippingTime,jdbcType=TIMESTAMP}
       </if>
       <if test="logisticsCompany != null">
-         and logistics_company = #{logisticsCompany,jdbcType=VARCHAR}
+         and t.logistics_company = #{logisticsCompany,jdbcType=VARCHAR}
       </if>
       <if test="shipmentNo != null">
-         and shipment_no = #{shipmentNo,jdbcType=VARCHAR}
+         and t.shipment_no = #{shipmentNo,jdbcType=VARCHAR}
       </if>
       <if test="receiptTime != null">
-         and receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
+         and t.receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
       </if>
       <if test="settleStatus != null">
-         and settle_status = #{settleStatus,jdbcType=VARCHAR}
+         and t.settle_status = #{settleStatus,jdbcType=VARCHAR}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_order
+    select * from mc_order t
   </select>
   <select id="getList" parameterType="com.eshop.serviceapp.model.Order" resultMap="BaseResultMap">
-    select * from mc_order
+    select * from mc_order t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceapp.model.Order" resultMap="BaseResultMap">
-    select * from mc_order
+    select * from mc_order t
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.Order" resultMap="BaseResultMap" useCache="false">
-    select * from mc_order
+  <select id="queryPageList" parameterType="com.eshop.serviceapp.model.Order" resultMap="voResultMap" useCache="false">
+    SELECT
+    b.zone_name,
+    d.receiver_name,
+    d.telephone receiver_telephone,
+    CONCAT(
+    d.receiving_province,
+    d.receiving_city,
+    d.receiving_area,
+    d.receiving_address
+    ) receiving_address,
+    t.*
+    FROM
+    mc_order t
+    LEFT JOIN sh_zone b ON b.zone_code = t.zone_code
+    LEFT JOIN mc_member c ON t.member_id = c.member_id
+    LEFT JOIN mc_member_address d ON t.member_address_id = d.member_address_id
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceapp.model.Order" resultMap="BaseResultMap" useCache="false">
-    select * from mc_order
+    select * from mc_order t
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />

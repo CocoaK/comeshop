@@ -73,7 +73,7 @@ public class OrderService extends BaseService<Order> implements IOrderService {
                     ZoneGoods zoneGoods = zoneGoodsMapper.getOne(vo.getZoneGoodsId());
                     GoodsModel goodsModel = goodsModelMapper.getOne(zoneGoods.getGoodsModelId());
                     //商品总价
-                    BigDecimal amount = goodsModel.getPrice().multiply(new BigDecimal(zoneGoods.getGoodsQty()));
+                    BigDecimal amount = goodsModel.getPrice().multiply(new BigDecimal(vo.getOrderQty()));
                     //商品型号数量*商品型号价格-商品折扣
                     BigDecimal netAmt = amount.subtract(zoneGoods.getDiscountAmt());
                     orderAmount = orderAmount.add(netAmt);
