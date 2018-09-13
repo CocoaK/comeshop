@@ -6,7 +6,7 @@ import com.eshop.serviceapp.vo.OrderVO;
 
 public interface IOrderService extends IBaseService<Order> {
 
-//    ResultEntity<Order> addForResultEntity(Order order);
-
     ResultEntity<Order> addOrder(OrderVO orderVO);
+
+    ResultEntity<Order> updateActiveOrder(Order order);
 }

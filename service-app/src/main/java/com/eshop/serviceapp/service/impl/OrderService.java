@@ -38,19 +38,6 @@ public class OrderService extends BaseService<Order> implements IOrderService {
         return orderMapper;
     }
 
-//    @Override
-//    public ResultEntity<Order> addForResultEntity(Order order) {
-//        order.setOrderNo(System.currentTimeMillis()+StringUtil.randomNum(7));
-//        Member member = memberMapper.getOne(order.getMemberId());
-//        order.setCurrentUser(member.getCurrentUser());
-//        order.setCreatedBy(member.getUserName());
-//        if(order.getBuCode()==null || "".equals(order.getBuCode())){
-//            order.setBuCode("ESHOP");
-//        }
-//        int result = orderMapper.insertActive(order);
-//        return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
-//                : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", order);
-//    }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -118,6 +105,31 @@ public class OrderService extends BaseService<Order> implements IOrderService {
         }catch (Exception e){
             e.printStackTrace();
             throw new RuntimeException();
+        }
+        return re;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ResultEntity<Order> updateActiveOrder(Order order) {
+        ResultEntity<Order> re = new ResultEntity<Order>();
+        Order odr = new Order();
+        if(order == null || order.getLastUpdatedBy() == null || order.getLastUpdatedDate() == null || order.getOrderId() == null){
+            return re;
+        }
+        odr.setOrderId(order.getOrderId());
+        odr.setLastUpdatedBy(order.getLastUpdatedBy());
+        odr.setLastUpdatedDate(order.getLastUpdatedDate());
+        odr.setStatus(order.getStatus());
+        Member member = memberMapper.getOne(order.getMemberId());
+        if(member!=null){
+            odr.setCurrentUser(member.getUserName());
+        }
+        int result = orderMapper.updateActiveByLock(odr);
+        if(result>0){
+            re.setCode(ResultEntity.SUCCESS);
+            re.setMsg(ResultEntity.MSG_SUCCESS);
+            re.setData(orderMapper.getOne(order.getOrderId()));
         }
         return re;
     }
