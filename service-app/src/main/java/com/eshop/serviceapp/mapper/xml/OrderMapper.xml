@@ -430,6 +430,7 @@
     LEFT JOIN mc_member c ON t.member_id = c.member_id
     LEFT JOIN mc_member_address d ON t.member_address_id = d.member_address_id
     <include refid="Base_Query_Cause" />
+    ORDER BY t.created_date desc
   </select>
   <select id="queryList" parameterType="com.eshop.serviceapp.model.Order" resultMap="BaseResultMap" useCache="false">
     select * from mc_order t
