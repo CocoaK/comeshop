@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshop.serviceweb.mapper.MemberGradeHistMapper">
-  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberGradeHist">
-    <id column="member_grade_hist_id" jdbcType="INTEGER" property="memberGradeHistId" />
+<mapper namespace="com.eshop.serviceweb.mapper.MemberRenewMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.MemberRenew">
+    <id column="member_renew_id" jdbcType="INTEGER" property="memberRenewId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
-    <result column="event_date" jdbcType="TIMESTAMP" property="eventDate" />
-    <result column="event_type" jdbcType="VARCHAR" property="eventType" />
-    <result column="event_amt" jdbcType="DECIMAL" property="eventAmt" />
-    <result column="event_by" jdbcType="VARCHAR" property="eventBy" />
+    <result column="member_grade" jdbcType="VARCHAR" property="memberGrade" />
+    <result column="renew_amt" jdbcType="DECIMAL" property="renewAmt" />
+    <result column="renew_time" jdbcType="TIMESTAMP" property="renewTime" />
     <result column="ref_member_id" jdbcType="INTEGER" property="refMemberId" />
-    <result column="grade_before" jdbcType="VARCHAR" property="gradeBefore" />
-    <result column="grade_after" jdbcType="VARCHAR" property="gradeAfter" />
+    <result column="is_reward" jdbcType="BIT" property="isReward" />
+    <result column="reward_time" jdbcType="TIMESTAMP" property="rewardTime" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -19,69 +18,64 @@
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    member_grade_hist_id, member_id, event_date, event_type, event_amt, event_by, ref_member_id, 
-    grade_before, grade_after, bu_code, created_by, created_date, last_updated_by, last_updated_date, 
+    member_renew_id, member_id, member_grade, renew_amt, renew_time, ref_member_id, is_reward, 
+    reward_time, bu_code, created_by, created_date, last_updated_by, last_updated_date, 
     row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from mc_member_grade_hist
-    where member_grade_hist_id = #{memberGradeHistId,jdbcType=INTEGER}
+    from mc_member_renew
+    where member_renew_id = #{memberRenewId,jdbcType=INTEGER}
   </select>
   <delete id="delete" parameterType="java.lang.Integer">
-    delete from mc_member_grade_hist
-    where member_grade_hist_id = #{memberGradeHistId,jdbcType=INTEGER}
+    delete from mc_member_renew
+    where member_renew_id = #{memberRenewId,jdbcType=INTEGER}
   </delete>
   <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
-    delete from mc_member_grade_hist
-    where member_grade_hist_id = #{id,jdbcType=INTEGER}
+    delete from mc_member_renew
+    where member_renew_id = #{id,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
-    insert into mc_member_grade_hist (member_grade_hist_id, member_id, event_date, 
-      event_type, event_amt, event_by, 
-      ref_member_id, grade_before, grade_after, 
-      bu_code, created_by, created_date, 
-      last_updated_by, last_updated_date, row_id
-      )
-    values (#{memberGradeHistId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{eventDate,jdbcType=TIMESTAMP}, 
-      #{eventType,jdbcType=VARCHAR}, #{eventAmt,jdbcType=DECIMAL}, #{eventBy,jdbcType=VARCHAR}, 
-      #{refMemberId,jdbcType=INTEGER}, #{gradeBefore,jdbcType=VARCHAR}, #{gradeAfter,jdbcType=VARCHAR}, 
-      #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
-      )
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberRenew">
+    insert into mc_member_renew (member_renew_id, member_id, member_grade, 
+      renew_amt, renew_time, ref_member_id, 
+      is_reward, reward_time, bu_code, 
+      created_by, created_date, last_updated_by, 
+      last_updated_date, row_id)
+    values (#{memberRenewId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{memberGrade,jdbcType=VARCHAR}, 
+      #{renewAmt,jdbcType=DECIMAL}, #{renewTime,jdbcType=TIMESTAMP}, #{refMemberId,jdbcType=INTEGER}, 
+      #{isReward,jdbcType=BIT}, #{rewardTime,jdbcType=TIMESTAMP}, #{buCode,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
-    insert into mc_member_grade_hist
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberRenew">
+    insert into mc_member_renew
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="memberGradeHistId != null">
-        member_grade_hist_id,
+      <if test="memberRenewId != null">
+        member_renew_id,
       </if>
       <if test="memberId != null">
         member_id,
       </if>
-      <if test="eventDate != null">
-        event_date,
+      <if test="memberGrade != null">
+        member_grade,
       </if>
-      <if test="eventType != null">
-        event_type,
+      <if test="renewAmt != null">
+        renew_amt,
       </if>
-      <if test="eventAmt != null">
-        event_amt,
-      </if>
-      <if test="eventBy != null">
-        event_by,
+      <if test="renewTime != null">
+        renew_time,
       </if>
       <if test="refMemberId != null">
         ref_member_id,
       </if>
-      <if test="gradeBefore != null">
-        grade_before,
+      <if test="isReward != null">
+        is_reward,
       </if>
-      <if test="gradeAfter != null">
-        grade_after,
+      <if test="rewardTime != null">
+        reward_time,
       </if>
       <if test="buCode != null">
         bu_code,
@@ -93,32 +87,29 @@
       row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="memberGradeHistId != null">
-        #{memberGradeHistId,jdbcType=INTEGER},
+      <if test="memberRenewId != null">
+        #{memberRenewId,jdbcType=INTEGER},
       </if>
       <if test="memberId != null">
         #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="eventDate != null">
-        #{eventDate,jdbcType=TIMESTAMP},
+      <if test="memberGrade != null">
+        #{memberGrade,jdbcType=VARCHAR},
       </if>
-      <if test="eventType != null">
-        #{eventType,jdbcType=VARCHAR},
+      <if test="renewAmt != null">
+        #{renewAmt,jdbcType=DECIMAL},
       </if>
-      <if test="eventAmt != null">
-        #{eventAmt,jdbcType=DECIMAL},
-      </if>
-      <if test="eventBy != null">
-        #{eventBy,jdbcType=VARCHAR},
+      <if test="renewTime != null">
+        #{renewTime,jdbcType=TIMESTAMP},
       </if>
       <if test="refMemberId != null">
         #{refMemberId,jdbcType=INTEGER},
       </if>
-      <if test="gradeBefore != null">
-        #{gradeBefore,jdbcType=VARCHAR},
+      <if test="isReward != null">
+        #{isReward,jdbcType=BIT},
       </if>
-      <if test="gradeAfter != null">
-        #{gradeAfter,jdbcType=VARCHAR},
+      <if test="rewardTime != null">
+        #{rewardTime,jdbcType=TIMESTAMP},
       </if>
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
@@ -155,32 +146,29 @@
       </if>
     </trim>
   </insert>
-  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
-    update mc_member_grade_hist
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.MemberRenew">
+    update mc_member_renew
     <set>
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="eventDate != null">
-        event_date = #{eventDate,jdbcType=TIMESTAMP},
+      <if test="memberGrade != null">
+        member_grade = #{memberGrade,jdbcType=VARCHAR},
       </if>
-      <if test="eventType != null">
-        event_type = #{eventType,jdbcType=VARCHAR},
+      <if test="renewAmt != null">
+        renew_amt = #{renewAmt,jdbcType=DECIMAL},
       </if>
-      <if test="eventAmt != null">
-        event_amt = #{eventAmt,jdbcType=DECIMAL},
-      </if>
-      <if test="eventBy != null">
-        event_by = #{eventBy,jdbcType=VARCHAR},
+      <if test="renewTime != null">
+        renew_time = #{renewTime,jdbcType=TIMESTAMP},
       </if>
       <if test="refMemberId != null">
         ref_member_id = #{refMemberId,jdbcType=INTEGER},
       </if>
-      <if test="gradeBefore != null">
-        grade_before = #{gradeBefore,jdbcType=VARCHAR},
+      <if test="isReward != null">
+        is_reward = #{isReward,jdbcType=BIT},
       </if>
-      <if test="gradeAfter != null">
-        grade_after = #{gradeAfter,jdbcType=VARCHAR},
+      <if test="rewardTime != null">
+        reward_time = #{rewardTime,jdbcType=TIMESTAMP},
       </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
@@ -201,34 +189,31 @@
         row_id = #{rowId,jdbcType=VARCHAR},
       </if>
     </set>
-    where member_grade_hist_id = #{memberGradeHistId,jdbcType=INTEGER}
+    where member_renew_id = #{memberRenewId,jdbcType=INTEGER}
   </update>
-  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
-    update mc_member_grade_hist
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.MemberRenew">
+    update mc_member_renew
     <set>
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="eventDate != null">
-        event_date = #{eventDate,jdbcType=TIMESTAMP},
+      <if test="memberGrade != null">
+        member_grade = #{memberGrade,jdbcType=VARCHAR},
       </if>
-      <if test="eventType != null">
-        event_type = #{eventType,jdbcType=VARCHAR},
+      <if test="renewAmt != null">
+        renew_amt = #{renewAmt,jdbcType=DECIMAL},
       </if>
-      <if test="eventAmt != null">
-        event_amt = #{eventAmt,jdbcType=DECIMAL},
-      </if>
-      <if test="eventBy != null">
-        event_by = #{eventBy,jdbcType=VARCHAR},
+      <if test="renewTime != null">
+        renew_time = #{renewTime,jdbcType=TIMESTAMP},
       </if>
       <if test="refMemberId != null">
         ref_member_id = #{refMemberId,jdbcType=INTEGER},
       </if>
-      <if test="gradeBefore != null">
-        grade_before = #{gradeBefore,jdbcType=VARCHAR},
+      <if test="isReward != null">
+        is_reward = #{isReward,jdbcType=BIT},
       </if>
-      <if test="gradeAfter != null">
-        grade_after = #{gradeAfter,jdbcType=VARCHAR},
+      <if test="rewardTime != null">
+        reward_time = #{rewardTime,jdbcType=TIMESTAMP},
       </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
@@ -249,56 +234,52 @@
         row_id = #{rowId,jdbcType=VARCHAR},
       </if>
     </set>
-    where member_grade_hist_id = #{memberGradeHistId,jdbcType=INTEGER}
+    where member_renew_id = #{memberRenewId,jdbcType=INTEGER}
     and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </update>
-  <update id="update" parameterType="com.eshop.serviceweb.model.MemberGradeHist">
-    update mc_member_grade_hist
+  <update id="update" parameterType="com.eshop.serviceweb.model.MemberRenew">
+    update mc_member_renew
     set member_id = #{memberId,jdbcType=INTEGER},
-      event_date = #{eventDate,jdbcType=TIMESTAMP},
-      event_type = #{eventType,jdbcType=VARCHAR},
-      event_amt = #{eventAmt,jdbcType=DECIMAL},
-      event_by = #{eventBy,jdbcType=VARCHAR},
+      member_grade = #{memberGrade,jdbcType=VARCHAR},
+      renew_amt = #{renewAmt,jdbcType=DECIMAL},
+      renew_time = #{renewTime,jdbcType=TIMESTAMP},
       ref_member_id = #{refMemberId,jdbcType=INTEGER},
-      grade_before = #{gradeBefore,jdbcType=VARCHAR},
-      grade_after = #{gradeAfter,jdbcType=VARCHAR},
+      is_reward = #{isReward,jdbcType=BIT},
+      reward_time = #{rewardTime,jdbcType=TIMESTAMP},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
       last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
       row_id = #{rowId,jdbcType=VARCHAR}
-    where member_grade_hist_id = #{memberGradeHistId,jdbcType=INTEGER}
+    where member_renew_id = #{memberRenewId,jdbcType=INTEGER}
   </update>
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="memberGradeHistId != null">
-         and t.member_grade_hist_id = #{memberGradeHistId,jdbcType=INTEGER}
+      <if test="memberRenewId != null">
+         and t.member_renew_id = #{memberRenewId,jdbcType=INTEGER}
       </if>
       <if test="memberId != null">
          and t.member_id = #{memberId,jdbcType=INTEGER}
       </if>
-      <if test="eventDate != null">
-         and t.event_date = #{eventDate,jdbcType=TIMESTAMP}
+      <if test="memberGrade != null">
+         and t.member_grade = #{memberGrade,jdbcType=VARCHAR}
       </if>
-      <if test="eventType != null">
-         and t.event_type = #{eventType,jdbcType=VARCHAR}
+      <if test="renewAmt != null">
+         and t.renew_amt = #{renewAmt,jdbcType=DECIMAL}
       </if>
-      <if test="eventAmt != null">
-         and t.event_amt = #{eventAmt,jdbcType=DECIMAL}
-      </if>
-      <if test="eventBy != null">
-         and t.event_by = #{eventBy,jdbcType=VARCHAR}
+      <if test="renewTime != null">
+         and t.renew_time = #{renewTime,jdbcType=TIMESTAMP}
       </if>
       <if test="refMemberId != null">
          and t.ref_member_id = #{refMemberId,jdbcType=INTEGER}
       </if>
-      <if test="gradeBefore != null">
-         and t.grade_before = #{gradeBefore,jdbcType=VARCHAR}
+      <if test="isReward != null">
+         and t.is_reward = #{isReward,jdbcType=BIT}
       </if>
-      <if test="gradeAfter != null">
-         and t.grade_after = #{gradeAfter,jdbcType=VARCHAR}
+      <if test="rewardTime != null">
+         and t.reward_time = #{rewardTime,jdbcType=TIMESTAMP}
       </if>
       <if test="buCode != null">
          and t.bu_code = #{buCode,jdbcType=VARCHAR}
@@ -321,22 +302,22 @@
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select t.* from mc_member_grade_hist t
+    select t.* from mc_member_renew t
   </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberGradeHist" resultMap="BaseResultMap">
-    select t.* from mc_member_grade_hist t
+  <select id="getList" parameterType="com.eshop.serviceweb.model.MemberRenew" resultMap="BaseResultMap">
+    select t.* from mc_member_renew t
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberGradeHist" resultMap="BaseResultMap">
-    select t.* from mc_member_grade_hist t
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberRenew" resultMap="BaseResultMap">
+    select t.* from mc_member_renew t
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberGradeHist" resultMap="BaseResultMap" useCache="false">
-    select t.* from mc_member_grade_hist t
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberRenew" resultMap="BaseResultMap" useCache="false">
+    select t.* from mc_member_renew t
     <include refid="Base_Query_Cause" />
   </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberGradeHist" resultMap="BaseResultMap" useCache="false">
-    select t.* from mc_member_grade_hist t
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberRenew" resultMap="BaseResultMap" useCache="false">
+    select t.* from mc_member_renew t
     <include refid="Base_Query_Cause" />
   </select>
   <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />

@@ -101,6 +101,10 @@ public class SettleService implements ISettleService {
         	rebateDetails.setRebateMp(rebateAmt);
         	rebateDetails.setBuCode("ESHOP");
         	//rebateDetails.setRowId(UUIDUtil.getUUID());
+//        	rebateDetails.setCreatedBy(vo.getCurrentUser());
+//        	rebateDetails.setCreatedDate(dateNow);
+//        	rebateDetails.setLastUpdatedBy(vo.getCurrentUser());
+//        	rebateDetails.setLastUpdatedDate(dateNow);
             rebateDetails.setCurrentUser(vo.getCurrentUser());
         	rebateDetailsMapper.insertActive(rebateDetails);
         	
@@ -120,11 +124,17 @@ public class SettleService implements ISettleService {
         	mm.setBuCode("ESHOP");
 //        	mm.setRowId(UUIDUtil.getUUID());
             mm.setCurrentUser(vo.getCurrentUser());
+//            mm.setCreatedBy(vo.getCurrentUser());
+//        	mm.setCreatedDate(dateNow);
+//        	mm.setLastUpdatedBy(vo.getCurrentUser());
+//        	mm.setLastUpdatedDate(dateNow);
         	memberMpDetailsMapper.insertActive(mm);
         	
         	Member memberModel=new Member();
         	memberModel.setMemberId(vo.getMemberId());
         	memberModel.setMpAmt(memberCheck.getMpAmt()+rebateAmt);
+//        	memberModel.setLastUpdatedBy(vo.getCurrentUser());
+//        	memberModel.setLastUpdatedDate(dateNow);
             memberModel.setCurrentUser(vo.getCurrentUser());
         	memberMapper.updateActive(memberModel);
         	
@@ -138,8 +148,8 @@ public class SettleService implements ISettleService {
         		rqModel.setSettleDetailsId(vo.getSettleDetailsId());
         		rqModel.setRebateBal(rq.getRebateBal().subtract(vo.getRebateAmt()));
                 rqModel.setCurrentUser(vo.getCurrentUser());
-//        		rqModel.setLastUpdatedBy(vo.getCurrentUser());
-//        		rqModel.setLastUpdatedDate(new Date());
+//                rqModel.setLastUpdatedBy(vo.getCurrentUser());
+//                rqModel.setLastUpdatedDate(dateNow);
             	
         		rebateQueueMapper.updateActive(rqModel);
         	}
@@ -162,8 +172,8 @@ public class SettleService implements ISettleService {
         RebateSetting rsModel=new RebateSetting();
         rsModel.setRebateSettingId(rs.getRebateSettingId());
         rsModel.setProfitBal(rs.getProfitBal().subtract(AllrebateAmt));
-//        rsModel.setLastUpdatedDate(dateNow);
 //        rsModel.setLastUpdatedBy(currentUser);
+//        rsModel.setLastUpdatedDate(dateNow);
         rsModel.setCurrentUser(currentUser);
         rebateSettingMapper.updateActive(rsModel);
         

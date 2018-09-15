@@ -23,6 +23,7 @@
     <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
     <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
     <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
+    <result column="hasRebateAmt" jdbcType="DECIMAL" property="hasRebateAmt" />
   </resultMap>
   <sql id="Base_Column_List">
     settle_details_id, settle_batch_id, order_id, profit_amt, rebate_amt, bu_code, created_by, 
@@ -246,7 +247,8 @@
   </sql>
   <sql id="Settle_Query">
     SELECT
-    a.*,o.order_no,o.amount,o.payment_time,o.receipt_time,m.nick_name,m.telephone,g.grade_name,o.created_date order_time
+    a.*,o.order_no,o.amount,o.payment_time,o.receipt_time,m.nick_name,m.telephone,g.grade_name,o.created_date order_time,
+    (select sum(rebate_amt) from ac_rebate_details where ac_rebate_details.settle_details_id=a.settle_details_id) hasRebateAmt
     FROM
     ac_settle_details a
     JOIN mc_order o ON o.order_id = a.order_id

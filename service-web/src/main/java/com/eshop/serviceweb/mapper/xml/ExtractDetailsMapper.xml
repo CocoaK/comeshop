@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshop.serviceweb.mapper.ExtractDetailsMapper">
+  <resultMap id="BaseResultMap" type="com.eshop.serviceweb.model.ExtractDetails">
+    <id column="extract_details_id" jdbcType="INTEGER" property="extractDetailsId" />
+    <result column="settle_batch_id" jdbcType="INTEGER" property="settleBatchId" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="member_grade_code" jdbcType="VARCHAR" property="memberGradeCode" />
+    <result column="recommend_no_1" jdbcType="INTEGER" property="recommendNo1" />
+    <result column="recommend_extract_amt_1" jdbcType="DECIMAL" property="recommendExtractAmt1" />
+    <result column="recommend_extract_mp_1" jdbcType="INTEGER" property="recommendExtractMp1" />
+    <result column="recommend_no_2" jdbcType="INTEGER" property="recommendNo2" />
+    <result column="recommend_extract_amt_2" jdbcType="DECIMAL" property="recommendExtractAmt2" />
+    <result column="recommend_extract_mp_2" jdbcType="INTEGER" property="recommendExtractMp2" />
+    <result column="renew_extract_no" jdbcType="INTEGER" property="renewExtractNo" />
+    <result column="renew_extract_amt" jdbcType="DECIMAL" property="renewExtractAmt" />
+    <result column="renew_extract_mp" jdbcType="INTEGER" property="renewExtractMp" />
+    <result column="consumption_amt_1" jdbcType="DECIMAL" property="consumptionAmt1" />
+    <result column="consumption_extract_amt_1" jdbcType="DECIMAL" property="consumptionExtractAmt1" />
+    <result column="consumption_extract_mp_1" jdbcType="INTEGER" property="consumptionExtractMp1" />
+    <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
+    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+    <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    extract_details_id, settle_batch_id, member_id, member_grade_code, recommend_no_1, 
+    recommend_extract_amt_1, recommend_extract_mp_1, recommend_no_2, recommend_extract_amt_2, 
+    recommend_extract_mp_2, renew_extract_no, renew_extract_amt, renew_extract_mp, consumption_amt_1, 
+    consumption_extract_amt_1, consumption_extract_mp_1, bu_code, created_by, created_date, 
+    last_updated_by, last_updated_date, row_id
+  </sql>
+  <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ac_extract_details
+    where extract_details_id = #{extractDetailsId,jdbcType=INTEGER}
+  </select>
+  <delete id="delete" parameterType="java.lang.Integer">
+    delete from ac_extract_details
+    where extract_details_id = #{extractDetailsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLock" parameterType="com.eshop.serviceweb.vo.DeleteVO">
+    delete from ac_extract_details
+    where extract_details_id = #{id,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.eshop.serviceweb.model.ExtractDetails">
+    insert into ac_extract_details (extract_details_id, settle_batch_id, 
+      member_id, member_grade_code, recommend_no_1, 
+      recommend_extract_amt_1, recommend_extract_mp_1, 
+      recommend_no_2, recommend_extract_amt_2, recommend_extract_mp_2, 
+      renew_extract_no, renew_extract_amt, renew_extract_mp, 
+      consumption_amt_1, consumption_extract_amt_1, 
+      consumption_extract_mp_1, bu_code, created_by, 
+      created_date, last_updated_by, last_updated_date, 
+      row_id)
+    values (#{extractDetailsId,jdbcType=INTEGER}, #{settleBatchId,jdbcType=INTEGER}, 
+      #{memberId,jdbcType=INTEGER}, #{memberGradeCode,jdbcType=VARCHAR}, #{recommendNo1,jdbcType=INTEGER}, 
+      #{recommendExtractAmt1,jdbcType=DECIMAL}, #{recommendExtractMp1,jdbcType=INTEGER}, 
+      #{recommendNo2,jdbcType=INTEGER}, #{recommendExtractAmt2,jdbcType=DECIMAL}, #{recommendExtractMp2,jdbcType=INTEGER}, 
+      #{renewExtractNo,jdbcType=INTEGER}, #{renewExtractAmt,jdbcType=DECIMAL}, #{renewExtractMp,jdbcType=INTEGER}, 
+      #{consumptionAmt1,jdbcType=DECIMAL}, #{consumptionExtractAmt1,jdbcType=DECIMAL}, 
+      #{consumptionExtractMp1,jdbcType=INTEGER}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
+      #{rowId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertActive" parameterType="com.eshop.serviceweb.model.ExtractDetails">
+    insert into ac_extract_details
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="extractDetailsId != null">
+        extract_details_id,
+      </if>
+      <if test="settleBatchId != null">
+        settle_batch_id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="memberGradeCode != null">
+        member_grade_code,
+      </if>
+      <if test="recommendNo1 != null">
+        recommend_no_1,
+      </if>
+      <if test="recommendExtractAmt1 != null">
+        recommend_extract_amt_1,
+      </if>
+      <if test="recommendExtractMp1 != null">
+        recommend_extract_mp_1,
+      </if>
+      <if test="recommendNo2 != null">
+        recommend_no_2,
+      </if>
+      <if test="recommendExtractAmt2 != null">
+        recommend_extract_amt_2,
+      </if>
+      <if test="recommendExtractMp2 != null">
+        recommend_extract_mp_2,
+      </if>
+      <if test="renewExtractNo != null">
+        renew_extract_no,
+      </if>
+      <if test="renewExtractAmt != null">
+        renew_extract_amt,
+      </if>
+      <if test="renewExtractMp != null">
+        renew_extract_mp,
+      </if>
+      <if test="consumptionAmt1 != null">
+        consumption_amt_1,
+      </if>
+      <if test="consumptionExtractAmt1 != null">
+        consumption_extract_amt_1,
+      </if>
+      <if test="consumptionExtractMp1 != null">
+        consumption_extract_mp_1,
+      </if>
+      <if test="buCode != null">
+        bu_code,
+      </if>
+      created_by,
+      created_date,
+      last_updated_by,
+      last_updated_date,
+      row_id,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="extractDetailsId != null">
+        #{extractDetailsId,jdbcType=INTEGER},
+      </if>
+      <if test="settleBatchId != null">
+        #{settleBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberGradeCode != null">
+        #{memberGradeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendNo1 != null">
+        #{recommendNo1,jdbcType=INTEGER},
+      </if>
+      <if test="recommendExtractAmt1 != null">
+        #{recommendExtractAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="recommendExtractMp1 != null">
+        #{recommendExtractMp1,jdbcType=INTEGER},
+      </if>
+      <if test="recommendNo2 != null">
+        #{recommendNo2,jdbcType=INTEGER},
+      </if>
+      <if test="recommendExtractAmt2 != null">
+        #{recommendExtractAmt2,jdbcType=DECIMAL},
+      </if>
+      <if test="recommendExtractMp2 != null">
+        #{recommendExtractMp2,jdbcType=INTEGER},
+      </if>
+      <if test="renewExtractNo != null">
+        #{renewExtractNo,jdbcType=INTEGER},
+      </if>
+      <if test="renewExtractAmt != null">
+        #{renewExtractAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="renewExtractMp != null">
+        #{renewExtractMp,jdbcType=INTEGER},
+      </if>
+      <if test="consumptionAmt1 != null">
+        #{consumptionAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractAmt1 != null">
+        #{consumptionExtractAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractMp1 != null">
+        #{consumptionExtractMp1,jdbcType=INTEGER},
+      </if>
+      <if test="buCode != null">
+        #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy == null and currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate == null">
+        now(),
+      </if>
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy == null and currentUser != null">
+        #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate == null">
+        now(),
+      </if>
+      <if test="lastUpdatedDate != null">
+        #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId == null">
+        uuid(),
+      </if>
+      <if test="rowId != null">
+        #{rowId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateActive" parameterType="com.eshop.serviceweb.model.ExtractDetails">
+    update ac_extract_details
+    <set>
+      <if test="settleBatchId != null">
+        settle_batch_id = #{settleBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberGradeCode != null">
+        member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendNo1 != null">
+        recommend_no_1 = #{recommendNo1,jdbcType=INTEGER},
+      </if>
+      <if test="recommendExtractAmt1 != null">
+        recommend_extract_amt_1 = #{recommendExtractAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="recommendExtractMp1 != null">
+        recommend_extract_mp_1 = #{recommendExtractMp1,jdbcType=INTEGER},
+      </if>
+      <if test="recommendNo2 != null">
+        recommend_no_2 = #{recommendNo2,jdbcType=INTEGER},
+      </if>
+      <if test="recommendExtractAmt2 != null">
+        recommend_extract_amt_2 = #{recommendExtractAmt2,jdbcType=DECIMAL},
+      </if>
+      <if test="recommendExtractMp2 != null">
+        recommend_extract_mp_2 = #{recommendExtractMp2,jdbcType=INTEGER},
+      </if>
+      <if test="renewExtractNo != null">
+        renew_extract_no = #{renewExtractNo,jdbcType=INTEGER},
+      </if>
+      <if test="renewExtractAmt != null">
+        renew_extract_amt = #{renewExtractAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="renewExtractMp != null">
+        renew_extract_mp = #{renewExtractMp,jdbcType=INTEGER},
+      </if>
+      <if test="consumptionAmt1 != null">
+        consumption_amt_1 = #{consumptionAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractAmt1 != null">
+        consumption_extract_amt_1 = #{consumptionExtractAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractMp1 != null">
+        consumption_extract_mp_1 = #{consumptionExtractMp1,jdbcType=INTEGER},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where extract_details_id = #{extractDetailsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateActiveByLock" parameterType="com.eshop.serviceweb.model.ExtractDetails">
+    update ac_extract_details
+    <set>
+      <if test="settleBatchId != null">
+        settle_batch_id = #{settleBatchId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberGradeCode != null">
+        member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendNo1 != null">
+        recommend_no_1 = #{recommendNo1,jdbcType=INTEGER},
+      </if>
+      <if test="recommendExtractAmt1 != null">
+        recommend_extract_amt_1 = #{recommendExtractAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="recommendExtractMp1 != null">
+        recommend_extract_mp_1 = #{recommendExtractMp1,jdbcType=INTEGER},
+      </if>
+      <if test="recommendNo2 != null">
+        recommend_no_2 = #{recommendNo2,jdbcType=INTEGER},
+      </if>
+      <if test="recommendExtractAmt2 != null">
+        recommend_extract_amt_2 = #{recommendExtractAmt2,jdbcType=DECIMAL},
+      </if>
+      <if test="recommendExtractMp2 != null">
+        recommend_extract_mp_2 = #{recommendExtractMp2,jdbcType=INTEGER},
+      </if>
+      <if test="renewExtractNo != null">
+        renew_extract_no = #{renewExtractNo,jdbcType=INTEGER},
+      </if>
+      <if test="renewExtractAmt != null">
+        renew_extract_amt = #{renewExtractAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="renewExtractMp != null">
+        renew_extract_mp = #{renewExtractMp,jdbcType=INTEGER},
+      </if>
+      <if test="consumptionAmt1 != null">
+        consumption_amt_1 = #{consumptionAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractAmt1 != null">
+        consumption_extract_amt_1 = #{consumptionExtractAmt1,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractMp1 != null">
+        consumption_extract_mp_1 = #{consumptionExtractMp1,jdbcType=INTEGER},
+      </if>
+      <if test="buCode != null">
+        bu_code = #{buCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null">
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="currentUser != null">
+        last_updated_by = #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedDate != null">
+        last_updated_date = now(),
+      </if>
+      <if test="rowId != null">
+        row_id = #{rowId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where extract_details_id = #{extractDetailsId,jdbcType=INTEGER}
+    and last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+    and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.eshop.serviceweb.model.ExtractDetails">
+    update ac_extract_details
+    set settle_batch_id = #{settleBatchId,jdbcType=INTEGER},
+      member_id = #{memberId,jdbcType=INTEGER},
+      member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
+      recommend_no_1 = #{recommendNo1,jdbcType=INTEGER},
+      recommend_extract_amt_1 = #{recommendExtractAmt1,jdbcType=DECIMAL},
+      recommend_extract_mp_1 = #{recommendExtractMp1,jdbcType=INTEGER},
+      recommend_no_2 = #{recommendNo2,jdbcType=INTEGER},
+      recommend_extract_amt_2 = #{recommendExtractAmt2,jdbcType=DECIMAL},
+      recommend_extract_mp_2 = #{recommendExtractMp2,jdbcType=INTEGER},
+      renew_extract_no = #{renewExtractNo,jdbcType=INTEGER},
+      renew_extract_amt = #{renewExtractAmt,jdbcType=DECIMAL},
+      renew_extract_mp = #{renewExtractMp,jdbcType=INTEGER},
+      consumption_amt_1 = #{consumptionAmt1,jdbcType=DECIMAL},
+      consumption_extract_amt_1 = #{consumptionExtractAmt1,jdbcType=DECIMAL},
+      consumption_extract_mp_1 = #{consumptionExtractMp1,jdbcType=INTEGER},
+      bu_code = #{buCode,jdbcType=VARCHAR},
+      created_by = #{createdBy,jdbcType=VARCHAR},
+      created_date = #{createdDate,jdbcType=TIMESTAMP},
+      last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
+      last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP},
+      row_id = #{rowId,jdbcType=VARCHAR}
+    where extract_details_id = #{extractDetailsId,jdbcType=INTEGER}
+  </update>
+  <sql id="Base_Query_Cause">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="extractDetailsId != null">
+         and t.extract_details_id = #{extractDetailsId,jdbcType=INTEGER}
+      </if>
+      <if test="settleBatchId != null">
+         and t.settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
+      </if>
+      <if test="memberId != null">
+         and t.member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="memberGradeCode != null">
+         and t.member_grade_code = #{memberGradeCode,jdbcType=VARCHAR}
+      </if>
+      <if test="recommendNo1 != null">
+         and t.recommend_no_1 = #{recommendNo1,jdbcType=INTEGER}
+      </if>
+      <if test="recommendExtractAmt1 != null">
+         and t.recommend_extract_amt_1 = #{recommendExtractAmt1,jdbcType=DECIMAL}
+      </if>
+      <if test="recommendExtractMp1 != null">
+         and t.recommend_extract_mp_1 = #{recommendExtractMp1,jdbcType=INTEGER}
+      </if>
+      <if test="recommendNo2 != null">
+         and t.recommend_no_2 = #{recommendNo2,jdbcType=INTEGER}
+      </if>
+      <if test="recommendExtractAmt2 != null">
+         and t.recommend_extract_amt_2 = #{recommendExtractAmt2,jdbcType=DECIMAL}
+      </if>
+      <if test="recommendExtractMp2 != null">
+         and t.recommend_extract_mp_2 = #{recommendExtractMp2,jdbcType=INTEGER}
+      </if>
+      <if test="renewExtractNo != null">
+         and t.renew_extract_no = #{renewExtractNo,jdbcType=INTEGER}
+      </if>
+      <if test="renewExtractAmt != null">
+         and t.renew_extract_amt = #{renewExtractAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="renewExtractMp != null">
+         and t.renew_extract_mp = #{renewExtractMp,jdbcType=INTEGER}
+      </if>
+      <if test="consumptionAmt1 != null">
+         and t.consumption_amt_1 = #{consumptionAmt1,jdbcType=DECIMAL}
+      </if>
+      <if test="consumptionExtractAmt1 != null">
+         and t.consumption_extract_amt_1 = #{consumptionExtractAmt1,jdbcType=DECIMAL}
+      </if>
+      <if test="consumptionExtractMp1 != null">
+         and t.consumption_extract_mp_1 = #{consumptionExtractMp1,jdbcType=INTEGER}
+      </if>
+      <if test="buCode != null">
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
+      </if>
+      <if test="createdBy != null">
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null">
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAll" resultMap="BaseResultMap">
+    select t.* from ac_extract_details t
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.ExtractDetails" resultMap="BaseResultMap">
+    select t.* from ac_extract_details t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.ExtractDetails" resultMap="BaseResultMap">
+    select t.* from ac_extract_details t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.ExtractDetails" resultMap="BaseResultMap" useCache="false">
+    select t.* from ac_extract_details t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.ExtractDetails" resultMap="BaseResultMap" useCache="false">
+    select t.* from ac_extract_details t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+</mapper>

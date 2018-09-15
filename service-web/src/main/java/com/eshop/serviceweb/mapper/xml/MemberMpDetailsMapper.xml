@@ -86,19 +86,11 @@
       <if test="buCode != null">
         bu_code,
       </if>
-      <if test="currentUser != null">
-        created_by,
-      </if>
-      <if test="createdDate == null">
-        created_date,
-      </if>
-      <if test="lastUpdatedBy == null">
-        last_updated_by,
-      </if>
-      <if test="lastUpdatedDate == null">
-        last_updated_date,
-      </if>
-        row_id,
+      created_by,
+      created_date,
+      last_updated_by,
+      last_updated_date,
+      row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="memberMpDetailsId != null">
@@ -131,17 +123,29 @@
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
       </if>
-      <if test="currentUser != null">
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy == null and currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
       </if>
       <if test="createdDate == null">
         now(),
       </if>
-      <if test="lastUpdatedBy == null">
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy == null and currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate == null">
         now(),
+      </if>
+      <if test="lastUpdatedDate != null">
+        #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId == null">
         uuid(),

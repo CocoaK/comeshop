@@ -3,24 +3,22 @@ package com.eshop.serviceweb.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class MemberGradeHist extends BaseModel {
-    private Integer memberGradeHistId;
+public class MemberRenew extends BaseModel {
+    private Integer memberRenewId;
 
     private Integer memberId;
 
-    private Date eventDate;
+    private String memberGrade;
 
-    private String eventType;
+    private BigDecimal renewAmt;
 
-    private BigDecimal eventAmt;
-
-    private String eventBy;
+    private Date renewTime;
 
     private Integer refMemberId;
 
-    private String gradeBefore;
+    private Boolean isReward;
 
-    private String gradeAfter;
+    private Date rewardTime;
 
     private String buCode;
 
@@ -34,12 +32,12 @@ public class MemberGradeHist extends BaseModel {
 
     private String rowId;
 
-    public Integer getMemberGradeHistId() {
-        return memberGradeHistId;
+    public Integer getMemberRenewId() {
+        return memberRenewId;
     }
 
-    public void setMemberGradeHistId(Integer memberGradeHistId) {
-        this.memberGradeHistId = memberGradeHistId;
+    public void setMemberRenewId(Integer memberRenewId) {
+        this.memberRenewId = memberRenewId;
     }
 
     public Integer getMemberId() {
@@ -50,36 +48,28 @@ public class MemberGradeHist extends BaseModel {
         this.memberId = memberId;
     }
 
-    public Date getEventDate() {
-        return eventDate;
+    public String getMemberGrade() {
+        return memberGrade;
     }
 
-    public void setEventDate(Date eventDate) {
-        this.eventDate = eventDate;
+    public void setMemberGrade(String memberGrade) {
+        this.memberGrade = memberGrade == null ? null : memberGrade.trim();
     }
 
-    public String getEventType() {
-        return eventType;
+    public BigDecimal getRenewAmt() {
+        return renewAmt;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType == null ? null : eventType.trim();
+    public void setRenewAmt(BigDecimal renewAmt) {
+        this.renewAmt = renewAmt;
     }
 
-    public BigDecimal getEventAmt() {
-        return eventAmt;
+    public Date getRenewTime() {
+        return renewTime;
     }
 
-    public void setEventAmt(BigDecimal eventAmt) {
-        this.eventAmt = eventAmt;
-    }
-
-    public String getEventBy() {
-        return eventBy;
-    }
-
-    public void setEventBy(String eventBy) {
-        this.eventBy = eventBy == null ? null : eventBy.trim();
+    public void setRenewTime(Date renewTime) {
+        this.renewTime = renewTime;
     }
 
     public Integer getRefMemberId() {
@@ -90,20 +80,20 @@ public class MemberGradeHist extends BaseModel {
         this.refMemberId = refMemberId;
     }
 
-    public String getGradeBefore() {
-        return gradeBefore;
+    public Boolean getIsReward() {
+        return isReward;
     }
 
-    public void setGradeBefore(String gradeBefore) {
-        this.gradeBefore = gradeBefore == null ? null : gradeBefore.trim();
+    public void setIsReward(Boolean isReward) {
+        this.isReward = isReward;
     }
 
-    public String getGradeAfter() {
-        return gradeAfter;
+    public Date getRewardTime() {
+        return rewardTime;
     }
 
-    public void setGradeAfter(String gradeAfter) {
-        this.gradeAfter = gradeAfter == null ? null : gradeAfter.trim();
+    public void setRewardTime(Date rewardTime) {
+        this.rewardTime = rewardTime;
     }
 
     public String getBuCode() {
