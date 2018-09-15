@@ -15,6 +15,7 @@
     <result column="expire_date" jdbcType="DATE" property="expireDate" />
     <result column="mp_amt" jdbcType="INTEGER" property="mpAmt" />
     <result column="member_grade" jdbcType="VARCHAR" property="memberGrade" />
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
     <result column="member_grade_expire_date" jdbcType="DATE" property="memberGradeExpireDate" />
     <result column="ref_member_id" jdbcType="INTEGER" property="refMemberId" />
     <result column="qr_code_url" jdbcType="VARCHAR" property="qrCodeUrl" />
@@ -27,6 +28,9 @@
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
+  </resultMap>
+  <resultMap id="mapResult" type="map" extends="BaseResultMap">
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
   </resultMap>
   <sql id="Base_Column_List">
     member_id, user_name, password, pay_password, telephone, email, avatar_url, nick_name, 
@@ -485,7 +489,8 @@
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_member
+    select mc_member.*,mc_member_grade.grade_name  from mc_member
+    left join mc_member_grade on mc_member.member_grade=mc_member_grade.grade_code
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.Member" resultMap="BaseResultMap">
     select * from mc_member

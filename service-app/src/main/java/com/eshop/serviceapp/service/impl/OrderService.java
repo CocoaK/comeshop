@@ -61,6 +61,7 @@ public class OrderService extends BaseService<Order> implements IOrderService {
             order.setStatus(Constants.ORDER_STATUS_UNPAID);
             order.setZoneCode(orderVO.getZoneCode());
             order.setMemberId(orderVO.getMemberId());
+            order.setMemberGradeCode(member.getMemberGrade());
             order.setMemberAddressId(orderVO.getMemberAddressId());
             order.setAmount(new BigDecimal(0));
             order.setMpAmt(0);

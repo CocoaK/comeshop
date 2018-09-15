@@ -16,7 +16,9 @@
 
   <resultMap id="voResultMap" type="com.eshop.serviceapp.vo.MemberCartVO" extends="BaseResultMap">
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_model_name" jdbcType="VARCHAR" property="goodsModelName" />
     <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+    <result column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
     <result column="goods_brief" jdbcType="VARCHAR" property="goodsBrief" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="media_url" jdbcType="VARCHAR" property="mediaUrl" />
@@ -247,7 +249,7 @@
   </select>
 
   <select id="queryCartList" parameterType="com.eshop.serviceapp.model.MemberCart" resultMap="voResultMap" useCache="false">
-    select t.*,b.goods_name,b.goods_code,b.goods_brief,c.price, d.media_url from mc_member_cart t
+    select t.*,a.zone_code,c.goods_model_name,b.goods_name,b.goods_code,b.goods_brief,c.price, d.media_url from mc_member_cart t
     LEFT JOIN sh_zone_goods a ON a.zone_goods_id = t.zone_goods_id
     LEFT JOIN sh_goods b ON b.goods_id = a.goods_id
     LEFT JOIN sh_goods_model c ON c.goods_model_id = a.goods_model_id

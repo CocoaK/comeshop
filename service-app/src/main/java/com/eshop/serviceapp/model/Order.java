@@ -10,6 +10,8 @@ public class Order extends BaseModel {
 
     private Integer memberId;
 
+    private String memberGradeCode;
+
     private Integer memberAddressId;
 
     private String orderNo;
@@ -202,5 +204,13 @@ public class Order extends BaseModel {
 
     public void setRowId(String rowId) {
         this.rowId = rowId == null ? null : rowId.trim();
+    }
+
+    public String getMemberGradeCode() {
+        return memberGradeCode;
+    }
+
+    public void setMemberGradeCode(String memberGradeCode) {
+        this.memberGradeCode = memberGradeCode;
     }
 }

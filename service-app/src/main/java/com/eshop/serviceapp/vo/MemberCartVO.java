@@ -12,9 +12,21 @@ public class MemberCartVO extends MemberCart{
 
     private String goodsBrief;
 
+    private String zoneCode;
+
     private String mediaUrl;
 
     private BigDecimal price;
+
+    private String goodsModelName;
+
+    public String getGoodsModelName() {
+        return goodsModelName;
+    }
+
+    public void setGoodsModelName(String goodsModelName) {
+        this.goodsModelName = goodsModelName;
+    }
 
     public String getGoodsCode() {
         return goodsCode;
@@ -54,5 +66,13 @@ public class MemberCartVO extends MemberCart{
 
     public void setMediaUrl(String mediaUrl) {
         this.mediaUrl = mediaUrl;
+    }
+
+    public String getZoneCode() {
+        return zoneCode;
+    }
+
+    public void setZoneCode(String zoneCode) {
+        this.zoneCode = zoneCode;
     }
 }

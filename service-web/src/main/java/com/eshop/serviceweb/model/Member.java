@@ -29,6 +29,7 @@ public class Member extends BaseModel {
     private Integer mpAmt;
 
     private String memberGrade;
+    private String gradeName;
 
     private Date memberGradeExpireDate;
 
@@ -156,6 +157,14 @@ public class Member extends BaseModel {
 
     public void setMemberGrade(String memberGrade) {
         this.memberGrade = memberGrade == null ? null : memberGrade.trim();
+    }
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setMemberName(String gradeName) {
+        this.gradeName = gradeName == null ? null : gradeName.trim();
     }
 
     public Date getMemberGradeExpireDate() {

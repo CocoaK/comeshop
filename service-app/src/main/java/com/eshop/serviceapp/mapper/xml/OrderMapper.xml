@@ -5,6 +5,7 @@
     <id column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="member_grade_code" jdbcType="INTEGER" property="memberGradeCode" />
     <result column="member_address_id" jdbcType="INTEGER" property="memberAddressId" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
@@ -31,7 +32,7 @@
     <result column="receiving_address" jdbcType="VARCHAR" property="receivingAddress" />
   </resultMap>
   <sql id="Base_Column_List">
-    order_id, zone_code, member_id, member_address_id, order_no, amount, mp_amt, status,
+    order_id, zone_code, member_id, member_grade_code, member_address_id, order_no, amount, mp_amt, status,
     payment_time, shipping_time, logistics_company, shipment_no, receipt_time, settle_status, 
     bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
   </sql>
@@ -52,14 +53,14 @@
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceapp.model.Order">
-    insert into mc_order (order_id, zone_code, member_id, 
+    insert into mc_order (order_id, zone_code, member_id, member_grade_code,
       member_address_id, order_no, amount, 
       mp_amt, status, payment_time,
       shipping_time, logistics_company, shipment_no, 
       receipt_time, settle_status, bu_code, 
       created_by, created_date, last_updated_by, 
       last_updated_date, row_id)
-    values (#{orderId,jdbcType=INTEGER}, #{zoneCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, 
+    values (#{orderId,jdbcType=INTEGER}, #{zoneCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, #{memberGradeCode,jdbcType=VARCHAR},
       #{memberAddressId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
       #{mpAmt,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{paymentTime,jdbcType=TIMESTAMP},
       #{shippingTime,jdbcType=TIMESTAMP}, #{logisticsCompany,jdbcType=VARCHAR}, #{shipmentNo,jdbcType=VARCHAR}, 
@@ -78,6 +79,9 @@
       </if>
       <if test="memberId != null">
         member_id,
+      </if>
+      <if test="memberGradeCode != null">
+        member_grade_code,
       </if>
       <if test="memberAddressId != null">
         member_address_id,
@@ -138,6 +142,9 @@
       </if>
       <if test="memberId != null">
         #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberGradeCode != null">
+        #{memberGradeCode,jdbcType=VARCHAR},
       </if>
       <if test="memberAddressId != null">
         #{memberAddressId,jdbcType=INTEGER},
@@ -204,6 +211,9 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
+      <if test="memberGradeCode != null">
+        member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
+      </if>
       <if test="memberAddressId != null">
         member_address_id = #{memberAddressId,jdbcType=INTEGER},
       </if>
@@ -267,6 +277,9 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
+      <if test="memberGradeCode != null">
+        member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
+      </if>
       <if test="memberAddressId != null">
         member_address_id = #{memberAddressId,jdbcType=INTEGER},
       </if>
@@ -327,6 +340,7 @@
     update mc_order
     set zone_code = #{zoneCode,jdbcType=VARCHAR},
       member_id = #{memberId,jdbcType=INTEGER},
+      member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
       member_address_id = #{memberAddressId,jdbcType=INTEGER},
       order_no = #{orderNo,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL},
@@ -356,6 +370,9 @@
       </if>
       <if test="memberId != null">
          and t.member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="memberId != null">
+        and t.member_grade_code = #{memberGradeCode,jdbcType=VARCHAR}
       </if>
       <if test="memberAddressId != null">
          and t.member_address_id = #{memberAddressId,jdbcType=INTEGER}

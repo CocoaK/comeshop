@@ -23,6 +23,15 @@ public class ZoneGoodsDetailVO implements Serializable {
 
     private List<Object> goodsImage;
 
+    private String zoneCode;
+
+    public String getZoneCode() {
+        return zoneCode;
+    }
+
+    public void setZoneCode(String zoneCode) {
+        this.zoneCode = zoneCode;
+    }
     //private List<Object> goodsModelImage;
 
     public BigDecimal getPrice() {

@@ -33,6 +33,7 @@
 
   <resultMap id="detailMap" type="com.eshop.serviceapp.vo.ZoneGoodsDetailVO">
     <result column="zone_goods_id" jdbcType="VARCHAR" property="zoneGoodsId" />
+    <result column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
     <result column="goods_id" jdbcType="VARCHAR" property="goodsId" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
@@ -427,7 +428,7 @@
 
   <select id="getDetail" parameterType="com.eshop.serviceapp.model.ZoneGoods" resultMap="detailMap" useCache="false">
     SELECT
-    t.zone_goods_id,t.goods_id,b.goods_name,b.goods_code,a.price,b.goods_brief,b.goods_desc
+    t.zone_goods_id,t.zone_code,t.goods_id,b.goods_name,b.goods_code,a.price,b.goods_brief,b.goods_desc
     FROM
     sh_zone_goods t
     LEFT JOIN sh_goods_model a ON a.goods_model_id = t.goods_model_id
