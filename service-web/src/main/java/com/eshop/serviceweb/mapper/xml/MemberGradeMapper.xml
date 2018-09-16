@@ -7,15 +7,35 @@
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
     <result column="is_active" jdbcType="BIT" property="isActive" />
     <result column="inactive_date" jdbcType="DATE" property="inactiveDate" />
+    <result column="annual_fee" jdbcType="DECIMAL" property="annualFee" />
+    <result column="one_time_recharge" jdbcType="DECIMAL" property="oneTimeRecharge" />
+    <result column="umbrella_member_num" jdbcType="INTEGER" property="umbrellaMemberNum" />
+    <result column="umbrella_area_num" jdbcType="INTEGER" property="umbrellaAreaNum" />
+    <result column="referee_member_amt" jdbcType="DECIMAL" property="refereeMemberAmt" />
+    <result column="referee_member_renew_amt" jdbcType="DECIMAL" property="refereeMemberRenewAmt" />
+    <result column="referee_maker_amt" jdbcType="DECIMAL" property="refereeMakerAmt" />
+    <result column="direct_member" jdbcType="INTEGER" property="directMember" />
+    <result column="umbrella_level_member" jdbcType="INTEGER" property="umbrellaLevelMember" />
+    <result column="umbrella_member" jdbcType="INTEGER" property="umbrellaMember" />
+    <result column="achievement" jdbcType="INTEGER" property="achievement" />
+    <result column="project" jdbcType="INTEGER" property="project" />
+    <result column="physical_store" jdbcType="INTEGER" property="physicalStore" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
+  <resultMap id="memberBaseResultMap" type="map" extends="BaseResultMap">
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+  </resultMap>
   <sql id="Base_Column_List">
-    grade_code, grade_name, remarks, is_active, inactive_date, created_by, created_date, 
-    last_updated_by, last_updated_date, row_id
+    grade_code, grade_name, remarks, is_active, inactive_date, annual_fee, one_time_recharge, 
+    umbrella_member_num, umbrella_area_num, referee_member_amt, referee_member_renew_amt, 
+    referee_maker_amt, direct_member, umbrella_level_member, umbrella_member, achievement, 
+    project, physical_store, created_by, created_date, last_updated_by, last_updated_date, 
+    row_id
   </sql>
   <select id="getOne" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -35,13 +55,23 @@
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.MemberGrade">
     insert into mc_member_grade (grade_code, grade_name, remarks, 
-      is_active, inactive_date, created_by, 
-      created_date, last_updated_by, last_updated_date, 
-      row_id)
+      is_active, inactive_date, annual_fee, 
+      one_time_recharge, umbrella_member_num, umbrella_area_num, 
+      referee_member_amt, referee_member_renew_amt, 
+      referee_maker_amt, direct_member, umbrella_level_member, 
+      umbrella_member, achievement, project, 
+      physical_store, created_by, created_date, 
+      last_updated_by, last_updated_date, row_id
+      )
     values (#{gradeCode,jdbcType=VARCHAR}, #{gradeName,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
-      #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=DATE}, #{createdBy,jdbcType=VARCHAR}, 
-      #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP},
-      #{rowId,jdbcType=VARCHAR})
+      #{isActive,jdbcType=BIT}, #{inactiveDate,jdbcType=DATE}, #{annualFee,jdbcType=DECIMAL}, 
+      #{oneTimeRecharge,jdbcType=DECIMAL}, #{umbrellaMemberNum,jdbcType=INTEGER}, #{umbrellaAreaNum,jdbcType=INTEGER}, 
+      #{refereeMemberAmt,jdbcType=DECIMAL}, #{refereeMemberRenewAmt,jdbcType=DECIMAL}, 
+      #{refereeMakerAmt,jdbcType=DECIMAL}, #{directMember,jdbcType=INTEGER}, #{umbrellaLevelMember,jdbcType=INTEGER}, 
+      #{umbrellaMember,jdbcType=INTEGER}, #{achievement,jdbcType=INTEGER}, #{project,jdbcType=INTEGER}, 
+      #{physicalStore,jdbcType=INTEGER}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.MemberGrade">
     insert into mc_member_grade
@@ -61,18 +91,49 @@
       <if test="inactiveDate != null">
         inactive_date,
       </if>
-      <if test="currentUser != null">
-        created_by,
+      <if test="annualFee != null">
+        annual_fee,
       </if>
-      <if test="createdDate == null">
-        created_date,
+      <if test="oneTimeRecharge != null">
+        one_time_recharge,
       </if>
-      <if test="lastUpdatedBy == null">
-        last_updated_by,
+      <if test="umbrellaMemberNum != null">
+        umbrella_member_num,
       </if>
-      <if test="lastUpdatedDate == null">
-        last_updated_date,
+      <if test="umbrellaAreaNum != null">
+        umbrella_area_num,
       </if>
+      <if test="refereeMemberAmt != null">
+        referee_member_amt,
+      </if>
+      <if test="refereeMemberRenewAmt != null">
+        referee_member_renew_amt,
+      </if>
+      <if test="refereeMakerAmt != null">
+        referee_maker_amt,
+      </if>
+      <if test="directMember != null">
+        direct_member,
+      </if>
+      <if test="umbrellaLevelMember != null">
+        umbrella_level_member,
+      </if>
+      <if test="umbrellaMember != null">
+        umbrella_member,
+      </if>
+      <if test="achievement != null">
+        achievement,
+      </if>
+      <if test="project != null">
+        project,
+      </if>
+      <if test="physicalStore != null">
+        physical_store,
+      </if>
+      created_by,
+      created_date,
+      last_updated_by,
+      last_updated_date,
       row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -91,17 +152,68 @@
       <if test="inactiveDate != null">
         #{inactiveDate,jdbcType=DATE},
       </if>
-      <if test="currentUser != null">
+      <if test="annualFee != null">
+        #{annualFee,jdbcType=DECIMAL},
+      </if>
+      <if test="oneTimeRecharge != null">
+        #{oneTimeRecharge,jdbcType=DECIMAL},
+      </if>
+      <if test="umbrellaMemberNum != null">
+        #{umbrellaMemberNum,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaAreaNum != null">
+        #{umbrellaAreaNum,jdbcType=INTEGER},
+      </if>
+      <if test="refereeMemberAmt != null">
+        #{refereeMemberAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="refereeMemberRenewAmt != null">
+        #{refereeMemberRenewAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="refereeMakerAmt != null">
+        #{refereeMakerAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="directMember != null">
+        #{directMember,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaLevelMember != null">
+        #{umbrellaLevelMember,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaMember != null">
+        #{umbrellaMember,jdbcType=INTEGER},
+      </if>
+      <if test="achievement != null">
+        #{achievement,jdbcType=INTEGER},
+      </if>
+      <if test="project != null">
+        #{project,jdbcType=INTEGER},
+      </if>
+      <if test="physicalStore != null">
+        #{physicalStore,jdbcType=INTEGER},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy == null and currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
       </if>
       <if test="createdDate == null">
         now(),
       </if>
-      <if test="lastUpdatedBy == null">
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy == null and currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate == null">
         now(),
+      </if>
+      <if test="lastUpdatedDate != null">
+        #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId == null">
         uuid(),
@@ -125,6 +237,45 @@
       </if>
       <if test="inactiveDate != null">
         inactive_date = #{inactiveDate,jdbcType=DATE},
+      </if>
+      <if test="annualFee != null">
+        annual_fee = #{annualFee,jdbcType=DECIMAL},
+      </if>
+      <if test="oneTimeRecharge != null">
+        one_time_recharge = #{oneTimeRecharge,jdbcType=DECIMAL},
+      </if>
+      <if test="umbrellaMemberNum != null">
+        umbrella_member_num = #{umbrellaMemberNum,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaAreaNum != null">
+        umbrella_area_num = #{umbrellaAreaNum,jdbcType=INTEGER},
+      </if>
+      <if test="refereeMemberAmt != null">
+        referee_member_amt = #{refereeMemberAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="refereeMemberRenewAmt != null">
+        referee_member_renew_amt = #{refereeMemberRenewAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="refereeMakerAmt != null">
+        referee_maker_amt = #{refereeMakerAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="directMember != null">
+        direct_member = #{directMember,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaLevelMember != null">
+        umbrella_level_member = #{umbrellaLevelMember,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaMember != null">
+        umbrella_member = #{umbrellaMember,jdbcType=INTEGER},
+      </if>
+      <if test="achievement != null">
+        achievement = #{achievement,jdbcType=INTEGER},
+      </if>
+      <if test="project != null">
+        project = #{project,jdbcType=INTEGER},
+      </if>
+      <if test="physicalStore != null">
+        physical_store = #{physicalStore,jdbcType=INTEGER},
       </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
@@ -159,6 +310,45 @@
       <if test="inactiveDate != null">
         inactive_date = #{inactiveDate,jdbcType=DATE},
       </if>
+      <if test="annualFee != null">
+        annual_fee = #{annualFee,jdbcType=DECIMAL},
+      </if>
+      <if test="oneTimeRecharge != null">
+        one_time_recharge = #{oneTimeRecharge,jdbcType=DECIMAL},
+      </if>
+      <if test="umbrellaMemberNum != null">
+        umbrella_member_num = #{umbrellaMemberNum,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaAreaNum != null">
+        umbrella_area_num = #{umbrellaAreaNum,jdbcType=INTEGER},
+      </if>
+      <if test="refereeMemberAmt != null">
+        referee_member_amt = #{refereeMemberAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="refereeMemberRenewAmt != null">
+        referee_member_renew_amt = #{refereeMemberRenewAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="refereeMakerAmt != null">
+        referee_maker_amt = #{refereeMakerAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="directMember != null">
+        direct_member = #{directMember,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaLevelMember != null">
+        umbrella_level_member = #{umbrellaLevelMember,jdbcType=INTEGER},
+      </if>
+      <if test="umbrellaMember != null">
+        umbrella_member = #{umbrellaMember,jdbcType=INTEGER},
+      </if>
+      <if test="achievement != null">
+        achievement = #{achievement,jdbcType=INTEGER},
+      </if>
+      <if test="project != null">
+        project = #{project,jdbcType=INTEGER},
+      </if>
+      <if test="physicalStore != null">
+        physical_store = #{physicalStore,jdbcType=INTEGER},
+      </if>
       <if test="createdBy != null">
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
@@ -185,6 +375,19 @@
       remarks = #{remarks,jdbcType=VARCHAR},
       is_active = #{isActive,jdbcType=BIT},
       inactive_date = #{inactiveDate,jdbcType=DATE},
+      annual_fee = #{annualFee,jdbcType=DECIMAL},
+      one_time_recharge = #{oneTimeRecharge,jdbcType=DECIMAL},
+      umbrella_member_num = #{umbrellaMemberNum,jdbcType=INTEGER},
+      umbrella_area_num = #{umbrellaAreaNum,jdbcType=INTEGER},
+      referee_member_amt = #{refereeMemberAmt,jdbcType=DECIMAL},
+      referee_member_renew_amt = #{refereeMemberRenewAmt,jdbcType=DECIMAL},
+      referee_maker_amt = #{refereeMakerAmt,jdbcType=DECIMAL},
+      direct_member = #{directMember,jdbcType=INTEGER},
+      umbrella_level_member = #{umbrellaLevelMember,jdbcType=INTEGER},
+      umbrella_member = #{umbrellaMember,jdbcType=INTEGER},
+      achievement = #{achievement,jdbcType=INTEGER},
+      project = #{project,jdbcType=INTEGER},
+      physical_store = #{physicalStore,jdbcType=INTEGER},
       created_by = #{createdBy,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
       last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR},
@@ -195,46 +398,98 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="gradeCode != null">
-         and grade_code = #{gradeCode,jdbcType=VARCHAR}
+         and t.grade_code = #{gradeCode,jdbcType=VARCHAR}
       </if>
       <if test="gradeName != null">
-         and grade_name = #{gradeName,jdbcType=VARCHAR}
+         and t.grade_name = #{gradeName,jdbcType=VARCHAR}
       </if>
       <if test="remarks != null">
-         and remarks = #{remarks,jdbcType=VARCHAR}
+         and t.remarks = #{remarks,jdbcType=VARCHAR}
       </if>
       <if test="isActive != null">
-         and is_active = #{isActive,jdbcType=BIT}
+         and t.is_active = #{isActive,jdbcType=BIT}
       </if>
       <if test="inactiveDate != null">
-         and inactive_date = #{inactiveDate,jdbcType=DATE}
+         and t.inactive_date = #{inactiveDate,jdbcType=DATE}
+      </if>
+      <if test="annualFee != null">
+         and t.annual_fee = #{annualFee,jdbcType=DECIMAL}
+      </if>
+      <if test="oneTimeRecharge != null">
+         and t.one_time_recharge = #{oneTimeRecharge,jdbcType=DECIMAL}
+      </if>
+      <if test="umbrellaMemberNum != null">
+         and t.umbrella_member_num = #{umbrellaMemberNum,jdbcType=INTEGER}
+      </if>
+      <if test="umbrellaAreaNum != null">
+         and t.umbrella_area_num = #{umbrellaAreaNum,jdbcType=INTEGER}
+      </if>
+      <if test="refereeMemberAmt != null">
+         and t.referee_member_amt = #{refereeMemberAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="refereeMemberRenewAmt != null">
+         and t.referee_member_renew_amt = #{refereeMemberRenewAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="refereeMakerAmt != null">
+         and t.referee_maker_amt = #{refereeMakerAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="directMember != null">
+         and t.direct_member = #{directMember,jdbcType=INTEGER}
+      </if>
+      <if test="umbrellaLevelMember != null">
+         and t.umbrella_level_member = #{umbrellaLevelMember,jdbcType=INTEGER}
+      </if>
+      <if test="umbrellaMember != null">
+         and t.umbrella_member = #{umbrellaMember,jdbcType=INTEGER}
+      </if>
+      <if test="achievement != null">
+         and t.achievement = #{achievement,jdbcType=INTEGER}
+      </if>
+      <if test="project != null">
+         and t.project = #{project,jdbcType=INTEGER}
+      </if>
+      <if test="physicalStore != null">
+         and t.physical_store = #{physicalStore,jdbcType=INTEGER}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_member_grade
+    select t.* from mc_member_grade t
+  </select>
+  <select id="getMemberAndGradeAll" resultMap="memberBaseResultMap">
+    select mc_member_grade.*,mc_member.member_id,mc_member.nick_name  from mc_member
+    inner join mc_member_grade on mc_member.member_grade=mc_member_grade.grade_code
   </select>
   <select id="getList" parameterType="com.eshop.serviceweb.model.MemberGrade" resultMap="BaseResultMap">
-    select * from mc_member_grade
+    select t.* from mc_member_grade t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.MemberGrade" resultMap="BaseResultMap">
-    select * from mc_member_grade
+    select t.* from mc_member_grade t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceweb.model.MemberGrade" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_grade
+    select t.* from mc_member_grade t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.MemberGrade" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_grade
+    select t.* from mc_member_grade t
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />-->
 </mapper>
