@@ -311,5 +311,5 @@
     select * from sh_goods
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />-->
 </mapper>

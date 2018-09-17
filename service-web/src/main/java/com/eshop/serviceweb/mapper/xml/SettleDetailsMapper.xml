@@ -339,5 +339,5 @@
   <select id="getRebateAmtSum" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
     select sum(rebate_amt) from ac_settle_details where settle_batch_id = #{settleBatchId,jdbcType=INTEGER}
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />-->
 </mapper>

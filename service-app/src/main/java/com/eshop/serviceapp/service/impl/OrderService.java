@@ -2,12 +2,14 @@ package com.eshop.serviceapp.service.impl;
 
 import com.eshop.serviceapp.common.Constants;
 import com.eshop.serviceapp.common.model.ResultEntity;
+import com.eshop.serviceapp.common.model.ResultList;
 import com.eshop.serviceapp.common.util.StringUtil;
 import com.eshop.serviceapp.mapper.*;
 import com.eshop.serviceapp.model.*;
 import com.eshop.serviceapp.service.IOrderService;
-import com.eshop.serviceapp.vo.OrderDetailVO;
-import com.eshop.serviceapp.vo.OrderVO;
+import com.eshop.serviceapp.vo.*;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,6 +35,8 @@ public class OrderService extends BaseService<Order> implements IOrderService {
     private GoodsModelMapper goodsModelMapper;
     @Autowired
     private OrderDetailsMapper orderDetailsMapper;
+    @Autowired
+    private GoodsMediaMapper goodsMediaMapper;
 
     @Override
     public BaseMapper<Order> getBaseMapper() {
@@ -132,6 +137,52 @@ public class OrderService extends BaseService<Order> implements IOrderService {
             re.setMsg(ResultEntity.MSG_SUCCESS);
             re.setData(orderMapper.getOne(order.getOrderId()));
         }
+        return re;
+    }
+
+    @Override
+    public ResultList<List<OrderListVO>> queryPageVOList(PageVO<Order> pageVO){
+        Page<OrderListVO> page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize(),pageVO.getOrderBy());
+        List<OrderListVO> list = orderMapper.queryPageVOList(pageVO.getParams());
+        if(list == null || list.isEmpty()){
+            return new ResultList<List<OrderListVO>>();
+        }
+        for(OrderListVO vo : list){
+            ZoneGoodsVO zoneGoodsVO = new ZoneGoodsVO();
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.setOrderId(vo.getOrderId());
+
+            List<OrderDetails> orderDetailsList = orderDetailsMapper.getList(orderDetails);
+            List<OrderDetailGoodsVO> orderDetailGoodsVOList = new ArrayList<OrderDetailGoodsVO>();
+            if(orderDetailsList!=null && !orderDetailsList.isEmpty()){
+                for(OrderDetails odrDetails : orderDetailsList){
+                    ZoneGoodsDetailVO zoneGoodsDetailVO = zoneGoodsMapper.getDetail(odrDetails.getZoneGoodsId());
+                    GoodsMedia media = new GoodsMedia();
+                    media.setGoodsId(zoneGoodsDetailVO.getGoodsId());
+                    List<Object> goodsImages = goodsMediaMapper.getSimpleList(media);
+                    zoneGoodsDetailVO.setGoodsImage(goodsImages);
+                    //组建返回值
+                    OrderDetailGoodsVO orderDetailGoodsVO = new OrderDetailGoodsVO();
+                    orderDetailGoodsVO.setAmount(odrDetails.getAmount());
+                    orderDetailGoodsVO.setNetAmt(odrDetails.getNetAmt());
+                    orderDetailGoodsVO.setOrderQty(odrDetails.getOrderQty());
+                    orderDetailGoodsVO.setProfitAmt(odrDetails.getProfitAmt());
+                    orderDetailGoodsVO.setRebateAmt(odrDetails.getRebateAmt());
+                    orderDetailGoodsVO.setGoodsImage(zoneGoodsDetailVO.getGoodsImage());
+                    orderDetailGoodsVO.setGoodsBrief(zoneGoodsDetailVO.getGoodsBrief());
+                    orderDetailGoodsVO.setGoodsCode(zoneGoodsDetailVO.getGoodsCode());
+                    orderDetailGoodsVO.setGoodsDesc(zoneGoodsDetailVO.getGoodsDesc());
+                    orderDetailGoodsVO.setGoodsId(zoneGoodsDetailVO.getGoodsId());
+                    orderDetailGoodsVO.setGoodsName(zoneGoodsDetailVO.getGoodsName());
+                    orderDetailGoodsVO.setPrice(zoneGoodsDetailVO.getPrice());
+                    orderDetailGoodsVO.setZoneCode(zoneGoodsDetailVO.getZoneCode());
+                    orderDetailGoodsVO.setZoneGoodsId(zoneGoodsDetailVO.getZoneGoodsId());
+                    orderDetailGoodsVOList.add(orderDetailGoodsVO);
+                }
+            }
+            vo.setZoneGoods(orderDetailGoodsVOList);
+        }
+        ResultList<List<OrderListVO>> re = new ResultList<List<OrderListVO>>(page.getTotal(), System.currentTimeMillis(), page);
         return re;
     }
 }

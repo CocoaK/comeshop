@@ -307,5 +307,5 @@
     select * from mc_order_details
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />-->
 </mapper>

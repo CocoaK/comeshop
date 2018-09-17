@@ -251,5 +251,5 @@
     LEFT JOIN sh_goods_model a ON a.goods_model_id = t.goods_model_id
     WHERE  t.goods_id = #{goodsId,jdbcType=INTEGER}
   </select>
-  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />-->
 </mapper>

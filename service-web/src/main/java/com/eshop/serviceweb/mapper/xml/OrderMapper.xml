@@ -29,6 +29,28 @@
     <result column="rebate_amt" jdbcType="DECIMAL" property="rebateAmt" />
   </resultMap>
 
+  <resultMap id="settleOrderMap" type="map">
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="profit_amt" jdbcType="DECIMAL" property="profitAmt" />
+    <result column="rebate_amt" jdbcType="DECIMAL" property="rebateAmt" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+  </resultMap>
+
+  <resultMap id="settleOrderSumMap" type="map">
+    <result column="zone_type" jdbcType="VARCHAR" property="zoneType" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="profit_amt" jdbcType="DECIMAL" property="profitAmt" />
+    <result column="rebate_amt" jdbcType="DECIMAL" property="rebateAmt" />
+    <result column="order_count" jdbcType="INTEGER" property="orderCount" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     order_id, zone_code, member_id, member_address_id, order_no, amount, mp_amt, status, 
     payment_time, shipping_time, receipt_time, bu_code, created_by, created_date, last_updated_by, 
@@ -393,18 +415,25 @@
   </select>
 
   <select id="getSettleOrderList" parameterType="com.eshop.serviceweb.vo.OrderVO" resultMap="BaseResultMap">
-    select a.* from mc_order a join sh_zone b on b.zone_code = a.zone_code
-    <include refid="Base_Query_Cause" />
+    SELECT s.* from (select a.* from mc_order a join sh_zone b on b.zone_code = a.zone_code
+    WHERE a.status = '4'
+    AND a.settle_status = #{settleStatus,jdbcType=VARCHAR}
     <include refid="Settle_Query_Time_Cause" />
-    and b.zone_type = 'COM'
-    order by a.payment_time desc
+    and b.zone_code != 'Z00002'
+    UNION
+    select a.* from mc_order a join sh_zone b on b.zone_code = a.zone_code
+    WHERE a.status = '2'
+    AND a.settle_status = #{settleStatus,jdbcType=VARCHAR}
+    <include refid="Recharge_Query_Time_Cause" />
+    and b.zone_code = 'Z00002') s
+    ORDER BY s.payment_time desc
   </select>
 
   <select id="getRechargeOrderList" parameterType="com.eshop.serviceweb.vo.OrderVO" resultMap="BaseResultMap">
     select a.* from mc_order a join sh_zone b on b.zone_code = a.zone_code
     <include refid="Base_Query_Cause" />
     <include refid="Recharge_Query_Time_Cause" />
-    and b.zone_type = 'EXP'
+    and b.zone_code = 'Z00002'
     order by a.payment_time desc
   </select>
 
@@ -420,5 +449,76 @@
     select * from mc_order a
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+
+  <select id="getUnSettleOrderList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="settleOrderMap" useCache="false">
+    SELECT
+		t.zone_code,t.order_id,t.order_no,b.telephone,t.created_date,t.payment_time,t.receipt_time,t.amount,sum(a.profit_amt) profit_amt,sum(a.rebate_amt) rebate_amt,b.nick_name,c.grade_name
+    FROM
+        mc_order t
+    LEFT JOIN mc_order_details a ON a.order_id = t.order_id
+    LEFT JOIN mc_member b on b.member_id = t.member_id
+    LEFT JOIN mc_member_grade c on b.member_grade = c.grade_code
+    WHERE t.settle_status = '0'
+	AND  t.zone_code != 'A00002'
+    AND t.receipt_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+    GROUP BY t.order_id
+	UNION
+	SELECT
+		t.zone_code,t.order_id,t.order_no,b.telephone,t.created_date,t.payment_time,t.receipt_time,t.amount,sum(a.profit_amt) profit_amt,sum(a.rebate_amt) rebate_amt,b.nick_name,c.grade_name
+    FROM
+        mc_order t
+    LEFT JOIN mc_order_details a ON a.order_id = t.order_id
+    LEFT JOIN mc_member b on b.member_id = t.member_id
+    LEFT JOIN mc_member_grade c on b.member_grade = c.grade_code
+    WHERE t.settle_status = '0'
+	AND  t.zone_code = 'A00002'
+	AND t.payment_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+	GROUP BY t.order_id
+	ORDER BY created_date desc
+  </select>
+
+  <select id="getUnSettleOrderSumList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="settleOrderSumMap" useCache="false">
+    SELECT
+    s.zone_type,
+    sum(s.rebate_amt) rebate_amt,
+    SUM(s.amount) amount,
+    sum(s.profit_amt) profit_amt,
+    count(1) order_count
+    FROM
+    (
+    SELECT
+    b.zone_type,
+    sum(a.rebate_amt) rebate_amt,
+    sum(t.amount) amount,
+    sum(a.profit_amt) profit_amt
+    FROM
+    mc_order t
+    LEFT JOIN mc_order_details a ON a.order_id = t.order_id
+    LEFT JOIN sh_zone b ON b.zone_code = t.zone_code
+    WHERE t.settle_status = '0'
+		AND t.zone_code != 'Z00002'
+    AND t.receipt_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+    GROUP BY
+    t.order_id
+		UNION
+		SELECT
+    b.zone_type,
+    sum(a.rebate_amt) rebate_amt,
+    sum(t.amount) amount,
+    sum(a.profit_amt) profit_amt
+    FROM
+    mc_order t
+    LEFT JOIN mc_order_details a ON a.order_id = t.order_id
+    LEFT JOIN sh_zone b ON b.zone_code = t.zone_code
+    WHERE t.settle_status = '0'
+		AND t.zone_code = 'Z00002'
+    AND t.payment_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+    GROUP BY
+    t.order_id
+    ) s
+    GROUP BY
+    s.zone_type
+
+  </select>
+  <!--<cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />-->
 </mapper>

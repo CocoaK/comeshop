@@ -31,6 +31,18 @@
     <result column="receiver_telephone" jdbcType="VARCHAR" property="receiverTelephone" />
     <result column="receiving_address" jdbcType="VARCHAR" property="receivingAddress" />
   </resultMap>
+
+  <resultMap id="voListMap" type="com.eshop.serviceapp.vo.OrderListVO">
+    <result column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
+    <result column="zone_name" jdbcType="VARCHAR" property="zoneName" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
+    <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
+  </resultMap>
   <sql id="Base_Column_List">
     order_id, zone_code, member_id, member_grade_code, member_address_id, order_no, amount, mp_amt, status,
     payment_time, shipping_time, logistics_company, shipment_no, receipt_time, settle_status, 
@@ -449,9 +461,28 @@
     <include refid="Base_Query_Cause" />
     ORDER BY t.created_date desc
   </select>
+
+  <select id="queryPageVOList" parameterType="com.eshop.serviceapp.model.Order" resultMap="voListMap" useCache="false">
+    SELECT
+    b.zone_name,
+    b.zone_code,
+    t.amount,
+    t.order_id,
+    t.order_no,
+    t.status,
+    t.last_updated_by,
+    t.last_updated_date,
+    c.member_id
+    FROM
+    mc_order t
+    LEFT JOIN sh_zone b ON b.zone_code = t.zone_code
+    LEFT JOIN mc_member c ON t.member_id = c.member_id
+    <include refid="Base_Query_Cause" />
+    ORDER BY t.created_date desc
+  </select>
   <select id="queryList" parameterType="com.eshop.serviceapp.model.Order" resultMap="BaseResultMap" useCache="false">
     select * from mc_order t
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />-->
 </mapper>

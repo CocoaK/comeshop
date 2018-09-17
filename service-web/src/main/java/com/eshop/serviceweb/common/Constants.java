@@ -33,8 +33,8 @@ public class Constants {
 //    /** 分区：充值优惠区*/
 //    public static final String ZONE_RECHARGE = "A00002";
 
-    /** 分区类型：充值优惠区*/
-    public static final String ZONE_TYPE_RECHARGE = "EXP";
+    /** 分区类型：体验区*/
+    public static final String ZONE_TYPE_EXPERIENCE = "EXP";
     /** 分区类型：普通区*/
     public static final String ZONE_TYPE_COMMON = "COM";
     /** 商品媒体类型：图片*/

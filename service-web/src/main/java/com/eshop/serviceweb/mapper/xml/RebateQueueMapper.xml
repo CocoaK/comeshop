@@ -277,7 +277,7 @@
   <include refid="Base_Query_Cause" />
 </select>
   <select id="getMaxRebateSeq" resultType="java.lang.Integer">
-    select max(rebate_seq) rebate_seq from ac_rebate_queue t
+    select IFNULL(max(rebate_seq),0) rebate_seq from ac_rebate_queue t
     <include refid="Base_Query_Cause" />
   </select>
 </mapper>

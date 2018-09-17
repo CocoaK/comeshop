@@ -3,12 +3,17 @@ package com.eshop.serviceweb.service.impl;
 import com.eshop.serviceweb.common.Constants;
 import com.eshop.serviceweb.common.model.ResultEntity;
 //import com.eshop.serviceweb.common.util.UUIDUtil;
+import com.eshop.serviceweb.common.model.ResultList;
 import com.eshop.serviceweb.mapper.*;
 import com.eshop.serviceweb.model.*;
 import com.eshop.serviceweb.service.ISettleService;
 import com.eshop.serviceweb.vo.OrderVO;
+import com.eshop.serviceweb.vo.PageVO;
 import com.eshop.serviceweb.vo.RebateDetailsVO;
 
+import com.eshop.serviceweb.vo.UnSettledVO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -41,6 +46,8 @@ public class SettleService implements ISettleService {
     private RebateSettingMapper rebateSettingMapper;
     @Autowired
     private MemberMpDetailsMapper memberMpDetailsMapper;
+    @Autowired
+    private ZoneMapper zoneMapper;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -53,12 +60,14 @@ public class SettleService implements ISettleService {
             settleBatch.setSettleType("SETTLE");
         }
         try {
+            Date d=new Date();
             //体验区结算
             SettleBatch sb1 = new SettleBatch();
             sb1.setSettleType(settleBatch.getSettleType());
             sb1.setSettleBy(settleBatch.getSettleBy());
             sb1.setBuCode(settleBatch.getBuCode());
-            sb1.setSettleZone(Constants.ZONE_TYPE_RECHARGE);
+            sb1.setSettleZone(Constants.ZONE_TYPE_EXPERIENCE);
+            sb1.setSettleTime(d);
             sb1.setCurrentUser(settleBatch.getCurrentUser());
             settle(sb1);
             //普通区结算
@@ -67,6 +76,7 @@ public class SettleService implements ISettleService {
             sb2.setSettleBy(settleBatch.getSettleBy());
             sb2.setBuCode(settleBatch.getBuCode());
             sb2.setSettleZone(Constants.ZONE_TYPE_COMMON);
+            sb2.setSettleTime(d);
             sb2.setCurrentUser(settleBatch.getCurrentUser());
             settle(sb2);
         }catch (Exception e){
@@ -203,17 +213,29 @@ public class SettleService implements ISettleService {
         SettleBatch settle  = settleBatchMapper.get(settleBatch.getSettleBatchId());
         OrderVO orderVO = new OrderVO();
         orderVO.setEndTime(settleBatch.getSettleTime());
-        orderVO.setStatus(Constants.ORDER_STATUS_RECEIPTED);
         orderVO.setSettleStatus(Constants.ORDER_SETTLE_STATUS_UNSETTLED);
-        List<Order> orders = new ArrayList<Order>();
-        if(null != settleBatch.getSettleZone() && Constants.ZONE_TYPE_RECHARGE.equals(settleBatch.getSettleZone())){
-            orders = orderMapper.getRechargeOrderList(orderVO);
-        }else{
-            orders = orderMapper.getSettleOrderList(orderVO);
+        List<Order> orders = orderMapper.getSettleOrderList(orderVO);
+        List<Zone> zoneList = zoneMapper.getAll();
+        List<Order> curOrderList = new ArrayList<Order>();
+        if(orders !=null && orders.isEmpty()){
+            for(Order order : orders){
+                for(Zone zone : zoneList){
+                    //如果是指定区的订单
+                    if(settleBatch.getSettleZone().equals(zone.getZoneType()) && order.getZoneCode().equals(zone.getZoneCode())){
+                        curOrderList.add(order);
+                    }
+                }
+
+            }
         }
+//        if(null != settleBatch.getSettleZone() && Constants.ZONE_TYPE_EXPERIENCE.equals(settleBatch.getSettleZone())){
+//            orders = orderMapper.getRechargeOrderList(orderVO);
+//        }else{
+//            orders = orderMapper.getSettleOrderList(orderVO);
+//        }
         //订单序数
         int index = 0;
-        for(Order od : orders){
+        for(Order od : curOrderList){
             index ++;
             SettleDetails settleDetails = new SettleDetails();
             settleDetails.setOrderId(od.getOrderId());
@@ -253,5 +275,37 @@ public class SettleService implements ISettleService {
         //结算后将返利设置的返利池更新
         rebateSetting.setProfitBal(rebateAmount);
         rebateSettingMapper.updateActive(rebateSetting);
+    }
+
+    @Override
+    public ResultEntity queryList(SettleBatch settleBatch){
+        ResultEntity<UnSettledVO> re = new ResultEntity<UnSettledVO>();
+        UnSettledVO unSettledVO = new UnSettledVO();
+        SettleBatch settleBatch1 = new SettleBatch();
+        settleBatch.setSettleZone(Constants.ZONE_TYPE_COMMON);
+        SettleBatch newestSettleBatch = settleBatchMapper.getNewestOne(settleBatch);
+        unSettledVO.setStartTime(newestSettleBatch.getBeginTime());
+        unSettledVO.setEndTime(settleBatch.getEndTime());
+        unSettledVO.setOrders(orderMapper.getUnSettleOrderList(settleBatch));
+        unSettledVO.setSettles(orderMapper.getUnSettleOrderSumList(settleBatch));
+        re.setCode(ResultEntity.SUCCESS);
+        re.setMsg(ResultEntity.MSG_SUCCESS);
+        re.setData(unSettledVO);
+        return re;
+    }
+
+    @Override
+    public ResultList<List> getUnSettleOrderSumPageList(SettleBatch settleBatch){
+        List list = orderMapper.getUnSettleOrderSumList(settleBatch);
+        ResultList<List> re = new ResultList<List>(list.size(), System.currentTimeMillis(), list);
+        return re;
+    }
+
+    @Override
+    public ResultList<List> getUnSettleOrderPageList(PageVO pageVO){
+        Page page = PageHelper.startPage(pageVO.getPageNum(),pageVO.getPageSize());
+        List list = orderMapper.getUnSettleOrderList(pageVO.getParams());
+        ResultList<List> re = new ResultList<List>(page.getTotal(), System.currentTimeMillis(), page);
+        return re;
     }
 }

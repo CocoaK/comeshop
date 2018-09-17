@@ -262,5 +262,5 @@
     select count(1) from mc_member_cart where member_id = #{memberId,jdbcType=INTEGER}
   </select>
 
-  <cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />-->
 </mapper>

@@ -13,6 +13,8 @@
     <result column="consumption_extract_mp_1" jdbcType="INTEGER" property="consumptionExtractMp1" />
     <result column="consumption_extract_amt_2" jdbcType="DECIMAL" property="consumptionExtractAmt2" />
     <result column="consumption_extract_mp_2" jdbcType="INTEGER" property="consumptionExtractMp2" />
+    <result column="consumption_extract_amt_3" jdbcType="DECIMAL" property="consumptionExtractAmt3" />
+    <result column="consumption_extract_mp_3" jdbcType="INTEGER" property="consumptionExtractMp3" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
@@ -89,14 +91,16 @@
       renew_extract_no_1, renew_extract_mp1, renew_extract_no_2, 
       renew_extract_mp2, consumption_extract_amt_1, 
       consumption_extract_mp_1, consumption_extract_amt_2, 
-      consumption_extract_mp_2, bu_code, created_by, 
+      consumption_extract_mp_2, consumption_extract_amt_3,
+      consumption_extract_mp_3,bu_code, created_by,
       created_date, last_updated_by, last_updated_date, 
       row_id)
     values (#{settleRewardId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{memberGradeCode,jdbcType=VARCHAR}, 
       #{renewExtractNo1,jdbcType=INTEGER}, #{renewExtractMp1,jdbcType=INTEGER}, #{renewExtractNo2,jdbcType=INTEGER}, 
       #{renewExtractMp2,jdbcType=DECIMAL}, #{consumptionExtractAmt1,jdbcType=DECIMAL}, 
       #{consumptionExtractMp1,jdbcType=INTEGER}, #{consumptionExtractAmt2,jdbcType=DECIMAL}, 
-      #{consumptionExtractMp2,jdbcType=INTEGER}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{consumptionExtractMp2,jdbcType=INTEGER}, #{consumptionExtractAmt3,jdbcType=DECIMAL},
+      #{consumptionExtractMp3,jdbcType=INTEGER},#{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR},
       #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, 
       #{rowId,jdbcType=VARCHAR})
   </insert>
@@ -135,6 +139,12 @@
       </if>
       <if test="consumptionExtractMp2 != null">
         consumption_extract_mp_2,
+      </if>
+      <if test="consumptionExtractAmt3 != null">
+        consumption_extract_amt_3,
+      </if>
+      <if test="consumptionExtractMp3 != null">
+        consumption_extract_mp_3,
       </if>
       <if test="buCode != null">
         bu_code,
@@ -178,6 +188,12 @@
       </if>
       <if test="consumptionExtractMp2 != null">
         #{consumptionExtractMp2,jdbcType=INTEGER},
+      </if>
+      <if test="consumptionExtractAmt3 != null">
+        #{consumptionExtractAmt3,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractMp3 != null">
+        #{consumptionExtractMp3,jdbcType=INTEGER},
       </if>
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
@@ -247,6 +263,12 @@
       <if test="consumptionExtractMp2 != null">
         consumption_extract_mp_2 = #{consumptionExtractMp2,jdbcType=INTEGER},
       </if>
+      <if test="consumptionExtractAmt3 != null">
+        consumption_extract_amt_3 = #{consumptionExtractAmt3,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractMp3 != null">
+        consumption_extract_mp_3 = #{consumptionExtractMp3,jdbcType=INTEGER},
+      </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
@@ -301,6 +323,12 @@
       <if test="consumptionExtractMp2 != null">
         consumption_extract_mp_2 = #{consumptionExtractMp2,jdbcType=INTEGER},
       </if>
+      <if test="consumptionExtractAmt3 != null">
+        consumption_extract_amt_3 = #{consumptionExtractAmt3,jdbcType=DECIMAL},
+      </if>
+      <if test="consumptionExtractMp3 != null">
+        consumption_extract_mp_3 = #{consumptionExtractMp3,jdbcType=INTEGER},
+      </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
       </if>
@@ -336,6 +364,8 @@
       consumption_extract_mp_1 = #{consumptionExtractMp1,jdbcType=INTEGER},
       consumption_extract_amt_2 = #{consumptionExtractAmt2,jdbcType=DECIMAL},
       consumption_extract_mp_2 = #{consumptionExtractMp2,jdbcType=INTEGER},
+      consumption_extract_amt_3 = #{consumptionExtractAmt3,jdbcType=DECIMAL},
+      consumption_extract_mp_3 = #{consumptionExtractMp3,jdbcType=INTEGER},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -379,6 +409,12 @@
       <if test="consumptionExtractMp2 != null">
          and t.consumption_extract_mp_2 = #{consumptionExtractMp2,jdbcType=INTEGER}
       </if>
+      <if test="consumptionExtractAmt3 != null">
+        and t.consumption_extract_amt_3 = #{consumptionExtractAmt3,jdbcType=DECIMAL}
+      </if>
+      <if test="consumptionExtractMp3 != null">
+        and t.consumption_extract_mp_3 = #{consumptionExtractMp3,jdbcType=INTEGER}
+      </if>
       <if test="buCode != null">
          and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
@@ -418,5 +454,5 @@
     select t.* from ac_settle_reward t
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />-->
 </mapper>

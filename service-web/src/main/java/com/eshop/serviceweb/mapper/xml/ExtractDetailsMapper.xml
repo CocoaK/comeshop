@@ -466,5 +466,5 @@
     select t.* from ac_extract_details t
     <include refid="Base_Query_Cause" />
   </select>
-  <cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />
+  <!--<cache type="com.eshop.serviceweb.redis.MybatisRedisCache" />-->
 </mapper>

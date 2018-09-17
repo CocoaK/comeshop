@@ -23,6 +23,20 @@
     <result column="rebateAmt" jdbcType="DECIMAL" property="rebateAmt" />
   </resultMap>
 
+  <resultMap id="detailsResult" extends="BaseResultMap" type="map">
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="shipping_time" jdbcType="TIMESTAMP" property="shippingTime" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="order_count" jdbcType="INTEGER" property="orderCount" />
+    <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+    <result column="rebateAmt" jdbcType="DECIMAL" property="rebateAmt" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     settle_batch_id, settle_time, settle_type, settle_zone, settle_by, profit_amt, profit_bal, 
     bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
@@ -301,15 +315,25 @@
   </sql>
 
   <sql id="Settle_Query_Value">
-  SELECT
-	sb.*, count(o.order_id) order_count,
-	sum(o.amount) order_amount,
-	sum(sd.rebate_amt) rebateAmt
-  FROM
-      ac_settle_batch sb
-  JOIN ac_settle_details sd ON sd.settle_batch_id = sb.settle_batch_id
-  JOIN mc_order o ON o.order_id = sd.order_id
-  JOIN sh_zone z on z.zone_code = o.zone_code
+    SELECT
+    sb.*, count(o.order_id) order_count,
+    sum(o.amount) order_amount,
+    sum(sd.rebate_amt) rebateAmt,
+    m.nick_name,
+    mc_member_grade.grade_name,
+    m.telephone,
+    o.order_no,
+    o.shipping_time,
+    o.payment_time,
+    o.receipt_time,
+    o.amount
+    FROM
+    ac_settle_batch sb
+    JOIN ac_settle_details sd ON sd.settle_batch_id = sb.settle_batch_id
+    JOIN mc_order o ON o.order_id = sd.order_id
+    JOIN mc_member m ON o.member_id = o.member_id
+    join mc_member_grade on o.member_grade_code=mc_member_grade.grade_code
+    JOIN sh_zone z on z.zone_code = o.zone_code
   WHERE 1=1
   AND sb.settle_zone = z.zone_type
     <if test="settleBatchId != null">
@@ -370,7 +394,7 @@
   <select id="getPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult">
     <include refid="Settle_Query_Value" />
   </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="mapResult" >
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="detailsResult" >
     <include refid="Settle_Query_Value" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="BaseResultMap" >
