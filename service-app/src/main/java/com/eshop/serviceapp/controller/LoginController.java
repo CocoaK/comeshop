@@ -35,20 +35,35 @@ public class LoginController {
         member.setUserName(loginVO.getUserName());
         member.setPassword(loginVO.getPassword());
         List<Member> list = memberService.getList(member);
-        if(null == list || list.size()==0){
-            re.setCode(ResultEntity.ACCOUNT_OR_PASSWD_ERROR);
-            re.setMsg(ResultEntity.MSG_FAILED);
+        if(null == list || list.isEmpty()){
+            //判断手机号和密码
+            Member tleMember = new Member();
+            tleMember.setTelephone(loginVO.getUserName());
+            tleMember.setPassword(loginVO.getPassword());
+            List<Member> telList = memberService.getList(tleMember);
+            if(null == telList || telList.isEmpty()){
+                re.setCode(ResultEntity.ACCOUNT_OR_PASSWD_ERROR);
+                re.setMsg(ResultEntity.MSG_FAILED);
+            }else{
+                //手机号和密码匹配
+                checkLoginResult(telList,re);
+            }
         }else{
-            Member mem = list.get(0);
-            LoginResultVO loginResultVO = new LoginResultVO();
-            String token = JwtTokenUtil.createToken(mem.getMemberId()+"");
-            redisService.addKey(token,mem.getMemberId()+"",Constants.REDIS_TOKEN_EXPIRE_TIME);
-            loginResultVO.setToken(token);
-            loginResultVO.setMember(mem);
-            re.setCode(ResultEntity.SUCCESS);
-            re.setMsg(ResultEntity.MSG_SUCCESS);
-            re.setData(loginResultVO);
+            //用户名和密码匹配
+            checkLoginResult(list,re);
         }
         return re;
+    }
+
+    private void checkLoginResult(List<Member> list,ResultEntity<LoginResultVO> re) throws Exception{
+        Member mem = list.get(0);
+        LoginResultVO loginResultVO = new LoginResultVO();
+        String token = JwtTokenUtil.createToken(mem.getMemberId()+"");
+        redisService.addKey(token,mem.getMemberId()+"",Constants.REDIS_TOKEN_EXPIRE_TIME);
+        loginResultVO.setToken(token);
+        loginResultVO.setMember(mem);
+        re.setCode(ResultEntity.SUCCESS);
+        re.setMsg(ResultEntity.MSG_SUCCESS);
+        re.setData(loginResultVO);
     }
 }
