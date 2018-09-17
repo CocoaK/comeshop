@@ -10,6 +10,8 @@ public class Order extends BaseModel {
 
     private Integer memberId;
 
+    private String memberGradeCode;
+
     private Integer memberAddressId;
 
     private String orderNo;
@@ -24,7 +26,13 @@ public class Order extends BaseModel {
 
     private Date shippingTime;
 
+    private String logisticsCompany;
+
+    private String shipmentNo;
+
     private Date receiptTime;
+
+    private String settleStatus;
 
     private String buCode;
 
@@ -37,8 +45,6 @@ public class Order extends BaseModel {
     private Date lastUpdatedDate;
 
     private String rowId;
-
-    private String settleStatus;
 
     public Integer getOrderId() {
         return orderId;
@@ -62,6 +68,14 @@ public class Order extends BaseModel {
 
     public void setMemberId(Integer memberId) {
         this.memberId = memberId;
+    }
+
+    public String getMemberGradeCode() {
+        return memberGradeCode;
+    }
+
+    public void setMemberGradeCode(String memberGradeCode) {
+        this.memberGradeCode = memberGradeCode == null ? null : memberGradeCode.trim();
     }
 
     public Integer getMemberAddressId() {
@@ -120,12 +134,36 @@ public class Order extends BaseModel {
         this.shippingTime = shippingTime;
     }
 
+    public String getLogisticsCompany() {
+        return logisticsCompany;
+    }
+
+    public void setLogisticsCompany(String logisticsCompany) {
+        this.logisticsCompany = logisticsCompany == null ? null : logisticsCompany.trim();
+    }
+
+    public String getShipmentNo() {
+        return shipmentNo;
+    }
+
+    public void setShipmentNo(String shipmentNo) {
+        this.shipmentNo = shipmentNo == null ? null : shipmentNo.trim();
+    }
+
     public Date getReceiptTime() {
         return receiptTime;
     }
 
     public void setReceiptTime(Date receiptTime) {
         this.receiptTime = receiptTime;
+    }
+
+    public String getSettleStatus() {
+        return settleStatus;
+    }
+
+    public void setSettleStatus(String settleStatus) {
+        this.settleStatus = settleStatus == null ? null : settleStatus.trim();
     }
 
     public String getBuCode() {
@@ -174,13 +212,5 @@ public class Order extends BaseModel {
 
     public void setRowId(String rowId) {
         this.rowId = rowId == null ? null : rowId.trim();
-    }
-
-    public String getSettleStatus() {
-        return settleStatus;
-    }
-
-    public void setSettleStatus(String settleStatus) {
-        this.settleStatus = settleStatus;
     }
 }

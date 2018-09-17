@@ -5,6 +5,7 @@
     <id column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="zone_code" jdbcType="VARCHAR" property="zoneCode" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="member_grade_code" jdbcType="VARCHAR" property="memberGradeCode" />
     <result column="member_address_id" jdbcType="INTEGER" property="memberAddressId" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
@@ -12,14 +13,16 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
     <result column="shipping_time" jdbcType="TIMESTAMP" property="shippingTime" />
+    <result column="logistics_company" jdbcType="VARCHAR" property="logisticsCompany" />
+    <result column="shipment_no" jdbcType="VARCHAR" property="shipmentNo" />
     <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
+    <result column="settle_status" jdbcType="VARCHAR" property="settleStatus" />
     <result column="bu_code" jdbcType="VARCHAR" property="buCode" />
     <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
     <result column="created_date" jdbcType="TIMESTAMP" property="createdDate" />
     <result column="last_updated_by" jdbcType="VARCHAR" property="lastUpdatedBy" />
     <result column="last_updated_date" jdbcType="TIMESTAMP" property="lastUpdatedDate" />
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
-    <result column="settle_status" jdbcType="VARCHAR" property="settleStatus" />
   </resultMap>
 
   <resultMap id="voResultMap" extends="BaseResultMap" type="com.eshop.serviceweb.vo.OrderVO">
@@ -52,9 +55,10 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    order_id, zone_code, member_id, member_address_id, order_no, amount, mp_amt, status, 
-    payment_time, shipping_time, receipt_time, bu_code, created_by, created_date, last_updated_by, 
-    last_updated_date, row_id,settle_status
+    order_id, zone_code, member_id, member_grade_code, member_address_id, order_no, amount, 
+    mp_amt, status, payment_time, shipping_time, logistics_company, shipment_no, receipt_time, 
+    settle_status, bu_code, created_by, created_date, last_updated_by, last_updated_date, 
+    row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -74,17 +78,21 @@
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceweb.model.Order">
     insert into mc_order (order_id, zone_code, member_id, 
-      member_address_id, order_no, amount, 
-      mp_amt, status, payment_time, 
-      shipping_time, receipt_time, bu_code, 
-      created_by, created_date, last_updated_by, 
-      last_updated_date, row_id,settle_status)
+      member_grade_code, member_address_id, order_no, 
+      amount, mp_amt, status, 
+      payment_time, shipping_time, logistics_company, 
+      shipment_no, receipt_time, settle_status, 
+      bu_code, created_by, created_date, 
+      last_updated_by, last_updated_date, row_id
+      )
     values (#{orderId,jdbcType=INTEGER}, #{zoneCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, 
-      #{memberAddressId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
-      #{mpAmt,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{paymentTime,jdbcType=TIMESTAMP}, 
-      #{shippingTime,jdbcType=TIMESTAMP}, #{receiptTime,jdbcType=TIMESTAMP}, #{buCode,jdbcType=VARCHAR}, 
-      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
-      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR},#{settleStatus,jdbcType=VARCHAR})
+      #{memberGradeCode,jdbcType=VARCHAR}, #{memberAddressId,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{mpAmt,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{paymentTime,jdbcType=TIMESTAMP}, #{shippingTime,jdbcType=TIMESTAMP}, #{logisticsCompany,jdbcType=VARCHAR}, 
+      #{shipmentNo,jdbcType=VARCHAR}, #{receiptTime,jdbcType=TIMESTAMP}, #{settleStatus,jdbcType=VARCHAR}, 
+      #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertActive" parameterType="com.eshop.serviceweb.model.Order">
     insert into mc_order
@@ -97,6 +105,9 @@
       </if>
       <if test="memberId != null">
         member_id,
+      </if>
+      <if test="memberGradeCode != null">
+        member_grade_code,
       </if>
       <if test="memberAddressId != null">
         member_address_id,
@@ -113,17 +124,23 @@
       <if test="status != null">
         status,
       </if>
-      <if test="settleStatus != null">
-        settle_status,
-      </if>
       <if test="paymentTime != null">
         payment_time,
       </if>
       <if test="shippingTime != null">
         shipping_time,
       </if>
+      <if test="logisticsCompany != null">
+        logistics_company,
+      </if>
+      <if test="shipmentNo != null">
+        shipment_no,
+      </if>
       <if test="receiptTime != null">
         receipt_time,
+      </if>
+      <if test="settleStatus != null">
+        settle_status,
       </if>
       <if test="buCode != null">
         bu_code,
@@ -140,7 +157,9 @@
       <if test="lastUpdatedDate == null">
         last_updated_date,
       </if>
-      row_id,
+      <if test="rowId != null">
+        row_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderId != null">
@@ -151,6 +170,9 @@
       </if>
       <if test="memberId != null">
         #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberGradeCode != null">
+        #{memberGradeCode,jdbcType=VARCHAR},
       </if>
       <if test="memberAddressId != null">
         #{memberAddressId,jdbcType=INTEGER},
@@ -167,17 +189,23 @@
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
       </if>
-      <if test="settleStatus != null">
-        #{settleStatus,jdbcType=VARCHAR},
-      </if>
       <if test="paymentTime != null">
         #{paymentTime,jdbcType=TIMESTAMP},
       </if>
       <if test="shippingTime != null">
         #{shippingTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="logisticsCompany != null">
+        #{logisticsCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="shipmentNo != null">
+        #{shipmentNo,jdbcType=VARCHAR},
+      </if>
       <if test="receiptTime != null">
         #{receiptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleStatus != null">
+        #{settleStatus,jdbcType=VARCHAR},
       </if>
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
@@ -194,9 +222,6 @@
       <if test="lastUpdatedDate == null">
         now(),
       </if>
-      <if test="rowId == null">
-        uuid(),
-      </if>
       <if test="rowId != null">
         #{rowId,jdbcType=VARCHAR},
       </if>
@@ -210,6 +235,9 @@
       </if>
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberGradeCode != null">
+        member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
       </if>
       <if test="memberAddressId != null">
         member_address_id = #{memberAddressId,jdbcType=INTEGER},
@@ -226,17 +254,23 @@
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="settleStatus != null">
-        settle_status = #{settleStatus,jdbcType=VARCHAR},
-      </if>
       <if test="paymentTime != null">
         payment_time = #{paymentTime,jdbcType=TIMESTAMP},
       </if>
       <if test="shippingTime != null">
         shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="logisticsCompany != null">
+        logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="shipmentNo != null">
+        shipment_no = #{shipmentNo,jdbcType=VARCHAR},
+      </if>
       <if test="receiptTime != null">
         receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleStatus != null">
+        settle_status = #{settleStatus,jdbcType=VARCHAR},
       </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
@@ -268,6 +302,9 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
+      <if test="memberGradeCode != null">
+        member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
+      </if>
       <if test="memberAddressId != null">
         member_address_id = #{memberAddressId,jdbcType=INTEGER},
       </if>
@@ -283,17 +320,23 @@
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
-      <if test="settleStatus != null">
-        settle_status = #{settleStatus,jdbcType=VARCHAR},
-      </if>
       <if test="paymentTime != null">
         payment_time = #{paymentTime,jdbcType=TIMESTAMP},
       </if>
       <if test="shippingTime != null">
         shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="logisticsCompany != null">
+        logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="shipmentNo != null">
+        shipment_no = #{shipmentNo,jdbcType=VARCHAR},
+      </if>
       <if test="receiptTime != null">
         receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleStatus != null">
+        settle_status = #{settleStatus,jdbcType=VARCHAR},
       </if>
       <if test="buCode != null">
         bu_code = #{buCode,jdbcType=VARCHAR},
@@ -322,6 +365,7 @@
     update mc_order
     set zone_code = #{zoneCode,jdbcType=VARCHAR},
       member_id = #{memberId,jdbcType=INTEGER},
+      member_grade_code = #{memberGradeCode,jdbcType=VARCHAR},
       member_address_id = #{memberAddressId,jdbcType=INTEGER},
       order_no = #{orderNo,jdbcType=VARCHAR},
       amount = #{amount,jdbcType=DECIMAL},
@@ -329,7 +373,10 @@
       status = #{status,jdbcType=VARCHAR},
       payment_time = #{paymentTime,jdbcType=TIMESTAMP},
       shipping_time = #{shippingTime,jdbcType=TIMESTAMP},
+      logistics_company = #{logisticsCompany,jdbcType=VARCHAR},
+      shipment_no = #{shipmentNo,jdbcType=VARCHAR},
       receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+      settle_status = #{settleStatus,jdbcType=VARCHAR},
       bu_code = #{buCode,jdbcType=VARCHAR},
       created_by = #{createdBy,jdbcType=VARCHAR},
       created_date = #{createdDate,jdbcType=TIMESTAMP},
@@ -341,53 +388,89 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="orderId != null">
-         and a.order_id = #{orderId,jdbcType=INTEGER}
+         and t.order_id = #{orderId,jdbcType=INTEGER}
       </if>
       <if test="zoneCode != null">
-         and a.zone_code = #{zoneCode,jdbcType=VARCHAR}
+         and t.zone_code = #{zoneCode,jdbcType=VARCHAR}
       </if>
       <if test="memberId != null">
-         and a.member_id = #{memberId,jdbcType=INTEGER}
+         and t.member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="memberGradeCode != null">
+         and t.member_grade_code = #{memberGradeCode,jdbcType=VARCHAR}
       </if>
       <if test="memberAddressId != null">
-         and a.member_address_id = #{memberAddressId,jdbcType=INTEGER}
+         and t.member_address_id = #{memberAddressId,jdbcType=INTEGER}
       </if>
       <if test="orderNo != null">
-         and a.order_no = #{orderNo,jdbcType=VARCHAR}
+         and t.order_no = #{orderNo,jdbcType=VARCHAR}
       </if>
       <if test="amount != null">
-         and a.amount = #{amount,jdbcType=DECIMAL}
+         and t.amount = #{amount,jdbcType=DECIMAL}
       </if>
       <if test="mpAmt != null">
-         and a.mp_amt = #{mpAmt,jdbcType=INTEGER}
+         and t.mp_amt = #{mpAmt,jdbcType=INTEGER}
       </if>
       <if test="status != null">
-         and a.status = #{status,jdbcType=VARCHAR}
-      </if>
-      <if test="settleStatus != null">
-        and a.settle_status = #{settleStatus,jdbcType=VARCHAR}
+         and t.status = #{status,jdbcType=VARCHAR}
       </if>
       <if test="paymentTime != null">
-         and a.payment_time = #{paymentTime,jdbcType=TIMESTAMP}
+         and t.payment_time = #{paymentTime,jdbcType=TIMESTAMP}
       </if>
       <if test="shippingTime != null">
-         and a.shipping_time = #{shippingTime,jdbcType=TIMESTAMP}
+         and t.shipping_time = #{shippingTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="logisticsCompany != null">
+         and t.logistics_company = #{logisticsCompany,jdbcType=VARCHAR}
+      </if>
+      <if test="shipmentNo != null">
+         and t.shipment_no = #{shipmentNo,jdbcType=VARCHAR}
       </if>
       <if test="receiptTime != null">
-         and a.receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
+         and t.receipt_time = #{receiptTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="settleStatus != null">
+         and t.settle_status = #{settleStatus,jdbcType=VARCHAR}
       </if>
       <if test="buCode != null">
-         and a.bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and a.created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and a.created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
-
+  <select id="getAll" resultMap="BaseResultMap">
+    select t.* from mc_order t
+  </select>
+  <select id="getList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
+    select t.* from mc_order t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
+    select t.* from mc_order t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
+    select t.* from mc_order t
+    <include refid="Base_Query_Cause" />
+  </select>
+  <select id="queryList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
+    select t.* from mc_order t
+    <include refid="Base_Query_Cause" />
+  </select>
   <sql id="Settle_Query_Time_Cause">
     <if test="beginTime != null">
       and receipt_time >= #{beginTime,jdbcType=TIMESTAMP}
@@ -405,15 +488,6 @@
       and payment_time &lt;= #{endTime,jdbcType=TIMESTAMP}
     </if>
   </sql>
-
-  <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_order a
-  </select>
-  <select id="getList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
-    select * from mc_order a
-    <include refid="Base_Query_Cause" />
-  </select>
-
   <select id="getSettleOrderList" parameterType="com.eshop.serviceweb.vo.OrderVO" resultMap="BaseResultMap">
     SELECT s.* from (select a.* from mc_order a join sh_zone b on b.zone_code = a.zone_code
     WHERE a.status = '4'
@@ -435,19 +509,6 @@
     <include refid="Recharge_Query_Time_Cause" />
     and b.zone_code = 'Z00002'
     order by a.payment_time desc
-  </select>
-
-  <select id="getPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap">
-    select * from mc_order a
-    <include refid="Base_Query_Cause" />
-  </select>
-  <select id="queryPageList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
-    select * from mc_order a
-    <include refid="Base_Query_Cause" />
-  </select>
-  <select id="queryList" parameterType="com.eshop.serviceweb.model.Order" resultMap="BaseResultMap" useCache="false">
-    select * from mc_order a
-    <include refid="Base_Query_Cause" />
   </select>
 
   <select id="getUnSettleOrderList" parameterType="com.eshop.serviceweb.model.SettleBatch" resultMap="settleOrderMap" useCache="false">
