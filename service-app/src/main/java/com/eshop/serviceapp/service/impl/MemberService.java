@@ -41,25 +41,29 @@ public class MemberService extends BaseService<Member> implements IMemberService
         mem.setUserName(memberVO.getUserName());
         List<Member> list = memberMapper.getList(mem);
         if(list!=null && !list.isEmpty()){
-            return new ResultEntity(ResultEntity.ALREADY_EXIST,"username exist",null);
+            return new ResultEntity(ResultEntity.ALREADY_EXIST,"用户名已被注册",null);
+        }
+        mem.setUserName(null);
+        mem.setTelephone(memberVO.getTelephone());
+        List<Member> list1 = memberMapper.getList(mem);
+        if(list1!=null && !list1.isEmpty()){
+            return new ResultEntity(ResultEntity.ALREADY_EXIST,"电话号码已被注册",null);
         }
         Member m = new Member();
-        m.setUserName(memberVO.getRefMemberUser());
+        m.setTelephone(memberVO.getRefMemberUser());
         List<Member> refMemberList = memberMapper.getList(m);
         Integer refMemberId = null;
         if(refMemberList != null && !refMemberList.isEmpty()){
-            refMemberId = refMemberList.get(0).getRefMemberId();
+            refMemberId = refMemberList.get(0).getMemberId();
         }
-
         Member member = new Member();
         member.setUserName(memberVO.getUserName());
         member.setPassword(memberVO.getPassword());
         member.setTelephone(memberVO.getTelephone());
-        member.setRefMemberId(1);
+        member.setRefMemberId(refMemberId);
         member.setCurrentUser("[SYS]");
         member.setIsActive(true);
         member.setBuCode("ESHOP");
-        member.setRefMemberId(refMemberId);
         int result = memberMapper.insertActive(member);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", memberMapper.getOne(member.getMemberId()));
