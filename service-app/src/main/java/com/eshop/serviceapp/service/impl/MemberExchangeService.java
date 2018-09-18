@@ -2,7 +2,6 @@ package com.eshop.serviceapp.service.impl;
 
 import com.eshop.serviceapp.common.Constants;
 import com.eshop.serviceapp.common.model.ResultEntity;
-import com.eshop.serviceapp.common.util.StringUtil;
 import com.eshop.serviceapp.mapper.BaseMapper;
 import com.eshop.serviceapp.mapper.MemberExchangeMapper;
 import com.eshop.serviceapp.mapper.MemberMapper;
