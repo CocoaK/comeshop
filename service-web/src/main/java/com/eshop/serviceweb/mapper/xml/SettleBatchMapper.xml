@@ -331,7 +331,7 @@
     ac_settle_batch sb
     JOIN ac_settle_details sd ON sd.settle_batch_id = sb.settle_batch_id
     JOIN mc_order o ON o.order_id = sd.order_id
-    JOIN mc_member m ON o.member_id = o.member_id
+    JOIN mc_member m ON o.member_id = m.member_id
     join mc_member_grade on o.member_grade_code=mc_member_grade.grade_code
     JOIN sh_zone z on z.zone_code = o.zone_code
   WHERE 1=1

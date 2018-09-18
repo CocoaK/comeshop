@@ -64,6 +64,7 @@ public class MemberService extends BaseService<Member> implements IMemberService
         member.setCurrentUser("[SYS]");
         member.setIsActive(true);
         member.setBuCode("ESHOP");
+        member.setMemberGrade("G001");
         int result = memberMapper.insertActive(member);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", memberMapper.getOne(member.getMemberId()));
