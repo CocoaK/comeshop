@@ -196,6 +196,7 @@ public class SettleService implements ISettleService {
      * 结算的方法
      * @param settleBatch
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     private void settle(SettleBatch settleBatch){
         if(null != settleBatch && !StringUtils.isEmpty(settleBatch.getCurrentUser())){
             settleBatch.setSettleBy(settleBatch.getCurrentUser());

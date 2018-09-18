@@ -1,18 +1,23 @@
 package com.eshop.serviceapp.model;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class MemberTrans extends BaseModel {
     private Integer transId;
-
+    @NotNull
     private Integer memberId;
 
-    private Date transDate;
+    private String transNo;
 
     private String transType;
 
+    private Date transDate;
+    @NotNull
     private BigDecimal transAmt;
+
+    private BigDecimal transAmtBal;
 
     private Integer transMp;
 
@@ -50,12 +55,12 @@ public class MemberTrans extends BaseModel {
         this.memberId = memberId;
     }
 
-    public Date getTransDate() {
-        return transDate;
+    public String getTransNo() {
+        return transNo;
     }
 
-    public void setTransDate(Date transDate) {
-        this.transDate = transDate;
+    public void setTransNo(String transNo) {
+        this.transNo = transNo == null ? null : transNo.trim();
     }
 
     public String getTransType() {
@@ -66,12 +71,28 @@ public class MemberTrans extends BaseModel {
         this.transType = transType == null ? null : transType.trim();
     }
 
+    public Date getTransDate() {
+        return transDate;
+    }
+
+    public void setTransDate(Date transDate) {
+        this.transDate = transDate;
+    }
+
     public BigDecimal getTransAmt() {
         return transAmt;
     }
 
     public void setTransAmt(BigDecimal transAmt) {
         this.transAmt = transAmt;
+    }
+
+    public BigDecimal getTransAmtBal() {
+        return transAmtBal;
+    }
+
+    public void setTransAmtBal(BigDecimal transAmtBal) {
+        this.transAmtBal = transAmtBal;
     }
 
     public Integer getTransMp() {

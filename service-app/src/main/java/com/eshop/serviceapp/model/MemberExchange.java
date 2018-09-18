@@ -10,9 +10,9 @@ public class MemberExchange extends BaseModel {
 
     private Date applicationDate;
 
-    private BigDecimal exchangeAmt;
-
     private Integer exchangeMp;
+
+    private BigDecimal exchangeAmt;
 
     private String accountType;
 
@@ -62,20 +62,20 @@ public class MemberExchange extends BaseModel {
         this.applicationDate = applicationDate;
     }
 
-    public BigDecimal getExchangeAmt() {
-        return exchangeAmt;
-    }
-
-    public void setExchangeAmt(BigDecimal exchangeAmt) {
-        this.exchangeAmt = exchangeAmt;
-    }
-
     public Integer getExchangeMp() {
         return exchangeMp;
     }
 
     public void setExchangeMp(Integer exchangeMp) {
         this.exchangeMp = exchangeMp;
+    }
+
+    public BigDecimal getExchangeAmt() {
+        return exchangeAmt;
+    }
+
+    public void setExchangeAmt(BigDecimal exchangeAmt) {
+        this.exchangeAmt = exchangeAmt;
     }
 
     public String getAccountType() {

@@ -103,7 +103,7 @@ public class OrderService extends BaseService<Order> implements IOrderService {
             Order o = orderMapper.getOne(order.getOrderId());
             o.setAmount(orderAmount);
             //积分=订单总金额*积分兑换比
-            o.setMpAmt(Integer.parseInt((orderAmount.multiply(new BigDecimal(rebateSetting.getExchangeRate())).setScale(0).toString())));
+            o.setMpAmt((orderAmount.multiply(new BigDecimal(rebateSetting.getExchangeRate())).setScale(0).intValue()));
             orderMapper.updateActive(o);
             re.setCode(ResultEntity.SUCCESS);
             re.setMsg(ResultEntity.MSG_SUCCESS);

@@ -4,9 +4,11 @@
   <resultMap id="BaseResultMap" type="com.eshop.serviceapp.model.MemberTrans">
     <id column="trans_id" jdbcType="INTEGER" property="transId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
-    <result column="trans_date" jdbcType="TIMESTAMP" property="transDate" />
+    <result column="trans_no" jdbcType="VARCHAR" property="transNo" />
     <result column="trans_type" jdbcType="VARCHAR" property="transType" />
+    <result column="trans_date" jdbcType="TIMESTAMP" property="transDate" />
     <result column="trans_amt" jdbcType="DECIMAL" property="transAmt" />
+    <result column="trans_amt_bal" jdbcType="DECIMAL" property="transAmtBal" />
     <result column="trans_mp" jdbcType="INTEGER" property="transMp" />
     <result column="trans_mp_bal" jdbcType="INTEGER" property="transMpBal" />
     <result column="ref_no" jdbcType="VARCHAR" property="refNo" />
@@ -19,8 +21,9 @@
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    trans_id, member_id, trans_date, trans_type, trans_amt, trans_mp, trans_mp_bal, ref_no, 
-    remarks, bu_code, created_by, created_date, last_updated_by, last_updated_date, row_id
+    trans_id, member_id, trans_no, trans_type, trans_date, trans_amt, trans_amt_bal, 
+    trans_mp, trans_mp_bal, ref_no, remarks, bu_code, created_by, created_date, last_updated_by, 
+    last_updated_date, row_id
   </sql>
   <select id="getOne" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -39,20 +42,20 @@
     and last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberTrans">
-    insert into mc_member_trans (trans_id, member_id, trans_date, 
-      trans_type, trans_amt, trans_mp, 
-      trans_mp_bal, ref_no, remarks, 
-      bu_code, created_by, created_date, 
-      last_updated_by, last_updated_date, row_id
-      )
-    values (#{transId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{transDate,jdbcType=TIMESTAMP}, 
-      #{transType,jdbcType=VARCHAR}, #{transAmt,jdbcType=DECIMAL}, #{transMp,jdbcType=INTEGER}, 
-      #{transMpBal,jdbcType=INTEGER}, #{refNo,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
-      #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
-      #{lastUpdatedBy,jdbcType=VARCHAR}, #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR}
-      )
+    insert into mc_member_trans (trans_id, member_id, trans_no, 
+      trans_type, trans_date, trans_amt, 
+      trans_amt_bal, trans_mp, trans_mp_bal, 
+      ref_no, remarks, bu_code, 
+      created_by, created_date, last_updated_by, 
+      last_updated_date, row_id)
+    values (#{transId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{transNo,jdbcType=VARCHAR}, 
+      #{transType,jdbcType=VARCHAR}, #{transDate,jdbcType=TIMESTAMP}, #{transAmt,jdbcType=DECIMAL}, 
+      #{transAmtBal,jdbcType=DECIMAL}, #{transMp,jdbcType=INTEGER}, #{transMpBal,jdbcType=INTEGER}, 
+      #{refNo,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{buCode,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
+      #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberTrans">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberTrans" useGeneratedKeys="true" keyProperty="transId">
     insert into mc_member_trans
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="transId != null">
@@ -61,14 +64,20 @@
       <if test="memberId != null">
         member_id,
       </if>
-      <if test="transDate != null">
-        trans_date,
+      <if test="transNo != null">
+        trans_no,
       </if>
       <if test="transType != null">
         trans_type,
       </if>
+      <if test="transDate != null">
+        trans_date,
+      </if>
       <if test="transAmt != null">
         trans_amt,
+      </if>
+      <if test="transAmtBal != null">
+        trans_amt_bal,
       </if>
       <if test="transMp != null">
         trans_mp,
@@ -85,18 +94,10 @@
       <if test="buCode != null">
         bu_code,
       </if>
-      <if test="currentUser != null">
-        created_by,
-      </if>
-      <if test="createdDate == null">
-        created_date,
-      </if>
-      <if test="lastUpdatedBy == null">
-        last_updated_by,
-      </if>
-      <if test="lastUpdatedDate == null">
-        last_updated_date,
-      </if>
+      created_by,
+      created_date,
+      last_updated_by,
+      last_updated_date,
       row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -106,14 +107,20 @@
       <if test="memberId != null">
         #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="transDate != null">
-        #{transDate,jdbcType=TIMESTAMP},
+      <if test="transNo != null">
+        #{transNo,jdbcType=VARCHAR},
       </if>
       <if test="transType != null">
         #{transType,jdbcType=VARCHAR},
       </if>
+      <if test="transDate != null">
+        #{transDate,jdbcType=TIMESTAMP},
+      </if>
       <if test="transAmt != null">
         #{transAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="transAmtBal != null">
+        #{transAmtBal,jdbcType=DECIMAL},
       </if>
       <if test="transMp != null">
         #{transMp,jdbcType=INTEGER},
@@ -130,17 +137,29 @@
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
       </if>
-      <if test="currentUser != null">
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy == null and currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
       </if>
       <if test="createdDate == null">
         now(),
       </if>
-      <if test="lastUpdatedBy == null">
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy == null and currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate == null">
         now(),
+      </if>
+      <if test="lastUpdatedDate != null">
+        #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId == null">
         uuid(),
@@ -156,14 +175,20 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="transDate != null">
-        trans_date = #{transDate,jdbcType=TIMESTAMP},
+      <if test="transNo != null">
+        trans_no = #{transNo,jdbcType=VARCHAR},
       </if>
       <if test="transType != null">
         trans_type = #{transType,jdbcType=VARCHAR},
       </if>
+      <if test="transDate != null">
+        trans_date = #{transDate,jdbcType=TIMESTAMP},
+      </if>
       <if test="transAmt != null">
         trans_amt = #{transAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="transAmtBal != null">
+        trans_amt_bal = #{transAmtBal,jdbcType=DECIMAL},
       </if>
       <if test="transMp != null">
         trans_mp = #{transMp,jdbcType=INTEGER},
@@ -204,14 +229,20 @@
       <if test="memberId != null">
         member_id = #{memberId,jdbcType=INTEGER},
       </if>
-      <if test="transDate != null">
-        trans_date = #{transDate,jdbcType=TIMESTAMP},
+      <if test="transNo != null">
+        trans_no = #{transNo,jdbcType=VARCHAR},
       </if>
       <if test="transType != null">
         trans_type = #{transType,jdbcType=VARCHAR},
       </if>
+      <if test="transDate != null">
+        trans_date = #{transDate,jdbcType=TIMESTAMP},
+      </if>
       <if test="transAmt != null">
         trans_amt = #{transAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="transAmtBal != null">
+        trans_amt_bal = #{transAmtBal,jdbcType=DECIMAL},
       </if>
       <if test="transMp != null">
         trans_mp = #{transMp,jdbcType=INTEGER},
@@ -251,9 +282,11 @@
   <update id="update" parameterType="com.eshop.serviceapp.model.MemberTrans">
     update mc_member_trans
     set member_id = #{memberId,jdbcType=INTEGER},
-      trans_date = #{transDate,jdbcType=TIMESTAMP},
+      trans_no = #{transNo,jdbcType=VARCHAR},
       trans_type = #{transType,jdbcType=VARCHAR},
+      trans_date = #{transDate,jdbcType=TIMESTAMP},
       trans_amt = #{transAmt,jdbcType=DECIMAL},
+      trans_amt_bal = #{transAmtBal,jdbcType=DECIMAL},
       trans_mp = #{transMp,jdbcType=INTEGER},
       trans_mp_bal = #{transMpBal,jdbcType=INTEGER},
       ref_no = #{refNo,jdbcType=VARCHAR},
@@ -269,61 +302,75 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="transId != null">
-         and trans_id = #{transId,jdbcType=INTEGER}
+         and t.trans_id = #{transId,jdbcType=INTEGER}
       </if>
       <if test="memberId != null">
-         and member_id = #{memberId,jdbcType=INTEGER}
+         and t.member_id = #{memberId,jdbcType=INTEGER}
       </if>
-      <if test="transDate != null">
-         and trans_date = #{transDate,jdbcType=TIMESTAMP}
+      <if test="transNo != null">
+         and t.trans_no = #{transNo,jdbcType=VARCHAR}
       </if>
       <if test="transType != null">
-         and trans_type = #{transType,jdbcType=VARCHAR}
+         and t.trans_type = #{transType,jdbcType=VARCHAR}
+      </if>
+      <if test="transDate != null">
+         and t.trans_date = #{transDate,jdbcType=TIMESTAMP}
       </if>
       <if test="transAmt != null">
-         and trans_amt = #{transAmt,jdbcType=DECIMAL}
+         and t.trans_amt = #{transAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="transAmtBal != null">
+         and t.trans_amt_bal = #{transAmtBal,jdbcType=DECIMAL}
       </if>
       <if test="transMp != null">
-         and trans_mp = #{transMp,jdbcType=INTEGER}
+         and t.trans_mp = #{transMp,jdbcType=INTEGER}
       </if>
       <if test="transMpBal != null">
-         and trans_mp_bal = #{transMpBal,jdbcType=INTEGER}
+         and t.trans_mp_bal = #{transMpBal,jdbcType=INTEGER}
       </if>
       <if test="refNo != null">
-         and ref_no = #{refNo,jdbcType=VARCHAR}
+         and t.ref_no = #{refNo,jdbcType=VARCHAR}
       </if>
       <if test="remarks != null">
-         and remarks = #{remarks,jdbcType=VARCHAR}
+         and t.remarks = #{remarks,jdbcType=VARCHAR}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_member_trans
+    select t.* from mc_member_trans t
   </select>
   <select id="getList" parameterType="com.eshop.serviceapp.model.MemberTrans" resultMap="BaseResultMap">
-    select * from mc_member_trans
+    select t.* from mc_member_trans t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberTrans" resultMap="BaseResultMap">
-    select * from mc_member_trans
+    select t.* from mc_member_trans t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberTrans" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_trans
+    select t.* from mc_member_trans t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberTrans" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_trans
+    select t.* from mc_member_trans t
     <include refid="Base_Query_Cause" />
   </select>
-  <!--<cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />-->
 </mapper>

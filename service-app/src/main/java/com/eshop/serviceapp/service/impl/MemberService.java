@@ -8,6 +8,8 @@ import com.eshop.serviceapp.service.IMemberService;
 import com.eshop.serviceapp.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class MemberService extends BaseService<Member> implements IMemberService
 //    }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public ResultEntity<Member> addForResultEntity(MemberVO memberVO) {
         Member mem = new Member();
         mem.setUserName(memberVO.getUserName());
@@ -64,7 +67,7 @@ public class MemberService extends BaseService<Member> implements IMemberService
         member.setCurrentUser("[SYS]");
         member.setIsActive(true);
         member.setBuCode("ESHOP");
-        member.setMemberGrade("G001");
+        member.setMemberGrade("G000");
         int result = memberMapper.insertActive(member);
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", memberMapper.getOne(member.getMemberId()));

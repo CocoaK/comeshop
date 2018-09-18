@@ -5,8 +5,8 @@
     <id column="member_exchange_id" jdbcType="INTEGER" property="memberExchangeId" />
     <result column="member_id" jdbcType="INTEGER" property="memberId" />
     <result column="application_date" jdbcType="DATE" property="applicationDate" />
-    <result column="exchange_amt" jdbcType="DECIMAL" property="exchangeAmt" />
     <result column="exchange_mp" jdbcType="INTEGER" property="exchangeMp" />
+    <result column="exchange_amt" jdbcType="DECIMAL" property="exchangeAmt" />
     <result column="account_type" jdbcType="VARCHAR" property="accountType" />
     <result column="account_no" jdbcType="VARCHAR" property="accountNo" />
     <result column="status" jdbcType="VARCHAR" property="status" />
@@ -21,7 +21,7 @@
     <result column="row_id" jdbcType="VARCHAR" property="rowId" />
   </resultMap>
   <sql id="Base_Column_List">
-    member_exchange_id, member_id, application_date, exchange_amt, exchange_mp, account_type, 
+    member_exchange_id, member_id, application_date, exchange_mp, exchange_amt, account_type, 
     account_no, status, approved_by, approval_time, remarks, bu_code, created_by, created_date, 
     last_updated_by, last_updated_date, row_id
   </sql>
@@ -43,13 +43,13 @@
   </delete>
   <insert id="insert" parameterType="com.eshop.serviceapp.model.MemberExchange">
     insert into mc_member_exchange (member_exchange_id, member_id, application_date, 
-      exchange_amt, exchange_mp, account_type, 
+      exchange_mp, exchange_amt, account_type, 
       account_no, status, approved_by, 
       approval_time, remarks, bu_code, 
       created_by, created_date, last_updated_by, 
       last_updated_date, row_id)
     values (#{memberExchangeId,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{applicationDate,jdbcType=DATE}, 
-      #{exchangeAmt,jdbcType=DECIMAL}, #{exchangeMp,jdbcType=INTEGER}, #{accountType,jdbcType=VARCHAR}, 
+      #{exchangeMp,jdbcType=INTEGER}, #{exchangeAmt,jdbcType=DECIMAL}, #{accountType,jdbcType=VARCHAR}, 
       #{accountNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{approvedBy,jdbcType=VARCHAR}, 
       #{approvalTime,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{buCode,jdbcType=VARCHAR}, 
       #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
@@ -67,11 +67,11 @@
       <if test="applicationDate != null">
         application_date,
       </if>
-      <if test="exchangeAmt != null">
-        exchange_amt,
-      </if>
       <if test="exchangeMp != null">
         exchange_mp,
+      </if>
+      <if test="exchangeAmt != null">
+        exchange_amt,
       </if>
       <if test="accountType != null">
         account_type,
@@ -94,18 +94,10 @@
       <if test="buCode != null">
         bu_code,
       </if>
-      <if test="currentUser != null">
-        created_by,
-      </if>
-      <if test="createdDate == null">
-        created_date,
-      </if>
-      <if test="lastUpdatedBy == null">
-        last_updated_by,
-      </if>
-      <if test="lastUpdatedDate == null">
-        last_updated_date,
-      </if>
+      created_by,
+      created_date,
+      last_updated_by,
+      last_updated_date,
       row_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -118,11 +110,11 @@
       <if test="applicationDate != null">
         #{applicationDate,jdbcType=DATE},
       </if>
-      <if test="exchangeAmt != null">
-        #{exchangeAmt,jdbcType=DECIMAL},
-      </if>
       <if test="exchangeMp != null">
         #{exchangeMp,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeAmt != null">
+        #{exchangeAmt,jdbcType=DECIMAL},
       </if>
       <if test="accountType != null">
         #{accountType,jdbcType=VARCHAR},
@@ -145,17 +137,29 @@
       <if test="buCode != null">
         #{buCode,jdbcType=VARCHAR},
       </if>
-      <if test="currentUser != null">
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy == null and currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
       </if>
       <if test="createdDate == null">
         now(),
       </if>
-      <if test="lastUpdatedBy == null">
+      <if test="createdDate != null">
+        #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy == null and currentUser != null">
         #{currentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdatedBy != null">
+        #{lastUpdatedBy,jdbcType=VARCHAR},
       </if>
       <if test="lastUpdatedDate == null">
         now(),
+      </if>
+      <if test="lastUpdatedDate != null">
+        #{lastUpdatedDate,jdbcType=TIMESTAMP},
       </if>
       <if test="rowId == null">
         uuid(),
@@ -174,11 +178,11 @@
       <if test="applicationDate != null">
         application_date = #{applicationDate,jdbcType=DATE},
       </if>
-      <if test="exchangeAmt != null">
-        exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
-      </if>
       <if test="exchangeMp != null">
         exchange_mp = #{exchangeMp,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeAmt != null">
+        exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
       </if>
       <if test="accountType != null">
         account_type = #{accountType,jdbcType=VARCHAR},
@@ -228,11 +232,11 @@
       <if test="applicationDate != null">
         application_date = #{applicationDate,jdbcType=DATE},
       </if>
-      <if test="exchangeAmt != null">
-        exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
-      </if>
       <if test="exchangeMp != null">
         exchange_mp = #{exchangeMp,jdbcType=INTEGER},
+      </if>
+      <if test="exchangeAmt != null">
+        exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
       </if>
       <if test="accountType != null">
         account_type = #{accountType,jdbcType=VARCHAR},
@@ -279,8 +283,8 @@
     update mc_member_exchange
     set member_id = #{memberId,jdbcType=INTEGER},
       application_date = #{applicationDate,jdbcType=DATE},
-      exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
       exchange_mp = #{exchangeMp,jdbcType=INTEGER},
+      exchange_amt = #{exchangeAmt,jdbcType=DECIMAL},
       account_type = #{accountType,jdbcType=VARCHAR},
       account_no = #{accountNo,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
@@ -298,66 +302,75 @@
   <sql id="Base_Query_Cause">
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="memberExchangeId != null">
-         and member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
+         and t.member_exchange_id = #{memberExchangeId,jdbcType=INTEGER}
       </if>
       <if test="memberId != null">
-         and member_id = #{memberId,jdbcType=INTEGER}
+         and t.member_id = #{memberId,jdbcType=INTEGER}
       </if>
       <if test="applicationDate != null">
-         and application_date = #{applicationDate,jdbcType=DATE}
-      </if>
-      <if test="exchangeAmt != null">
-         and exchange_amt = #{exchangeAmt,jdbcType=DECIMAL}
+         and t.application_date = #{applicationDate,jdbcType=DATE}
       </if>
       <if test="exchangeMp != null">
-         and exchange_mp = #{exchangeMp,jdbcType=INTEGER}
+         and t.exchange_mp = #{exchangeMp,jdbcType=INTEGER}
+      </if>
+      <if test="exchangeAmt != null">
+         and t.exchange_amt = #{exchangeAmt,jdbcType=DECIMAL}
       </if>
       <if test="accountType != null">
-         and account_type = #{accountType,jdbcType=VARCHAR}
+         and t.account_type = #{accountType,jdbcType=VARCHAR}
       </if>
       <if test="accountNo != null">
-         and account_no = #{accountNo,jdbcType=VARCHAR}
+         and t.account_no = #{accountNo,jdbcType=VARCHAR}
       </if>
       <if test="status != null">
-         and status = #{status,jdbcType=VARCHAR}
+         and t.status = #{status,jdbcType=VARCHAR}
       </if>
       <if test="approvedBy != null">
-         and approved_by = #{approvedBy,jdbcType=VARCHAR}
+         and t.approved_by = #{approvedBy,jdbcType=VARCHAR}
       </if>
       <if test="approvalTime != null">
-         and approval_time = #{approvalTime,jdbcType=TIMESTAMP}
+         and t.approval_time = #{approvalTime,jdbcType=TIMESTAMP}
       </if>
       <if test="remarks != null">
-         and remarks = #{remarks,jdbcType=VARCHAR}
+         and t.remarks = #{remarks,jdbcType=VARCHAR}
       </if>
       <if test="buCode != null">
-         and bu_code = #{buCode,jdbcType=VARCHAR}
+         and t.bu_code = #{buCode,jdbcType=VARCHAR}
       </if>
       <if test="createdBy != null">
-         and created_by = #{createdBy,jdbcType=VARCHAR}
+         and t.created_by = #{createdBy,jdbcType=VARCHAR}
       </if>
       <if test="createdDate != null">
-         and created_date = #{createdDate,jdbcType=TIMESTAMP}
+         and t.created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastUpdatedBy != null">
+         and t.last_updated_by = #{lastUpdatedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastUpdatedDate != null">
+         and t.last_updated_date = #{lastUpdatedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="rowId != null">
+         and t.row_id = #{rowId,jdbcType=VARCHAR}
       </if>
     </trim>
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
-    select * from mc_member_exchange
+    select t.* from mc_member_exchange t
   </select>
   <select id="getList" parameterType="com.eshop.serviceapp.model.MemberExchange" resultMap="BaseResultMap">
-    select * from mc_member_exchange
+    select t.* from mc_member_exchange t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="getPageList" parameterType="com.eshop.serviceapp.model.MemberExchange" resultMap="BaseResultMap">
-    select * from mc_member_exchange
+    select t.* from mc_member_exchange t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryPageList" parameterType="com.eshop.serviceapp.model.MemberExchange" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_exchange
+    select t.* from mc_member_exchange t
     <include refid="Base_Query_Cause" />
   </select>
   <select id="queryList" parameterType="com.eshop.serviceapp.model.MemberExchange" resultMap="BaseResultMap" useCache="false">
-    select * from mc_member_exchange
+    select t.* from mc_member_exchange t
     <include refid="Base_Query_Cause" />
   </select>
   <!--<cache type="com.eshop.serviceapp.redis.MybatisRedisCache" />-->

@@ -14,6 +14,8 @@
     <result column="join_date" jdbcType="DATE" property="joinDate" />
     <result column="expire_date" jdbcType="DATE" property="expireDate" />
     <result column="mp_amt" jdbcType="INTEGER" property="mpAmt" />
+    <result column="bal_amt" jdbcType="DECIMAL" property="balAmt" />
+    <result column="locked_mp_amt" jdbcType="INTEGER" property="lockedMpAmt" />
     <result column="member_grade" jdbcType="VARCHAR" property="memberGrade" />
     <result column="member_grade_expire_date" jdbcType="DATE" property="memberGradeExpireDate" />
     <result column="ref_member_id" jdbcType="INTEGER" property="refMemberId" />
@@ -30,7 +32,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     member_id, user_name, password, pay_password, telephone, avatar_url, nick_name, gender, 
-    email, join_date, expire_date, mp_amt, member_grade, member_grade_expire_date, ref_member_id, 
+    email, join_date, expire_date, mp_amt, bal_amt, locked_mp_amt, member_grade, member_grade_expire_date, ref_member_id,
     qr_code_url, remarks, is_active, inactive_date, bu_code, created_by, created_date, 
     last_updated_by, last_updated_date, row_id
   </sql>
@@ -54,7 +56,7 @@
     insert into mc_member (member_id, user_name, password, 
       pay_password, telephone, avatar_url, 
       nick_name, gender, email, 
-      join_date, expire_date, mp_amt, 
+      join_date, expire_date, mp_amt, bal_amt, locked_mp_amt,
       member_grade, member_grade_expire_date, ref_member_id, 
       qr_code_url, remarks, is_active, 
       inactive_date, bu_code, created_by, 
@@ -63,7 +65,7 @@
     values (#{memberId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{payPassword,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, 
       #{nickName,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{joinDate,jdbcType=DATE}, #{expireDate,jdbcType=DATE}, #{mpAmt,jdbcType=INTEGER}, 
+      #{joinDate,jdbcType=DATE}, #{expireDate,jdbcType=DATE}, #{mpAmt,jdbcType=INTEGER}, #{balAmt,jdbcType=DECIMAL},#{lockedMpAmt,jdbcType=DECIMAL},
       #{memberGrade,jdbcType=VARCHAR}, #{memberGradeExpireDate,jdbcType=DATE}, #{refMemberId,jdbcType=INTEGER}, 
       #{qrCodeUrl,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, #{isActive,jdbcType=BIT}, 
       #{inactiveDate,jdbcType=TIMESTAMP}, #{buCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
@@ -108,6 +110,12 @@
       </if>
       <if test="mpAmt != null">
         mp_amt,
+      </if>
+      <if test="balAmt != null">
+        bal_amt,
+      </if>
+      <if test="lockedMpAmt != null">
+        locked_mp_amt,
       </if>
       <if test="memberGrade != null">
         member_grade,
@@ -183,6 +191,12 @@
       </if>
       <if test="mpAmt != null">
         #{mpAmt,jdbcType=INTEGER},
+      </if>
+      <if test="balAmt != null">
+        #{balAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="lockedMpAmt != null">
+        #{lockedMpAmt,jdbcType=INTEGER},
       </if>
       <if test="memberGrade != null">
         #{memberGrade,jdbcType=VARCHAR},
@@ -264,6 +278,12 @@
       <if test="mpAmt != null">
         mp_amt = #{mpAmt,jdbcType=INTEGER},
       </if>
+      <if test="balAmt != null">
+        bal_amt = #{balAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="lockedMpAmt != null">
+        locked_mp_amt = #{lockedMpAmt,jdbcType=INTEGER},
+      </if>
       <if test="memberGrade != null">
         member_grade = #{memberGrade,jdbcType=VARCHAR},
       </if>
@@ -342,6 +362,12 @@
       <if test="mpAmt != null">
         mp_amt = #{mpAmt,jdbcType=INTEGER},
       </if>
+      <if test="balAmt != null">
+        bal_amt = #{balAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="lockedMpAmt != null">
+        locked_mp_amt = #{lockedMpAmt,jdbcType=INTEGER},
+      </if>
       <if test="memberGrade != null">
         member_grade = #{memberGrade,jdbcType=VARCHAR},
       </if>
@@ -399,6 +425,8 @@
       join_date = #{joinDate,jdbcType=DATE},
       expire_date = #{expireDate,jdbcType=DATE},
       mp_amt = #{mpAmt,jdbcType=INTEGER},
+      bal_amt = #{balAmt,jdbcType=DECIMAL},
+      locked_mp_amt = #{lockedMpAmt,jdbcType=INTEGER},
       member_grade = #{memberGrade,jdbcType=VARCHAR},
       member_grade_expire_date = #{memberGradeExpireDate,jdbcType=DATE},
       ref_member_id = #{refMemberId,jdbcType=INTEGER},
@@ -451,6 +479,12 @@
       </if>
       <if test="mpAmt != null">
          and mp_amt = #{mpAmt,jdbcType=INTEGER}
+      </if>
+      <if test="balAmt != null">
+         and bal_amt = #{balAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="lockedMpAmt != null">
+         and locked_mp_amt = #{lockedMpAmt,jdbcType=INTEGER},
       </if>
       <if test="memberGrade != null">
          and member_grade = #{memberGrade,jdbcType=VARCHAR}

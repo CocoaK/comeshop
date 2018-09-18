@@ -1,5 +1,6 @@
 package com.eshop.serviceapp.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Member extends BaseModel {
@@ -25,7 +26,11 @@ public class Member extends BaseModel {
 
     private Date expireDate;
 
+    private BigDecimal balAmt;
+
     private Integer mpAmt;
+
+    private Integer lockedMpAmt;
 
     private String memberGrade;
 
@@ -141,12 +146,28 @@ public class Member extends BaseModel {
         this.expireDate = expireDate;
     }
 
+    public BigDecimal getBalAmt() {
+        return balAmt;
+    }
+
+    public void setBalAmt(BigDecimal balAmt) {
+        this.balAmt = balAmt;
+    }
+
     public Integer getMpAmt() {
         return mpAmt;
     }
 
     public void setMpAmt(Integer mpAmt) {
         this.mpAmt = mpAmt;
+    }
+
+    public Integer getLockedMpAmt() {
+        return lockedMpAmt;
+    }
+
+    public void setLockedMpAmt(Integer lockedMpAmt) {
+        this.lockedMpAmt = lockedMpAmt;
     }
 
     public String getMemberGrade() {
