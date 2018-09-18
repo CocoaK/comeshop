@@ -55,7 +55,7 @@
       #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=VARCHAR}, 
       #{lastUpdatedDate,jdbcType=TIMESTAMP}, #{rowId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberExchange">
+  <insert id="insertActive" parameterType="com.eshop.serviceapp.model.MemberExchange" useGeneratedKeys="true" keyProperty="memberExchangeId">
     insert into mc_member_exchange
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="memberExchangeId != null">

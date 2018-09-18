@@ -10,6 +10,8 @@ import com.eshop.serviceapp.model.MemberExchange;
 import com.eshop.serviceapp.service.IMemberExchangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -27,12 +29,15 @@ public class MemberExchangeService extends BaseService<MemberExchange> implement
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public ResultEntity<MemberExchange> addForResultEntity(MemberExchange memberExchange) {
         memberExchange.setCurrentUser("[SYS]");
         memberExchange.setApplicationDate(new Date());
         memberExchange.setBuCode(Constants.BU_CODE);
+        //不考虑现金提现
+        //memberExchange.getExchangeAmt();
         memberExchange.setStatus(Constants.MEMBER_EXCHANGE_STATUS_PENDING);
-        memberExchange.setAccountType(Constants.ACCOUNT_TYPE_WECHAT);
+        //memberExchange.setAccountType(Constants.ACCOUNT_TYPE_WECHAT);
         Member member = memberMapper.getOne(memberExchange.getMemberId());
         int result = add(memberExchange);
         //更新会员的余额(上期余额+本次充值金额)
@@ -42,5 +47,4 @@ public class MemberExchangeService extends BaseService<MemberExchange> implement
         return proccessResultEntity(result > 0 ? ResultEntity.SUCCESS
                 : ResultEntity.FAILD, result > 0 ? ResultEntity.MSG_SUCCESS : "", mExchange);
     }
-
 }
